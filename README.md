@@ -24,7 +24,7 @@ e.g.) `feature/login`, `feature/common`
 
 `test`: 테스트 코드 추가 등
 
-`chore`: 빌드 업무 수정 등 주요 코드 외 수정 사
+`chore`: 빌드 업무 수정 등 주요 코드 외 수정 사항
 
 ----
 ## 작업 방법
