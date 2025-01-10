@@ -1,4 +1,4 @@
-package muit.backend.domain;
+package muit.backend.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,11 +8,14 @@ import lombok.*;
 
 @Entity
 @Getter @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+@NoArgsConstructor
+public class Review {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    public String name;
+    private Long id;
+
+    private String title;
+    private String content;
+
 }
