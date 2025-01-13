@@ -1,9 +1,12 @@
 package muit.backend.repository;
 
-import muit.backend.domain.entity.Review;
+import muit.backend.domain.entity.musical.Musical;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface MusicalRepository extends JpaRepository<Musical, Long> {
+
 }
