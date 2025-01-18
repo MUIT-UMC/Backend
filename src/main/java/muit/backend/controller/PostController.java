@@ -5,11 +5,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
-import muit.backend.domain.entity.member.Member;
-import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.enums.PostType;
-import muit.backend.dto.reviewDTO.PostRequestDTO;
-import muit.backend.dto.reviewDTO.PostResponseDTO;
+import muit.backend.dto.postDTO.PostRequestDTO;
+import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.service.PostService;
 import org.springframework.web.bind.annotation.*;
 

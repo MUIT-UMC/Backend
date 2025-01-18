@@ -1,4 +1,4 @@
-package muit.backend.dto.reviewDTO;
+package muit.backend.dto.postDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

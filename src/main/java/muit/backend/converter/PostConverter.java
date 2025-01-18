@@ -4,8 +4,8 @@ import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
-import muit.backend.dto.reviewDTO.PostRequestDTO;
-import muit.backend.dto.reviewDTO.PostResponseDTO;
+import muit.backend.dto.postDTO.PostRequestDTO;
+import muit.backend.dto.postDTO.PostResponseDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
