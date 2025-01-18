@@ -1,4 +1,4 @@
-package muit.backend.domain.entity.coProduct;
+package muit.backend.domain.entity.member;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,24 +6,25 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
-import muit.backend.domain.entity.member.Member;
+import muit.backend.domain.entity.amateur.AmateurShow;
+import muit.backend.domain.entity.amateur.AmateurTicket;
 import muit.backend.domain.enums.ReservationStatus;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Getter @Builder
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reservation extends BaseEntity {
+public class MemberTicket extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer copy;
-
-    private Integer payment;
-
-    private Integer fee;
+    private Integer quantity;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'RESERVE_AWAIT'")
@@ -33,8 +34,7 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "coProduct_id")
-    private CoProduct coProduct;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "amateur_ticket_id")
+    private AmateurTicket amateurTicket;
 }

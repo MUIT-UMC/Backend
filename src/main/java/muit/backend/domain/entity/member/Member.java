@@ -3,7 +3,8 @@ package muit.backend.domain.entity.member;
 import jakarta.persistence.*;
 import lombok.*;
 import muit.backend.domain.common.BaseEntity;
-import muit.backend.domain.entity.coProduct.Reservation;
+import muit.backend.domain.entity.amateur.AmateurShow;
+import muit.backend.domain.entity.amateur.AmateurTicket;
 import muit.backend.domain.enums.ActiveStatus;
 import muit.backend.domain.enums.Gender;
 import muit.backend.domain.enums.LoginType;
@@ -74,8 +75,15 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Inquiry> inquiryList = new ArrayList<>();
 
+    //매핑 삭제
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+//    private List<AmateurTicket> amateurTicketList = new ArrayList<>();
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Reservation> reservationList = new ArrayList<>();
+    private List<MemberTicket> memberTicketList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<AmateurShow> amateurShowList = new ArrayList<>();
 
 
     public void encodePassword(String password) {
