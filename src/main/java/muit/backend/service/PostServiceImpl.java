@@ -2,13 +2,12 @@ package muit.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import muit.backend.converter.PostConverter;
-import muit.backend.domain.entity.member.Inquiry;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
-import muit.backend.dto.reviewDTO.PostRequestDTO;
-import muit.backend.dto.reviewDTO.PostResponseDTO;
+import muit.backend.dto.postDTO.PostRequestDTO;
+import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.repository.MemberRepository;
 import muit.backend.repository.MusicalRepository;
 import muit.backend.repository.PostRepository;
@@ -16,8 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

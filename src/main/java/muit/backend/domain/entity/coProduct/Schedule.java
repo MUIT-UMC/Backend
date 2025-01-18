@@ -26,9 +26,6 @@ public class Schedule extends BaseEntity {
 
     private String perTime;
 
-    @Enumerated(EnumType.STRING)
-    private OpenStatus openStatus;
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "musical_id")
     private Musical musical;

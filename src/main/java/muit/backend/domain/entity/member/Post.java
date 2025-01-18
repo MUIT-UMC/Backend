@@ -6,10 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
-import muit.backend.domain.entity.Image;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
-import muit.backend.dto.reviewDTO.PostRequestDTO;
+import muit.backend.dto.postDTO.PostRequestDTO;
 
 import java.util.ArrayList;
 import java.util.List;
