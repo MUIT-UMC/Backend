@@ -27,12 +27,7 @@ public class AmateurTicket extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TicketType ticketType;
 
-    private String price;
-
-    //매핑 삭제
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "member_id")
-//    private Member member;
+    private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "amateur_show_id")

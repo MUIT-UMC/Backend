@@ -26,15 +26,14 @@ public class MemberTicket extends BaseEntity {
 
     private Integer quantity;
 
-    @Enumerated(EnumType.STRING)
-    @ColumnDefault("'RESERVE_AWAIT'")
-    private ReservationStatus reservationStatus;
+    private Integer totalPrice;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "member_id")
-    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "amateur_ticket_id")
     private AmateurTicket amateurTicket;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
 }

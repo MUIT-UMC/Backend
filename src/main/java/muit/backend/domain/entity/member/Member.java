@@ -75,12 +75,8 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Inquiry> inquiryList = new ArrayList<>();
 
-    //매핑 삭제
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-//    private List<AmateurTicket> amateurTicketList = new ArrayList<>();
-
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<MemberTicket> memberTicketList = new ArrayList<>();
+    private List<Reservation> reservationList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<AmateurShow> amateurShowList = new ArrayList<>();
