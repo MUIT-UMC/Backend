@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.enums.PostType;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 @NoArgsConstructor
@@ -17,4 +19,8 @@ public class PostRequestDTO {
     private String title;
     private String content;
     private String location;
+    private Integer rating;
+    private LocalDateTime lostDate;
+    private String lostItem;
+    private String musicalName;
 }

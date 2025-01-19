@@ -97,11 +97,12 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
         //musical 유효성 검사
-        Long musicalId = requestDTO.getMusicalId();
-        Musical musical = musicalRepository.findById(musicalId)
-                .orElseThrow(() -> new RuntimeException("Musical not found"));
-        //musical 먼저 수정
-        post.changeMusical(musical);
+        if(requestDTO.getMusicalId()!=null){Long musicalId = requestDTO.getMusicalId();
+            Musical musical = musicalRepository.findById(musicalId)
+                    .orElseThrow(() -> new RuntimeException("Musical not found"));
+            //musical 먼저 수정
+            post.changeMusical(musical);}
+
         //나머지 필드 수정
         Post changedPost = post.changePost(requestDTO);
 

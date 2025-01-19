@@ -9,7 +9,9 @@ import muit.backend.domain.common.BaseEntity;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.PostRequestDTO;
+import org.hibernate.annotations.DynamicUpdate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
 public class Post extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +36,14 @@ public class Post extends BaseEntity {
     private String location;
 
     private Integer commentCount;
+
+    private Integer rating;
+
+    private LocalDateTime lostDate;
+
+    private String lostItem;
+
+    private String musicalName;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
@@ -60,14 +71,14 @@ public class Post extends BaseEntity {
     }
 
     public Post changePost(PostRequestDTO postRequestDTO) {
-        return builder()
-                .id(this.id)
-                .member(this.member)
-                .musical(this.musical)
-                .postType(postRequestDTO.getPostType())
-                .title(postRequestDTO.getTitle())
-                .content(postRequestDTO.getContent())
-                .location(postRequestDTO.getLocation())
-                .build();
+        if(postRequestDTO.getTitle()!=null){this.title = postRequestDTO.getTitle();}
+        if(postRequestDTO.getContent()!=null){this.content = postRequestDTO.getContent();}
+        if(postRequestDTO.getLocation()!=null){this.location = postRequestDTO.getLocation();}
+        if(postRequestDTO.getRating()!=null){this.rating = postRequestDTO.getRating();}
+        if(postRequestDTO.getLostItem()!=null){this.lostItem = postRequestDTO.getLostItem();}
+        if(postRequestDTO.getLostDate()!=null){this.lostDate = postRequestDTO.getLostDate();}
+        if(postRequestDTO.getMusicalName()!=null){this.musicalName = postRequestDTO.getMusicalName();}
+        return this;
+
     }
 }

@@ -26,6 +26,9 @@ public class PostConverter {
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
                 .location(requestDTO.getLocation())
+                .rating(requestDTO.getRating())
+                .lostItem(requestDTO.getLostItem())
+                .lostDate(requestDTO.getLostDate())
                 .build();
     }
 
@@ -41,6 +44,11 @@ public class PostConverter {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .location(post.getLocation())
+                .rating(post.getRating())
+                .lostItem(post.getLostItem())
+                .lostDate(post.getLostDate())
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
                 .build();
     }
 
@@ -73,6 +81,11 @@ public class PostConverter {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .location(post.getLocation())
+                .rating(post.getRating())
+                .lostItem(post.getLostItem())
+                .lostDate(post.getLostDate())
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
                 .build();
     }
 }
