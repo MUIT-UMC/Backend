@@ -23,6 +23,7 @@ public class Reservation {
 
     private LocalDateTime date;
 
+    @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
