@@ -12,4 +12,7 @@ public interface ManageMemberService {
 
     // 사용자 전체 조회
     public Page<ManageMemberResponseDTO.ManageMemberResultListDTO> getAllMembers(Pageable pageable, String keyword, Set<String> selectedFields);
+
+    // 특정 사용자 조회 (단건 조회)
+    public ManageMemberResponseDTO.ManageMemberResultDTO getMember(Long memberId);
 }

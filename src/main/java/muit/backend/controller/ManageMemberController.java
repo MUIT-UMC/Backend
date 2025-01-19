@@ -23,9 +23,16 @@ public class ManageMemberController {
     @Operation(summary = "전체 사용자 조회")
     @GetMapping
     public ApiResponse<Page<ManageMemberResponseDTO.ManageMemberResultListDTO>> getAllMembers(@ParameterObject Pageable pageable,
-                                                                                              @RequestParam(required = false) String keyword, @RequestParam(required = false) Set<String> selectedFields) {
-        Page<ManageMemberResponseDTO.ManageMemberResultListDTO> members =
-                manageMemberService.getAllMembers(pageable, keyword, selectedFields);
+                                                                                              @RequestParam(required = false) String keyword,
+                                                                                              @RequestParam(required = false) Set<String> selectedFields) {
+        Page<ManageMemberResponseDTO.ManageMemberResultListDTO> members = manageMemberService.getAllMembers(pageable, keyword, selectedFields);
         return ApiResponse.onSuccess(members);
+    }
+
+    @Operation(summary = "특정 사용자 조회 (단건 조회)")
+    @GetMapping("/{memberId}")
+    public ApiResponse<ManageMemberResponseDTO.ManageMemberResultDTO> getMember(@PathVariable("memberId") Long memberId) {
+        ManageMemberResponseDTO.ManageMemberResultDTO member = manageMemberService.getMember(memberId);
+        return ApiResponse.onSuccess(member);
     }
 }

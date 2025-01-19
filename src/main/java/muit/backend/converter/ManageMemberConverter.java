@@ -6,7 +6,8 @@ import muit.backend.dto.manageMemberDTO.ManageMemberResponseDTO;
 import java.util.Set;
 
 public class ManageMemberConverter {
-    public static ManageMemberResponseDTO.ManageMemberResultListDTO toMangeMemberResultDTO(Member member, Set<String> selectedFields, boolean isKeywordSearch) {
+
+    public static ManageMemberResponseDTO.ManageMemberResultListDTO toMangeMemberResultListDTO(Member member, Set<String> selectedFields, boolean isKeywordSearch) {
 
         // 키워드 검색이거나 전체 조회인 경우 모든 필드 포함
         if (isKeywordSearch || selectedFields == null || selectedFields.isEmpty()) {
@@ -28,6 +29,19 @@ public class ManageMemberConverter {
                 .email(selectedFields.contains("email") ? member.getEmail() : null)
                 .phone(selectedFields.contains("phone") ? member.getPhone() : null)
                 .gender(selectedFields.contains("gender") ? member.getGender() : null)
+                .build();
+    }
+
+    public static ManageMemberResponseDTO.ManageMemberResultDTO toManageMemberResultDTO(Member member) {
+        return ManageMemberResponseDTO.ManageMemberResultDTO.builder()
+                .memberId(member.getId())
+                .username(member.getUsername())
+                .name(member.getName())
+                .phone(member.getPhone())
+                .email(member.getEmail())
+                .birthDate(member.getBirthDate())
+                .gender(member.getGender())
+                .address(member.getAddress())
                 .build();
     }
 }

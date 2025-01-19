@@ -2,6 +2,8 @@ package muit.backend.service;
 
 
 import lombok.RequiredArgsConstructor;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.ManageMemberConverter;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.dto.manageMemberDTO.ManageMemberResponseDTO;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
+
+import static muit.backend.apiPayLoad.code.status.ErrorStatus.MEMBER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +46,15 @@ public class ManageMemberServiceImpl implements ManageMemberService {
         }
 
         return members.map(member ->
-                ManageMemberConverter.toMangeMemberResultDTO(member, selectedFields, isKeywordSearch));
+                ManageMemberConverter.toMangeMemberResultListDTO(member, selectedFields, isKeywordSearch));
+    }
+
+    // 특정 사용자 조회 (단건 조회)
+    @Override
+    public ManageMemberResponseDTO.ManageMemberResultDTO getMember(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
+        return ManageMemberConverter.toManageMemberResultDTO(member);
     }
 }

@@ -13,11 +13,25 @@ public class ManageMemberResponseDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL) // null 값을 가진 필드는 JSON 응답에서 제외
     public static class ManageMemberResultListDTO {
         private Long memberId;
-        private String username;
-        private String name;
-        private String email;
-        private String phone;
-        private Gender gender;
+        private String username; // 아이디
+        private String name; // 이름
+        private String email; // 이메일
+        private String phone; // 전번
+        private Gender gender; // 성별
+    }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ManageMemberResultDTO {
+        private Long memberId;
+        private String username; // 아이디
+        private String name; // 이름
+        private String phone; // 전번
+        private String email; // 이메일
+        private String birthDate; // 생년월일
+        private Gender gender; // 성별
+        private String address; // 주소
     }
 }
