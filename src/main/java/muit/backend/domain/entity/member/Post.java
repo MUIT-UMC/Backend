@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
+import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -75,10 +76,17 @@ public class Post extends BaseEntity {
         if(postRequestDTO.getContent()!=null){this.content = postRequestDTO.getContent();}
         if(postRequestDTO.getLocation()!=null){this.location = postRequestDTO.getLocation();}
         if(postRequestDTO.getRating()!=null){this.rating = postRequestDTO.getRating();}
-        if(postRequestDTO.getLostItem()!=null){this.lostItem = postRequestDTO.getLostItem();}
-        if(postRequestDTO.getLostDate()!=null){this.lostDate = postRequestDTO.getLostDate();}
-        if(postRequestDTO.getMusicalName()!=null){this.musicalName = postRequestDTO.getMusicalName();}
         return this;
 
+    }
+
+    public Post changeLost(LostRequestDTO lostRequestDTO){
+        if(lostRequestDTO.getTitle()!=null){this.title = lostRequestDTO.getTitle();}
+        if(lostRequestDTO.getContent()!=null){this.content = lostRequestDTO.getContent();}
+        if(lostRequestDTO.getLocation()!=null){this.location = lostRequestDTO.getLocation();}
+        if(lostRequestDTO.getLostItem()!=null){this.lostItem = lostRequestDTO.getLostItem();}
+        if(lostRequestDTO.getLostDate()!=null){this.lostDate = lostRequestDTO.getLostDate();}
+        if(lostRequestDTO.getMusicalName()!=null){this.musicalName = lostRequestDTO.getMusicalName();}
+        return this;
     }
 }

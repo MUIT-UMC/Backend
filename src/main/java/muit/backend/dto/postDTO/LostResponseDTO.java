@@ -1,5 +1,6 @@
 package muit.backend.dto.postDTO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,20 +11,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-public class PostResponseDTO {
+public class LostResponseDTO {
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PostResultDTO{
+    public static class LostResultDTO{
         private Long id;
         private PostType postType;
         private Long memberId;
-        private Long musicalId;
+        private String musicalName;
         private String title;
         private String content;
         private String location;
-        private Integer rating;
+        private LocalDateTime lostDate;
+        private String lostItem;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -32,8 +34,8 @@ public class PostResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PostResultListDTO{
-        private List<PostResponseDTO.PostResultDTO> postResultListDTO;
+    public static class LostResultListDTO{
+        private List<LostResponseDTO.LostResultDTO> postResultListDTO;
         private Integer listSize;
         private Integer totalPage;
         private Long totalElements;
@@ -45,16 +47,17 @@ public class PostResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CreatePostResponseDTO {
+    public static class CreateLostResponseDTO {
         private String message;
         private Long id;
         private PostType postType;
         private Long memberId;
-        private Long musicalId;
+        private String musicalName;
         private String title;
         private String content;
         private String location;
-        private Integer rating;
+        private LocalDateTime lostDate;
+        private String lostItem;
         private LocalDateTime createdAt;
 
     }

@@ -42,7 +42,6 @@ public class PostServiceImpl implements PostService {
                 .postType(post.getPostType())
                 .memberId(post.getMember().getId())
                 .musicalId(post.getMusical().getId())
-                .musicalName(post.getMusical().getName())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .location(post.getLocation())

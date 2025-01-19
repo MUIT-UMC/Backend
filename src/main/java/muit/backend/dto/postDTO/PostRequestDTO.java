@@ -13,14 +13,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostRequestDTO {
-    private PostType postType;
     private Long memberId;
     private Long musicalId;
     private String title;
     private String content;
     private String location;
     private Integer rating;
-    private LocalDateTime lostDate;
-    private String lostItem;
-    private String musicalName;
 }
