@@ -1,5 +1,6 @@
 package muit.backend.service;
 
+import muit.backend.dto.manageMemberDTO.ManageMemberRequestDTO;
 import muit.backend.dto.manageMemberDTO.ManageMemberResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,4 +16,7 @@ public interface ManageMemberService {
 
     // 특정 사용자 조회 (단건 조회)
     public ManageMemberResponseDTO.ManageMemberResultDTO getMember(Long memberId);
+
+    // 특정 사용자 정보 수정
+    public ManageMemberResponseDTO.ManageMemberResultDTO updateMember(Long memberId, ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO);
 }

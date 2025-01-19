@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
+import muit.backend.dto.manageMemberDTO.ManageMemberRequestDTO;
 import muit.backend.dto.manageMemberDTO.ManageMemberResponseDTO;
 import muit.backend.service.ManageMemberService;
 import org.springdoc.core.annotations.ParameterObject;
@@ -34,5 +35,12 @@ public class ManageMemberController {
     public ApiResponse<ManageMemberResponseDTO.ManageMemberResultDTO> getMember(@PathVariable("memberId") Long memberId) {
         ManageMemberResponseDTO.ManageMemberResultDTO member = manageMemberService.getMember(memberId);
         return ApiResponse.onSuccess(member);
+    }
+
+    @Operation(summary = "특정 사용자 정보 수정")
+    @PatchMapping("/{memberId}/update")
+    public ApiResponse<ManageMemberResponseDTO.ManageMemberResultDTO> updateMember(@PathVariable("memberId") Long memberId, @RequestBody ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO) {
+        ManageMemberResponseDTO.ManageMemberResultDTO updateMember = manageMemberService.updateMember(memberId, requestDTO);
+        return ApiResponse.onSuccess(updateMember);
     }
 }

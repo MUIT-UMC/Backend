@@ -11,7 +11,7 @@ public class ManageMemberResponseDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonInclude(JsonInclude.Include.NON_NULL) // null 값을 가진 필드는 JSON 응답에서 제외
-    public static class ManageMemberResultListDTO {
+    public static class ManageMemberResultListDTO { // 사용자 전체 조회
         private Long memberId;
         private String username; // 아이디
         private String name; // 이름
@@ -24,7 +24,7 @@ public class ManageMemberResponseDTO {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ManageMemberResultDTO {
+    public static class ManageMemberResultDTO { // 특정 사용자 조회, 특정 사용자 수정
         private Long memberId;
         private String username; // 아이디
         private String name; // 이름

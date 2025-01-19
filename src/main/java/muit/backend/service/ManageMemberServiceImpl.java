@@ -6,6 +6,7 @@ import muit.backend.apiPayLoad.code.status.ErrorStatus;
 import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.ManageMemberConverter;
 import muit.backend.domain.entity.member.Member;
+import muit.backend.dto.manageMemberDTO.ManageMemberRequestDTO;
 import muit.backend.dto.manageMemberDTO.ManageMemberResponseDTO;
 import muit.backend.repository.MemberRepository;
 import org.springframework.data.domain.Page;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
-
-import static muit.backend.apiPayLoad.code.status.ErrorStatus.MEMBER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -53,8 +52,21 @@ public class ManageMemberServiceImpl implements ManageMemberService {
     @Override
     public ManageMemberResponseDTO.ManageMemberResultDTO getMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new RuntimeException("Member not found"));
 
         return ManageMemberConverter.toManageMemberResultDTO(member);
+    }
+
+    // 특정 사용자 정보 수정
+    @Override
+    @Transactional
+    public ManageMemberResponseDTO.ManageMemberResultDTO updateMember(Long memberId, ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+        Member updateMember = member.updateMember(requestDTO);
+        memberRepository.save(updateMember);
+
+        return ManageMemberConverter.toManageMemberResultDTO(updateMember);
     }
 }
