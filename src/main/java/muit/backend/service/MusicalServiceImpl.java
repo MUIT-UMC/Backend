@@ -2,25 +2,17 @@ package muit.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import muit.backend.converter.EventConverter;
-import muit.backend.domain.entity.coProduct.CoProduct;
-import muit.backend.domain.entity.coProduct.Schedule;
-import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Event;
 import muit.backend.domain.entity.musical.Musical;
-import muit.backend.domain.enums.OpenStatus;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
-import muit.backend.dto.postDTO.PostResponseDTO;
-import muit.backend.repository.CoProductRepository;
 import muit.backend.repository.EventRepository;
 import muit.backend.repository.MusicalRepository;
 import muit.backend.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

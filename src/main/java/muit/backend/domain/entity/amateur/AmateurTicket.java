@@ -1,4 +1,4 @@
-package muit.backend.domain.entity.coProduct;
+package muit.backend.domain.entity.amateur;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,34 +7,33 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
 import muit.backend.domain.entity.member.Member;
+import muit.backend.domain.entity.member.MemberTicket;
 import muit.backend.domain.enums.ReservationStatus;
+import muit.backend.domain.enums.TicketType;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reservation extends BaseEntity {
+public class AmateurTicket extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer copy;
-
-    private Integer payment;
-
-    private Integer fee;
-
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("'RESERVE_AWAIT'")
-    private ReservationStatus reservationStatus;
+    private TicketType ticketType;
+
+    private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "amateur_show_id")
+    private AmateurShow amateurShow;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "coProduct_id")
-    private CoProduct coProduct;
+    @OneToMany(mappedBy = "amateurTicket", cascade = CascadeType.ALL)
+    private List<MemberTicket> memberTicketList = new ArrayList<>();
 
 }

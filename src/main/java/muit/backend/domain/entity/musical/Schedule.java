@@ -1,4 +1,4 @@
-package muit.backend.domain.entity.coProduct;
+package muit.backend.domain.entity.musical;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
-import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.OpenStatus;
 
 import java.util.Date;
@@ -30,6 +29,7 @@ public class Schedule extends BaseEntity {
     @JoinColumn(name = "musical_id")
     private Musical musical;
 
-    @OneToOne(mappedBy = "schedule", cascade = CascadeType.ALL)
-    private CoProduct coProduct;
+    //매핑 제거
+//    @OneToOne(mappedBy = "schedule", cascade = CascadeType.ALL)
+//    private AmateurShow amateurShow;
 }

@@ -1,6 +1,6 @@
 package muit.backend.repository;
 
-import muit.backend.domain.entity.coProduct.Schedule;
+import muit.backend.domain.entity.musical.Schedule;
 import muit.backend.domain.enums.OpenStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
