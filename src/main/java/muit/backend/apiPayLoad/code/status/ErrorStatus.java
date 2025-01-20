@@ -26,6 +26,8 @@ public enum ErrorStatus implements BaseErrorCode {
     //APPLICANT ERROR
     APPLICANT_NOT_FOUND(HttpStatus.NOT_FOUND, "APPLICANT4000", "존재하지 않는 회원입니다."),
 
+    // MEMBER ERROR
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4000", "존재하지 않는 사용자입니다."),
 
     //JOIN ERROR
     JOIN_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "JOIN4000", "아이디와 비밀번호는 필수 입력 값입니다."),
