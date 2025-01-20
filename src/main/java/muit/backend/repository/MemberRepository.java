@@ -24,4 +24,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "OR m.phone LIKE %:keyword%")
     Page<Member> findByKeyword(Pageable pageable, @Param("keyword") String keyword);
 
+    @Query("select m from Member m where m.email = :email")
+    Optional<Member> findMemberByEmail(@Param("email") String email);
 }
