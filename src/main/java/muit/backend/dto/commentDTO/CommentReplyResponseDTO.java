@@ -30,7 +30,7 @@ public class CommentReplyResponseDTO {
         private Long commentId;
         private Long replyId;
         private String content;
-        private Long writerId;
+        private Long memberId;
         private LocalDateTime createdAt;
     }
 
