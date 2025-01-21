@@ -27,4 +27,39 @@ public class MusicalController {
         return ApiResponse.onSuccess("뮤지컬 정보를 성공적으로 저장하였습니다.");
     }
 
+    @GetMapping("/hot")
+    @Operation(summary = "뮤지컬 조회 - 리스트 HOT NOW", description = "Home에서 현재 HOT한 뮤지컬 5개 조회하는 API, HOT한 기준은 불명")
+    public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> getFiveHotMusicals() {
+        return ApiResponse.onSuccess(musicalService.getFiveMusicals());
+    }
+
+    @GetMapping("/hot/all")
+    @Operation(summary = "뮤지컬 조회 - 리스트 HOT NOW 전체보기", description = "현재 HOT한 뮤지컬 전체 조회하는 API")
+    public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> getAllHotMusicals() {
+        return ApiResponse.onSuccess(musicalService.getAllHotMusicals());
+    }
+
+    @GetMapping("/rank")
+    @Operation(summary = "뮤지컬 조회 - 리스트 RANKING", description = "Home에서 Ranking 5개 뮤지컬 조회하는 API, Ranking 기준은 불명")
+    public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> getFiveRankMusicals() {
+        return ApiResponse.onSuccess(musicalService.getFiveMusicals());
+    }
+
+    @GetMapping("/rank/all")
+    @Operation(summary = "뮤지컬 조회 - 리스트 RANKING 전체보기", description = "RANKING 뮤지컬 전체 조회하는 API")
+    public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> getAllRankMusicals() {
+        return ApiResponse.onSuccess(musicalService.getAllHotMusicals());
+    }
+
+    @GetMapping("/open")
+    @Operation(summary = "뮤지컬 조회 - 리스트 TICKET OPEN", description = "Home에서 1주일 안에 오픈하는 최대 5개 뮤지컬을 조회하는 API")
+    public ApiResponse<MusicalResponseDTO.MusicalOpenListDTO> getFiveOpenMusicals() {
+        return ApiResponse.onSuccess(musicalService.getFiveOpenMusicals());
+    }
+
+    @GetMapping("/open/all")
+    @Operation(summary = "뮤지컬 조회 - 리스트 TICKET OPEN 전체보기", description = "오늘 이후 티켓 오픈하는 뮤지컬 전체 조회하는 API")
+    public ApiResponse<MusicalResponseDTO.MusicalOpenListDTO> getAllOpenMusicals() {
+        return ApiResponse.onSuccess(musicalService.getAllOpenMusicals());
+    }
 }

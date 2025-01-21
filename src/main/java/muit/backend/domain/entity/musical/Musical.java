@@ -7,10 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.converter.EventConverter;
 import muit.backend.domain.common.BaseEntity;
+import muit.backend.domain.enums.EventType;
+import muit.backend.domain.enums.OpenStatus;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +52,10 @@ public class Musical extends BaseEntity {
     private String description;
 
     //직접 작성
-    private LocalDate openDate;
+    private LocalDateTime openDate;
+
+    @Enumerated(EnumType.STRING)
+    private EventType openInfo;
 
     private String posterUrl;
 
