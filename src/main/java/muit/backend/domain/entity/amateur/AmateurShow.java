@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
 import muit.backend.domain.entity.member.Member;
+import muit.backend.domain.enums.AmateurStatus;
+import muit.backend.domain.enums.ReservationStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,13 @@ public class AmateurShow extends BaseEntity {
 
     private String account;
 
+    private String hashtag;
+
+    private String contact;
+
+    @Enumerated(EnumType.STRING)
+    private AmateurStatus amateurStatus;
+
 
     //매핑 제거
 //    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -59,6 +68,8 @@ public class AmateurShow extends BaseEntity {
     @OneToMany(mappedBy = "amateurShow", cascade = CascadeType.ALL)
     private List<AmateurNotice> amateurNoticeList = new ArrayList<>();
 
+    @OneToOne(mappedBy = "amateurShow", cascade = CascadeType.ALL)
+    private AmateurSummary amateurSummary;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
