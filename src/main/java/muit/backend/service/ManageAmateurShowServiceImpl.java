@@ -19,6 +19,7 @@ public class ManageAmateurShowServiceImpl implements ManageAmateurShowService {
 
     private final AmateurShowRepository amateurShowRepository;
 
+    // 소극장 공연 전체 조회
     @Override
     public Page<ManageAmateurShowResponseDTO.ResultListDTO> getAllAmateurShows(Pageable pageable, String keyword, Set<String> selectedFields) {
 
@@ -34,11 +35,20 @@ public class ManageAmateurShowServiceImpl implements ManageAmateurShowService {
                 return Page.empty(pageable);
             }
         } else { // 검색어가 없으면 모든 소극장 공연 정보 조회
-            amateurShows = amateurShowRepository.findAll(pageable);
+            amateurShows = amateurShowRepository.findAllWithMember(pageable);
         }
 
         return amateurShows.map(amateurShow ->
                 ManageAmateurShowConverter.toResultListDTO(amateurShow, selectedFields, isKeywordSearch)
         );
+    }
+
+    // 특정 소극장 공연 조회
+    @Override
+    public ManageAmateurShowResponseDTO.ResultDTO getAmateurShow(Long amateurShowId) {
+        AmateurShow amateurShow = amateurShowRepository.findByIdWithMemberAndSummary(amateurShowId)
+                .orElseThrow(() -> new RuntimeException("AmateurShow not found"));
+
+        return ManageAmateurShowConverter.toResultDTO(amateurShow);
     }
 }

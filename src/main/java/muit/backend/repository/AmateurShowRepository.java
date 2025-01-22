@@ -7,7 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface AmateurShowRepository extends JpaRepository<AmateurShow, Long> {
+
+    // 전체 조회용 (member 함께 조회)
+    @Query("SELECT a FROM AmateurShow a JOIN FETCH a.member")
+    Page<AmateurShow> findAllWithMember(Pageable pageable);
 
     // 검색어가 있을 때
     @Query("SELECT a FROM AmateurShow a JOIN FETCH a.member WHERE " +
@@ -15,4 +21,11 @@ public interface AmateurShowRepository extends JpaRepository<AmateurShow, Long> 
             "OR a.schedule LIKE %:keyword% " +
             "OR a.member.name LIKE %:keyword%")
     Page<AmateurShow> findByKeyword(Pageable pageable, @Param("keyword") String keyword);
+
+    // 특정 공연 조회용 (member와 summary 함께 조회)
+    @Query("SELECT a FROM AmateurShow a " +
+            "JOIN FETCH a.member " +
+            "LEFT JOIN FETCH a.amateurSummary " +
+            "WHERE a.id = :amateurShowId")
+    Optional<AmateurShow> findByIdWithMemberAndSummary(@Param("amateurShowId") Long amateurShowId);
 }

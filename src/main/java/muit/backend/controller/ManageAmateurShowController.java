@@ -9,10 +9,7 @@ import muit.backend.service.ManageAmateurShowService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -33,4 +30,13 @@ public class ManageAmateurShowController {
         return ApiResponse.onSuccess(amateurShows);
     }
 
+    @Operation(summary = "특정 소극장 공연 상세 조회")
+    @GetMapping("/{amateurShowId}")
+    public ApiResponse<ManageAmateurShowResponseDTO.ResultDTO> getAmateurShow(@PathVariable("amateurShowId") Long amateurShowId) {
+        ManageAmateurShowResponseDTO.ResultDTO amateurShow = manageAmateurShowService.getAmateurShow(amateurShowId);
+        return ApiResponse.onSuccess(amateurShow);
+    }
+
+
 }
+

@@ -2,7 +2,9 @@ package muit.backend.converter;
 
 import muit.backend.domain.entity.amateur.AmateurShow;
 import muit.backend.domain.entity.member.Member;
+import muit.backend.domain.enums.AmateurStatus;
 import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowResponseDTO;
+import muit.backend.dto.manageMemberDTO.ManageMemberResponseDTO;
 
 import java.util.Set;
 
@@ -27,6 +29,21 @@ public class ManageAmateurShowConverter {
                 .amateurShowName(selectedFields.contains("amateurShowName") ? amateurShow.getName() : null)
                 .schedule(selectedFields.contains("schedule") ? amateurShow.getSchedule() : null)
                 .memberName(selectedFields.contains("memberName") ? amateurShow.getMember().getName() : null)
+                .build();
+    }
+
+    public static ManageAmateurShowResponseDTO.ResultDTO toResultDTO(AmateurShow amateurShow) {
+        return ManageAmateurShowResponseDTO.ResultDTO.builder()
+                .amateurShowId(amateurShow.getId())
+                .amateurShowName(amateurShow.getName())
+                .memberName(amateurShow.getMember().getName())
+                .username(amateurShow.getMember().getUsername())
+                .schedule(amateurShow.getSchedule())
+                .hashtag(amateurShow.getHashtag())
+                .content(amateurShow.getAmateurSummary().getContent())
+                .account(amateurShow.getAccount())
+                .contact(amateurShow.getContact())
+                .amateurStatus(amateurShow.getAmateurStatus())
                 .build();
     }
 }

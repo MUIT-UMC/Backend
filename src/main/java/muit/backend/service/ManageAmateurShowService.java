@@ -11,4 +11,5 @@ import java.util.Set;
 public interface ManageAmateurShowService {
 
     public Page<ManageAmateurShowResponseDTO.ResultListDTO> getAllAmateurShows(Pageable pageable, String keyword, Set<String> selectedFields);
+    public ManageAmateurShowResponseDTO.ResultDTO getAmateurShow(Long amateurShowId);
 }

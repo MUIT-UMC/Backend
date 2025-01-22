@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.enums.AmateurStatus;
+import muit.backend.domain.enums.Gender;
 
 public class ManageAmateurShowResponseDTO {
 
@@ -19,6 +20,24 @@ public class ManageAmateurShowResponseDTO {
         private String amateurShowName; // 소극장 공연명
         private String schedule; // 소극장 공연 날짜/시간
         private String memberName; // 등록자(사용자)명
+        private AmateurStatus amateurStatus; // 등록 상태 (확인 전, 등록, 반려)
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ResultDTO { // 특정 소극장 공연 조회, 특정 소극장 공연 수정
+
+        private Long amateurShowId; // 소극장 공연 id
+        private String amateurShowName; // 소극장 공연명
+        private String memberName; // 등록자(사용자)명
+        private String username; // 등록자 아이디
+        private String schedule; // 소극장 공연 날짜/시간
+        private String hashtag; // 해시태그
+        private String content; // 공연 줄거리
+        private String account; // 계좌번호
+        private String contact; // 연락처
         private AmateurStatus amateurStatus; // 등록 상태 (확인 전, 등록, 반려)
     }
 }
