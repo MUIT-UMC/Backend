@@ -11,6 +11,8 @@ public class CommentReplyRequestDTO {
     @Getter
     public static class CommentRequestDTO{
         private String content;
+        //삭제예정
+        private Long memberId;
     }
 
     @AllArgsConstructor
@@ -18,8 +20,9 @@ public class CommentReplyRequestDTO {
     @Builder
     @Getter
     public static class ReplyRequestDTO{
-        private Long commentId;
         private String content;
+        //삭제 예정
+        private Long memberId;
     }
 
     @AllArgsConstructor

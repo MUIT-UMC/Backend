@@ -3,6 +3,7 @@ package muit.backend.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.domain.enums.PostType;
@@ -14,6 +15,7 @@ import muit.backend.service.LostService;
 import muit.backend.service.PostService;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = " 분실물 게시글")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/losts")
