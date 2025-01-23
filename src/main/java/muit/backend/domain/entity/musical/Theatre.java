@@ -29,6 +29,8 @@ public class Theatre extends BaseEntity {
 
     private String allSeatImg;
 
+    private String relateUrl;
+
     @OneToOne (mappedBy = "theatre", cascade = CascadeType.ALL)
     private Musical musical;
 

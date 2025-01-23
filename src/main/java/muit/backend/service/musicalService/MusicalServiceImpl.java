@@ -14,8 +14,10 @@ import muit.backend.dto.musicalDTO.MusicalRequestDTO;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 import muit.backend.repository.EventRepository;
 import muit.backend.repository.MusicalRepository;
-import muit.backend.repository.ScheduleRepository;
 import muit.backend.service.theatreService.TheatreService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,5 +79,34 @@ public class MusicalServiceImpl implements MusicalService {
         } catch (Exception e) {
             throw new RuntimeException("뮤지컬 저장 실패", e);
         }
+    }
+
+    @Override
+    public MusicalResponseDTO.MusicalHomeListDTO getFiveMusicals(){
+        List<Musical> musicals = musicalRepository.findTop5ByOrderByIdAsc();
+
+        return MusicalConverter.toMusicalHomeListDTO(musicals);
+    }
+
+    @Override
+    public MusicalResponseDTO.MusicalHomeListDTO getAllHotMusicals(){
+        List<Musical> musicals = musicalRepository.findAllByOrderByIdAsc();
+
+        return MusicalConverter.toMusicalHomeListDTO(musicals);
+    }
+
+    @Override
+    public MusicalResponseDTO.MusicalOpenListDTO getFiveOpenMusicals(){
+        Pageable pageable = PageRequest.of(0,5);
+        List<Musical> musicals = musicalRepository.getFiveOpenWithin7Days(pageable);
+
+        return MusicalConverter.toMusicalOpenListDTO(musicals);
+    }
+
+    @Override
+    public MusicalResponseDTO.MusicalOpenListDTO getAllOpenMusicals(){
+        List<Musical> musicals = musicalRepository.getAllOpenAfterToday();
+
+        return MusicalConverter.toMusicalOpenListDTO(musicals);
     }
 }

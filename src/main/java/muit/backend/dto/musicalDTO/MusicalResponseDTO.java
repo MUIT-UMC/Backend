@@ -39,6 +39,48 @@ public class MusicalResponseDTO {
 
         //직접 작성
         private String description;
-
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MusicalHomeDTO{
+        private Long id;
+        private String posterUrl;
+        private String name;
+        private String place;
+        private LocalDate perFrom;
+        private LocalDate perTo;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MusicalHomeListDTO{
+        private List<MusicalHomeDTO> musicalHomeList;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MusicalOpenDTO{
+        private Long id;
+        private String posterUrl;
+        private String name;
+        private String place;
+        private String openDate;
+        private String openInfo;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MusicalOpenListDTO{
+        private List<MusicalOpenDTO> musicalOpenList;
+    }
+
 }

@@ -1,7 +1,10 @@
 package muit.backend.converter;
 
+import muit.backend.domain.entity.musical.Event;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.entity.musical.Theatre;
+import muit.backend.domain.enums.EventType;
+import muit.backend.domain.enums.OpenStatus;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.dto.kopisDTO.KopisMusicalResponseDTO;
 import muit.backend.dto.musicalDTO.MusicalRequestDTO;
@@ -11,6 +14,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class MusicalConverter {
 
@@ -78,5 +83,64 @@ public class MusicalConverter {
                 .desImgUrl(musical.getDesImgUrl())
                 .build();
     }
+
+    public static MusicalResponseDTO.MusicalHomeDTO toMusicalHomeDTO(Musical musical) {
+        return MusicalResponseDTO.MusicalHomeDTO.builder()
+                .id(musical.getId())
+                .name(musical.getName())
+                .place(musical.getPlace())
+                .posterUrl(musical.getPosterUrl())
+                .perFrom(musical.getPerFrom())
+                .perTo(musical.getPerTo())
+                .build();
+    }
+
+    public static MusicalResponseDTO.MusicalHomeListDTO toMusicalHomeListDTO(List<Musical> musicals) {
+        List<MusicalResponseDTO.MusicalHomeDTO> musicalHomeList = musicals.stream()
+                .map(MusicalConverter::toMusicalHomeDTO).collect(Collectors.toList());
+
+        return MusicalResponseDTO.MusicalHomeListDTO.builder()
+                .musicalHomeList(musicalHomeList)
+                .build();
+    }
+
+    public static MusicalResponseDTO.MusicalOpenDTO toMusicalOpenDTO(Musical musical) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M.dd (E) HH:mm", Locale.KOREA);
+        String openDate = musical.getOpenDate().format(formatter);
+        EventType s = musical.getOpenInfo();
+        String openInfo;
+        switch(s){
+            case FIRST:
+                openInfo = "1차 오픈";
+                break;
+            case SECOND:
+                openInfo = "2차 오픈";
+                break;
+            case THIRD:
+                openInfo = "3차 오픈";
+                break;
+            default:
+                openInfo = "일반 예매";
+        }
+
+        return MusicalResponseDTO.MusicalOpenDTO.builder()
+                .id(musical.getId())
+                .name(musical.getName())
+                .place(musical.getPlace())
+                .posterUrl(musical.getPosterUrl())
+                .openDate(openDate)
+                .openInfo(openInfo)
+                .build();
+    }
+
+    public static MusicalResponseDTO.MusicalOpenListDTO toMusicalOpenListDTO(List<Musical> musicals) {
+        List<MusicalResponseDTO.MusicalOpenDTO> musicalOpenList = musicals.stream()
+                .map(MusicalConverter::toMusicalOpenDTO).collect(Collectors.toList());
+
+        return MusicalResponseDTO.MusicalOpenListDTO.builder()
+                .musicalOpenList(musicalOpenList)
+                .build();
+    }
+
 
 }

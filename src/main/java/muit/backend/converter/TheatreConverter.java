@@ -20,6 +20,7 @@ public class TheatreConverter {
                 .kopisTheatreId(theatreCreateDTO.getKopisTheatreId())
                 .address(theatreCreateDTO.getAddress())
                 .name(theatreCreateDTO.getName())
+                .relateUrl(theatreCreateDTO.getRelateUrl())
                 .musical(musical)
                 .build();
     }

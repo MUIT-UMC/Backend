@@ -12,4 +12,12 @@ public interface MusicalService {
 
     //뮤지컬 생성
     public void createMusical(String kopisMusicalId);
+
+    public MusicalResponseDTO.MusicalHomeListDTO getFiveMusicals();
+
+    public MusicalResponseDTO.MusicalHomeListDTO getAllHotMusicals();
+
+    public MusicalResponseDTO.MusicalOpenListDTO getFiveOpenMusicals();
+
+    public MusicalResponseDTO.MusicalOpenListDTO getAllOpenMusicals();
 }
