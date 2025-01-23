@@ -27,6 +27,9 @@ public class EventController {
 
     @GetMapping("/{musicalId}")
     @Operation(summary = "이벤트 조회 - 단건 API", description = "특정 뮤지컬의 이벤트를 조회하는 API 입니다.")
+    @Parameters({
+            @Parameter(name = "musicalId", description = "이벤트 정보를 알고 싶은 뮤지컬id 입력")
+    })
     public ApiResponse<EventResponseDTO.EventResultListDTO> getEvent(@PathVariable("musicalId") Long musicalId) {
         return ApiResponse.onSuccess(eventService.getEvent(musicalId));
     }

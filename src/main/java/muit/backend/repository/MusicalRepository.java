@@ -8,5 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface MusicalRepository extends JpaRepository<Musical, Long> {
-
 }

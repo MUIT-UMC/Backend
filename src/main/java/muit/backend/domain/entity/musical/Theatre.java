@@ -19,17 +19,15 @@ public class Theatre extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String kopisTheatreId;
+
     private String name;
 
     private String address;
 
-    private String pictureUrl;
+    private String theatrePic;
 
-    private String seatUrl;
-
-    private Integer seatNum;
-
-    private String relateUrl;
+    private String allSeatImg;
 
     @OneToOne (mappedBy = "theatre", cascade = CascadeType.ALL)
     private Musical musical;

@@ -5,13 +5,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
-import muit.backend.domain.enums.PostType;
 import muit.backend.domain.enums.SectionType;
-import muit.backend.dto.postDTO.PostRequestDTO;
-import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.dto.sectionDTO.SectionResponseDTO;
 import muit.backend.dto.theatreDTO.TheatreResponseDTO;
-import muit.backend.service.TheatreService;
+import muit.backend.service.theatreService.TheatreService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
