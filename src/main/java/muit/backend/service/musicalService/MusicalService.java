@@ -15,9 +15,11 @@ public interface MusicalService {
 
     public MusicalResponseDTO.MusicalHomeListDTO getFiveMusicals();
 
-    public MusicalResponseDTO.MusicalHomeListDTO getAllHotMusicals();
+    public MusicalResponseDTO.MusicalHomeListDTO getAllHotMusicals(Integer page);
 
     public MusicalResponseDTO.MusicalOpenListDTO getFiveOpenMusicals();
 
-    public MusicalResponseDTO.MusicalOpenListDTO getAllOpenMusicals();
+    public MusicalResponseDTO.MusicalOpenListDTO getAllOpenMusicals(Integer page);
+
+    public MusicalResponseDTO.MusicalHomeListDTO findMusicalsByName(String musicalName);
 }
