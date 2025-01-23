@@ -5,12 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import muit.backend.converter.EventConverter;
 import muit.backend.domain.common.BaseEntity;
-import muit.backend.domain.entity.coProduct.Schedule;
+import muit.backend.domain.enums.EventType;
+import muit.backend.domain.enums.OpenStatus;
+import muit.backend.dto.eventDTO.EventResponseDTO;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @Getter @Builder
@@ -21,44 +29,66 @@ public class Musical extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String kopisMusicalId;
+
     private String name;
 
-    private Date per_from;
+    private LocalDate perFrom;
 
-    private Date per_to;
+    private LocalDate perTo;
 
-    private String per_pattern;
+    private String perPattern;
 
-    private String area;
+    //공연 장소 (ex.링크아트센터드림)
+    private String place;
+
+    private String kopisTheatreId;
 
     private String runtime;
 
     private String ageLimit;
 
+    //직접 작성
     private String description;
 
-    private Date openDate;
+    //직접 작성
+    private LocalDateTime openDate;
+
+    @Enumerated(EnumType.STRING)
+    private EventType openInfo;
 
     private String posterUrl;
 
-//    private List<String> des_imgList;
+    @ElementCollection
+    @CollectionTable(name = "actor_preview", joinColumns = @JoinColumn(name = "musical_id"))
+    @Column(name = "actor_name")
+    private List<String> actorPreview;
 
-    @OneToOne (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "price_id")
-    private Price price;
+    @ElementCollection
+    @CollectionTable(name = "des_img_url", joinColumns = @JoinColumn(name = "musical_id"))
+    @Column(name = "img_url")
+    private List<String> desImgUrl;
 
-    @OneToOne (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ElementCollection
+    @CollectionTable(name = "price_info", joinColumns = @JoinColumn(name = "musical_id"))
+    @Column(name = "ticket_price")
+    private List<String> priceInfo;
+
+    @OneToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "theatre_id")
     private Theatre theatre;
 
+    //직접 작성
     @OneToMany (mappedBy = "musical", cascade = CascadeType.ALL)
     private List<Event> eventList = new ArrayList<>();
 
+    //직접 작성
     @OneToMany (mappedBy = "musical", cascade = CascadeType.ALL)
     private List<Casting> castingList = new ArrayList<>();
 
-    @OneToMany (mappedBy = "musical", cascade = CascadeType.ALL)
-    private List<Schedule> shceduleList = new ArrayList<>();
-
+    public Musical updateTheatre(Theatre theatre) {
+        this.theatre = theatre;
+        return this;
+    }
 
 }

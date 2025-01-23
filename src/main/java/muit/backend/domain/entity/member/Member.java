@@ -3,11 +3,13 @@ package muit.backend.domain.entity.member;
 import jakarta.persistence.*;
 import lombok.*;
 import muit.backend.domain.common.BaseEntity;
-import muit.backend.domain.entity.coProduct.Reservation;
+import muit.backend.domain.entity.amateur.AmateurShow;
+import muit.backend.domain.entity.amateur.AmateurTicket;
 import muit.backend.domain.enums.ActiveStatus;
 import muit.backend.domain.enums.Gender;
 import muit.backend.domain.enums.LoginType;
 import muit.backend.domain.enums.Role;
+import muit.backend.dto.manageMemberDTO.ManageMemberRequestDTO;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
@@ -22,8 +24,8 @@ public class Member extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
 
     private String username;
 
@@ -50,7 +52,7 @@ public class Member extends BaseEntity {
 
     private String receiver;
 
-    private String deliveryAddress;
+    //private String deliveryAddress;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
@@ -77,8 +79,22 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Reservation> reservationList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<AmateurShow> amateurShowList = new ArrayList<>();
+
 
     public void encodePassword(String password) {
         this.password = password;
+    }
+
+    public Member updateMember(ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO) {
+        if(requestDTO.getUsername()!=null){this.username = requestDTO.getUsername();}
+        if(requestDTO.getName()!=null){this.name = requestDTO.getName();}
+        if(requestDTO.getPhone()!=null){this.phone = requestDTO.getPhone();}
+        if(requestDTO.getEmail()!=null){this.email = requestDTO.getEmail();}
+        if(requestDTO.getBirthDate()!=null){this.birthDate = requestDTO.getBirthDate();}
+        if(requestDTO.getGender()!=null){this.gender = requestDTO.getGender();}
+        if(requestDTO.getAddress()!=null){this.address = requestDTO.getAddress();}
+        return this;
     }
 }

@@ -2,13 +2,12 @@ package muit.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import muit.backend.converter.PostConverter;
-import muit.backend.domain.entity.member.Inquiry;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
-import muit.backend.dto.reviewDTO.PostRequestDTO;
-import muit.backend.dto.reviewDTO.PostResponseDTO;
+import muit.backend.dto.postDTO.PostRequestDTO;
+import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.repository.MemberRepository;
 import muit.backend.repository.MusicalRepository;
 import muit.backend.repository.PostRepository;
@@ -16,8 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +42,6 @@ public class PostServiceImpl implements PostService {
                 .postType(post.getPostType())
                 .memberId(post.getMember().getId())
                 .musicalId(post.getMusical().getId())
-                .musicalName(post.getMusical().getName())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .location(post.getLocation())
@@ -100,11 +96,12 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
         //musical 유효성 검사
-        Long musicalId = requestDTO.getMusicalId();
-        Musical musical = musicalRepository.findById(musicalId)
-                .orElseThrow(() -> new RuntimeException("Musical not found"));
-        //musical 먼저 수정
-        post.changeMusical(musical);
+        if(requestDTO.getMusicalId()!=null){Long musicalId = requestDTO.getMusicalId();
+            Musical musical = musicalRepository.findById(musicalId)
+                    .orElseThrow(() -> new RuntimeException("Musical not found"));
+            //musical 먼저 수정
+            post.changeMusical(musical);}
+
         //나머지 필드 수정
         Post changedPost = post.changePost(requestDTO);
 

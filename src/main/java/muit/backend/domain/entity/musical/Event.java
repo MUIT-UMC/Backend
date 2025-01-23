@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
 import muit.backend.domain.enums.EventType;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -21,9 +22,11 @@ public class Event extends BaseEntity {
 
     private String name;
 
-    private Date evFrom;
+    private LocalDate evFrom;
 
-    private Date evTo;
+    private LocalDate evTo;
+
+    private String place;
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;
@@ -31,8 +34,4 @@ public class Event extends BaseEntity {
     @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "musical_id")
     private Musical musical;
-
-
-
-
 }
