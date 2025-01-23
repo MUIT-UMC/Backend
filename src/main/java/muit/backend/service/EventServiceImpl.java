@@ -6,6 +6,7 @@ import muit.backend.domain.entity.musical.Event;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.repository.EventRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,8 @@ public class EventServiceImpl implements EventService {
                 .filter(group -> group.stream()                                     // List<Event>로 변환된 스트림을 다시 스트림으로 변환
                         .anyMatch(event -> !event.getEvFrom().isBefore(today)))     //evFrom이 today보다 앞선다면의 부정
                 .collect(Collectors.toList()); // 최종적으로 List<List<Event>>로 변환
+
+
         return EventConverter.toEventGroupListDTO(eventListGroupedByMusicalId);
 
     }

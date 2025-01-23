@@ -89,9 +89,9 @@ public class MusicalServiceImpl implements MusicalService {
     }
 
     @Override
-    public MusicalResponseDTO.MusicalHomeListDTO getAllHotMusicals(){
-        List<Musical> musicals = musicalRepository.findAllByOrderByIdAsc();
-
+    public MusicalResponseDTO.MusicalHomeListDTO getAllHotMusicals(Integer page){
+        Pageable pageable = PageRequest.of(page,20);
+        List<Musical> musicals = musicalRepository.findAllByOrderByIdAsc(pageable);
         return MusicalConverter.toMusicalHomeListDTO(musicals);
     }
 
@@ -104,9 +104,17 @@ public class MusicalServiceImpl implements MusicalService {
     }
 
     @Override
-    public MusicalResponseDTO.MusicalOpenListDTO getAllOpenMusicals(){
-        List<Musical> musicals = musicalRepository.getAllOpenAfterToday();
+    public MusicalResponseDTO.MusicalOpenListDTO getAllOpenMusicals(Integer page){
+        Pageable pageable = PageRequest.of(page,20);
+        List<Musical> musicals = musicalRepository.getAllOpenAfterToday(pageable);
 
         return MusicalConverter.toMusicalOpenListDTO(musicals);
+    }
+
+    @Override
+    public MusicalResponseDTO.MusicalHomeListDTO findMusicalsByName(String musicalName){
+        List<Musical> musicals = musicalRepository.findByNameContaining(musicalName);
+
+        return MusicalConverter.toMusicalHomeListDTO(musicals);
     }
 }

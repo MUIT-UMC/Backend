@@ -1,9 +1,12 @@
 package muit.backend.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
+import muit.backend.dto.theatreDTO.TheatreResponseDTO;
 import muit.backend.service.musicalService.MusicalService;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +38,9 @@ public class MusicalController {
 
     @GetMapping("/hot/all")
     @Operation(summary = "뮤지컬 조회 - 리스트 HOT NOW 전체보기", description = "현재 HOT한 뮤지컬 전체 조회하는 API")
-    public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> getAllHotMusicals() {
-        return ApiResponse.onSuccess(musicalService.getAllHotMusicals());
+    @Parameter( name = "page", description = "페이지를 정수로 입력")
+    public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> getAllHotMusicals(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+        return ApiResponse.onSuccess(musicalService.getAllHotMusicals(page));
     }
 
     @GetMapping("/rank")
@@ -47,8 +51,8 @@ public class MusicalController {
 
     @GetMapping("/rank/all")
     @Operation(summary = "뮤지컬 조회 - 리스트 RANKING 전체보기", description = "RANKING 뮤지컬 전체 조회하는 API")
-    public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> getAllRankMusicals() {
-        return ApiResponse.onSuccess(musicalService.getAllHotMusicals());
+    public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> getAllRankMusicals(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+        return ApiResponse.onSuccess(musicalService.getAllHotMusicals(page));
     }
 
     @GetMapping("/open")
@@ -59,7 +63,16 @@ public class MusicalController {
 
     @GetMapping("/open/all")
     @Operation(summary = "뮤지컬 조회 - 리스트 TICKET OPEN 전체보기", description = "오늘 이후 티켓 오픈하는 뮤지컬 전체 조회하는 API")
-    public ApiResponse<MusicalResponseDTO.MusicalOpenListDTO> getAllOpenMusicals() {
-        return ApiResponse.onSuccess(musicalService.getAllOpenMusicals());
+    public ApiResponse<MusicalResponseDTO.MusicalOpenListDTO> getAllOpenMusicals(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+        return ApiResponse.onSuccess(musicalService.getAllOpenMusicals(page));
+    }
+
+    @GetMapping("")
+    @Operation(summary = "뮤지컬 검색", description = "상단바에서 뮤지컬을 검색하는 API 입니다.")
+    @Parameters({
+            @Parameter(name = "musicalName", description = "뮤지컬 이름을 검색어로 입력")
+    })
+    public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> searchMusicals(@RequestParam("musicalName") String musicalName) {
+        return ApiResponse.onSuccess(musicalService.findMusicalsByName(musicalName));
     }
 }
