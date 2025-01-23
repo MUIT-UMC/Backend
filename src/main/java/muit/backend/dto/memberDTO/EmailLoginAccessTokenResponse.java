@@ -10,6 +10,8 @@ public class EmailLoginAccessTokenResponse {
     private String accessToken;
     private String refreshToken;
     private Long id;
+    private String username;
+    private String name;
 
 }
 

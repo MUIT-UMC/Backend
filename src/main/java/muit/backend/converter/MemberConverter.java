@@ -1,6 +1,8 @@
 package muit.backend.converter;
 
+import muit.backend.config.jwt.TokenDTO;
 import muit.backend.domain.entity.member.Member;
+import muit.backend.dto.memberDTO.EmailLoginAccessTokenResponse;
 import muit.backend.dto.memberDTO.EmailRegisterRequestDTO;
 import muit.backend.dto.memberDTO.EmailRegisterResponseDTO;
 
@@ -21,4 +23,14 @@ public class MemberConverter {
                 .id(member.getId())
                 .email(member.getEmail()).build();
     }
+//
+//    public static EmailLoginAccessTokenResponse TokenRegisterResponseDTO(TokenDTO dto, Member member){
+//        return EmailLoginAccessTokenResponse.builder()
+//                .accessToken(dto.getAccessToken())
+//                .refreshToken(dto.getRefreshToken())
+//                .id(member.getId())
+//                .name(member.getName())
+//                .username(member.getUsername())
+//                .build();
+//    }
 }
