@@ -18,12 +18,12 @@ public class TheatreController {
     private final TheatreService theatreService;
 
     @GetMapping ("/")
-    @Operation(summary = "공연장 조회", description = "시야확인에서 공연장을 검색하는 API 입니다.")
+    @Operation(summary = "공연장 검색", description = "시야확인에서 공연장을 검색하는 API 입니다.")
     @Parameters({
             @Parameter(name = "theatreName", description = "공연장 이름을 검색어로 입력")
     })
-    public ApiResponse<TheatreResponseDTO.TheatreResultDTO> getTheatre(@RequestParam("theatreName") String theatreName) {
-        return ApiResponse.onSuccess(theatreService.getTheatre(theatreName));
+    public ApiResponse<TheatreResponseDTO.TheatreResultListDTO> getTheatre(@RequestParam("theatreName") String theatreName) {
+        return ApiResponse.onSuccess(theatreService.findTheatreByName(theatreName));
     }
 
     @GetMapping ("/{theatreId}")

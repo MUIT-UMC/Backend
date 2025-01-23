@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface TheatreService {
-    public TheatreResponseDTO.TheatreResultDTO getTheatre(String theatreName);
+    public TheatreResponseDTO.TheatreResultListDTO findTheatreByName(String theatreName);
 
     public SectionResponseDTO.SectionResultDTO getSection(Long theatreId, SectionType sectionType);
 
