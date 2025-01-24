@@ -1,4 +1,4 @@
-package muit.backend.service;
+package muit.backend.service.postService;
 
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.PostRequestDTO;

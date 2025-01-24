@@ -1,7 +1,7 @@
-package muit.backend.service;
+package muit.backend.service.postService;
 
 import lombok.RequiredArgsConstructor;
-import muit.backend.converter.PostConverter;
+import muit.backend.converter.postConverter.PostConverter;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Musical;
@@ -24,6 +24,25 @@ public class PostServiceImpl implements PostService {
     private final MemberRepository memberRepository;
     private final MusicalRepository musicalRepository;
 
+    //게시글 작성
+    @Override
+    @Transactional
+    public PostResponseDTO.CreatePostResponseDTO createPost(PostType postType, PostRequestDTO requestDTO) {
+
+        Member member = memberRepository.findById(requestDTO.getMemberId())
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+        // DTO -> Entity 변환
+        Post post = PostConverter.toPost(member, postType, requestDTO);
+
+        // 엔티티 저장
+        postRepository.save(post);
+
+        // Entity -> ResponseDTO 변환
+        String message = "등록 완료";
+        return PostConverter.toCreatePostResponseDTO(message, post);
+    }
+
     //게시판 조회
     @Override
     public PostResponseDTO.PostResultListDTO getPostList(PostType postType, Integer page){
@@ -39,36 +58,10 @@ public class PostServiceImpl implements PostService {
 
         return PostResponseDTO.PostResultDTO.builder()
                 .id(id)
-                .postType(post.getPostType())
                 .memberId(post.getMember().getId())
-                .musicalId(post.getMusical().getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .location(post.getLocation())
                 .build();
-    }
-
-    //게시글 작성
-    @Override
-    @Transactional
-    public PostResponseDTO.CreatePostResponseDTO createPost(PostType postType, PostRequestDTO requestDTO) {
-
-        Member member = memberRepository.findById(requestDTO.getMemberId())
-                .orElseThrow(() -> new RuntimeException("Member not found"));
-
-        Musical musical = musicalRepository.findById(requestDTO.getMusicalId())
-                .orElseThrow(() -> new RuntimeException("Musical not found"));
-
-
-        // DTO -> Entity 변환
-        Post post = PostConverter.toPost(member, musical, postType, requestDTO);
-
-        // 엔티티 저장
-        postRepository.save(post);
-
-        // Entity -> ResponseDTO 변환
-        String message = "등록 완료";
-        return PostConverter.toCreatePostResponseDTO(message, post);
     }
 
     //게시글 삭제
@@ -95,14 +88,7 @@ public class PostServiceImpl implements PostService {
         //post 유효성 검사
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
-        //musical 유효성 검사
-        if(requestDTO.getMusicalId()!=null){Long musicalId = requestDTO.getMusicalId();
-            Musical musical = musicalRepository.findById(musicalId)
-                    .orElseThrow(() -> new RuntimeException("Musical not found"));
-            //musical 먼저 수정
-            post.changeMusical(musical);}
-
-        //나머지 필드 수정
+        //필드 수정
         Post changedPost = post.changePost(requestDTO);
 
         postRepository.save(changedPost);

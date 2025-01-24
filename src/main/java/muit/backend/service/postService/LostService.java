@@ -1,10 +1,8 @@
-package muit.backend.service;
+package muit.backend.service.postService;
 
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.LostResponseDTO;
-import muit.backend.dto.postDTO.PostRequestDTO;
-import muit.backend.dto.postDTO.PostResponseDTO;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,16 +1,12 @@
-package muit.backend.service;
+package muit.backend.service.postService;
 
 import lombok.RequiredArgsConstructor;
-import muit.backend.converter.LostConverter;
-import muit.backend.converter.PostConverter;
+import muit.backend.converter.postConverter.LostConverter;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
-import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.LostResponseDTO;
-import muit.backend.dto.postDTO.PostRequestDTO;
-import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.repository.MemberRepository;
 import muit.backend.repository.MusicalRepository;
 import muit.backend.repository.PostRepository;
@@ -71,8 +67,6 @@ public class LostServiceImpl implements LostService {
 
         //나머지 필드 수정
         Post changedPost = post.changeLost(lostRequestDTO);
-
-        postRepository.save(changedPost);
 
         String message = "수정 완료";
         return LostConverter.toCreateLostResponseDTO(message, changedPost);

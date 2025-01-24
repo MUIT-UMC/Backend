@@ -1,4 +1,4 @@
-package muit.backend.controller;
+package muit.backend.controller.postController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -9,7 +9,7 @@ import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
-import muit.backend.service.PostService;
+import muit.backend.service.postService.PostService;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "게시글")
@@ -41,7 +41,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    @Operation(summary = "게시글 단건 조회 API", description = "특정 게시글을 조회하는 API 입니다.")
+    @Operation(summary = "익명 게시글 단건 조회 API", description = "익명 게시판의 특정 게시글을 조회하는 API 입니다.")
     public ApiResponse<PostResponseDTO.PostResultDTO> getPost(@PathVariable("postId") Long postId) {
         return ApiResponse.onSuccess(postService.getPost(postId));
     }

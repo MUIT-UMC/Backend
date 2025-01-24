@@ -1,48 +1,43 @@
-package muit.backend.converter;
+package muit.backend.converter.postConverter;
 
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
-import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.LostRequestDTO;
-import muit.backend.dto.postDTO.PostRequestDTO;
-import muit.backend.dto.postDTO.PostResponseDTO;
+import muit.backend.dto.postDTO.LostResponseDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PostConverter {
-    //RequestDTO : POST 메서드에서 받아오는 dto
-    //ResultDTO : GET 메서드에서 리턴하는 dto, ResultListDTO : List<ResultDTO>
-    //ResponseDTO : GET 이외의 메서드에서 리턴하는 dto
+public class LostConverter {
 
     // requestDTO -> Entity
     // 게시글 생성
-    public static Post toPost(Member member, Musical musical, PostType postType, PostRequestDTO requestDTO) {
+    public static Post toPost(Member member, PostType postType, LostRequestDTO requestDTO) {
         return Post.builder()
                 .postType(postType)
                 .member(member)
-                .musical(musical)
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
                 .location(requestDTO.getLocation())
-                .rating(requestDTO.getRating())
+                .lostItem(requestDTO.getLostItem())
+                .lostDate(requestDTO.getLostDate())
                 .build();
     }
 
     // Entity -> ResultDTO
     // 게시글 조회 - 단건
-    public static PostResponseDTO.PostResultDTO toPostResultDTO(Post post) {
-        return PostResponseDTO.PostResultDTO.builder()
+    public static LostResponseDTO.LostResultDTO toLostResultDTO(Post post) {
+        return LostResponseDTO.LostResultDTO.builder()
                 .id(post.getId())
                 .postType(post.getPostType())
                 .memberId(post.getMember().getId())
-                .musicalId(post.getMusical().getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .location(post.getLocation())
-                .rating(post.getRating())
+                .lostItem(post.getLostItem())
+                .lostDate(post.getLostDate())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();
@@ -50,13 +45,13 @@ public class PostConverter {
 
     // List<Entity> -> ResultListDTO
     //게시판 조회 - 리스트
-    public static PostResponseDTO.PostResultListDTO toPostResultListDTO(Page<Post> postPage) {
-        List<PostResponseDTO.PostResultDTO> postResultListDTO = postPage.stream()
-                .map(PostConverter::toPostResultDTO).collect(Collectors.toList());
+    public static LostResponseDTO.LostResultListDTO toLostResultListDTO(Page<Post> postPage) {
+        List<LostResponseDTO.LostResultDTO> lostResultListDTO = postPage.stream()
+                .map(LostConverter::toLostResultDTO).collect(Collectors.toList());
 
-        return PostResponseDTO.PostResultListDTO.builder()
-                .postResultListDTO(postResultListDTO)
-                .listSize(postResultListDTO.size())
+        return LostResponseDTO.LostResultListDTO.builder()
+                .postResultListDTO(lostResultListDTO)
+                .listSize(lostResultListDTO.size())
                 .isFirst(postPage.isFirst())
                 .isLast(postPage.isLast())
                 .totalPage(postPage.getTotalPages())
@@ -66,17 +61,17 @@ public class PostConverter {
 
     // Entity -> ResponseDTO
     // 게시글 생성 후 Response
-    public static PostResponseDTO.CreatePostResponseDTO toCreatePostResponseDTO(String message, Post post) {
-        return PostResponseDTO.CreatePostResponseDTO.builder()
+    public static LostResponseDTO.CreateLostResponseDTO toCreateLostResponseDTO(String message, Post post) {
+        return LostResponseDTO.CreateLostResponseDTO.builder()
                 .message(message)
                 .id(post.getId())
                 .postType(post.getPostType())
                 .memberId(post.getMember().getId())
-                .musicalId(post.getMusical().getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .location(post.getLocation())
-                .rating(post.getRating())
+                .lostItem(post.getLostItem())
+                .lostDate(post.getLostDate())
                 .createdAt(post.getCreatedAt())
                 .build();
     }

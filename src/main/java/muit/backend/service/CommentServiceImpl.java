@@ -2,7 +2,6 @@ package muit.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import muit.backend.converter.CommentConverter;
-import muit.backend.converter.LostConverter;
 import muit.backend.domain.entity.member.Comment;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
