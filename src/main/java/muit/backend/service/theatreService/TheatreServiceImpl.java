@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,11 +34,10 @@ public class TheatreServiceImpl implements TheatreService {
     private final KopisConfig kopisConfig;
 
     @Override
-    public TheatreResponseDTO.TheatreResultDTO getTheatre(String theatreName){
-        Theatre theatre = theatreRepository.findByName(theatreName)
-                .orElseThrow(() -> new RuntimeException("Theatre not found"));
+    public TheatreResponseDTO.TheatreResultListDTO findTheatreByName(String theatreName){
+        List<Theatre> theatre = theatreRepository.findByNameContaining(theatreName);
 
-        return TheatreConverter.toTheatreResultDTO(theatre);
+        return TheatreConverter.toTheatreResultListDTO(theatre);
     }
 
     @Override
