@@ -3,6 +3,7 @@ package muit.backend.converter;
 import muit.backend.domain.entity.amateur.AmateurShow;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.enums.AmateurStatus;
+import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
 import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowResponseDTO;
 import muit.backend.dto.manageMemberDTO.ManageMemberResponseDTO;
 
@@ -44,6 +45,17 @@ public class ManageAmateurShowConverter {
                 .account(amateurShow.getAccount())
                 .contact(amateurShow.getContact())
                 .amateurStatus(amateurShow.getAmateurStatus())
+                .build();
+    }
+
+    public static ManageAmateurShowResponseDTO.DecideDTO toDecideDTO(AmateurShow amateurShow) {
+        return ManageAmateurShowResponseDTO.DecideDTO.builder()
+                .amateurShowId(amateurShow.getId())
+                .amateurShowName(amateurShow.getName())
+                .memberName(amateurShow.getMember().getName())
+                .username(amateurShow.getMember().getUsername())
+                .amateurStatus(amateurShow.getAmateurStatus())
+                .rejectReason(amateurShow.getRejectReason())
                 .build();
     }
 }

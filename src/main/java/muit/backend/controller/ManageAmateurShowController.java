@@ -1,9 +1,13 @@
 package muit.backend.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
+import muit.backend.domain.enums.AmateurStatus;
+import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
 import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowResponseDTO;
 import muit.backend.service.ManageAmateurShowService;
 import org.springdoc.core.annotations.ParameterObject;
@@ -37,6 +41,20 @@ public class ManageAmateurShowController {
         return ApiResponse.onSuccess(amateurShow);
     }
 
+
+    @Operation(summary = "특정 소극장 공연 정보 수정")
+    @PatchMapping("/{amateurShowId}/update")
+    public ApiResponse<ManageAmateurShowResponseDTO.ResultDTO> updateAmateurShow(@PathVariable("amateurShowId") Long amateurShowId, @RequestBody ManageAmateurShowRequestDTO.UpdateDTO requestDTO) {
+        ManageAmateurShowResponseDTO.ResultDTO amateurShow = manageAmateurShowService.updateAmateurShow(amateurShowId, requestDTO);
+        return ApiResponse.onSuccess(amateurShow);
+    }
+
+    @Operation(summary = "소극장 공연 최종 등록/반려")
+    @PatchMapping("/{amateurShowId}/decision")
+    public ApiResponse<ManageAmateurShowResponseDTO.DecideDTO> decideAmateurShow(@PathVariable("amateurShowId") Long amateurShowId, @RequestParam AmateurStatus amateurStatus, @RequestBody ManageAmateurShowRequestDTO.DecideDTO requestDTO) {
+        ManageAmateurShowResponseDTO.DecideDTO amateurShow = manageAmateurShowService.decideAmateurShow(amateurShowId, amateurStatus, requestDTO);
+        return ApiResponse.onSuccess(amateurShow);
+    }
 
 }
 

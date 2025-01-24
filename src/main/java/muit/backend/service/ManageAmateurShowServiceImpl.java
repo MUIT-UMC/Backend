@@ -1,8 +1,11 @@
 package muit.backend.service;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import muit.backend.converter.ManageAmateurShowConverter;
 import muit.backend.domain.entity.amateur.AmateurShow;
+import muit.backend.domain.enums.AmateurStatus;
+import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
 import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowResponseDTO;
 import muit.backend.repository.AmateurShowRepository;
 import org.springframework.data.domain.Page;
@@ -50,5 +53,28 @@ public class ManageAmateurShowServiceImpl implements ManageAmateurShowService {
                 .orElseThrow(() -> new RuntimeException("AmateurShow not found"));
 
         return ManageAmateurShowConverter.toResultDTO(amateurShow);
+    }
+
+    // 특정 소극장 공연 정보 수정
+    @Transactional
+    @Override
+    public ManageAmateurShowResponseDTO.ResultDTO updateAmateurShow(Long amateurShowId, ManageAmateurShowRequestDTO.UpdateDTO requestDTO) {
+        AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
+                .orElseThrow(() -> new RuntimeException("amateurShow not found"));
+
+        amateurShow.updateAmateurShow(requestDTO);
+
+        return ManageAmateurShowConverter.toResultDTO(amateurShow);
+    }
+
+    // 소극장 공연 최종 등록/반려
+    @Transactional
+    @Override
+    public ManageAmateurShowResponseDTO.DecideDTO decideAmateurShow(Long amateurShowId, @NotNull AmateurStatus amateurStatus, ManageAmateurShowRequestDTO.DecideDTO requestDTO) {
+        AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
+                .orElseThrow(() -> new RuntimeException("amateurShow not found"));
+
+        amateurShow.decideAmateurShow(amateurStatus, requestDTO);
+        return ManageAmateurShowConverter.toDecideDTO(amateurShow);
     }
 }

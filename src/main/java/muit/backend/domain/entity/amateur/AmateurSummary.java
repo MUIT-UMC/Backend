@@ -23,4 +23,9 @@ public class AmateurSummary extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "amateur_show_id")
     private AmateurShow amateurShow;
+
+    // amateurShow 업데이트할 때 사용
+    public void updateContent(String newContent) {
+        this.content = newContent;
+    }
 }
