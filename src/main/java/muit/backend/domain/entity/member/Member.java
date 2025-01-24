@@ -23,8 +23,8 @@ public class Member extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
 
     private String username;
 
@@ -51,7 +51,7 @@ public class Member extends BaseEntity {
 
     private String receiver;
 
-    private String deliveryAddress;
+    //private String deliveryAddress;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")

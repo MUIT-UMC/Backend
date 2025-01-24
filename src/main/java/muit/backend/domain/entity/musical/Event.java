@@ -34,5 +34,4 @@ public class Event extends BaseEntity {
     @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "musical_id")
     private Musical musical;
-
 }

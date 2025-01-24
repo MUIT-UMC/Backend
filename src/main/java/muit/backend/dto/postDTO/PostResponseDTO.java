@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.enums.PostType;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -19,10 +20,12 @@ public class PostResponseDTO {
         private PostType postType;
         private Long memberId;
         private Long musicalId;
-        private String musicalName;
         private String title;
         private String content;
         private String location;
+        private Integer rating;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
     }
 
     @Builder
@@ -48,10 +51,11 @@ public class PostResponseDTO {
         private PostType postType;
         private Long memberId;
         private Long musicalId;
-        private String musicalName;
         private String title;
         private String content;
         private String location;
+        private Integer rating;
+        private LocalDateTime createdAt;
 
     }
 

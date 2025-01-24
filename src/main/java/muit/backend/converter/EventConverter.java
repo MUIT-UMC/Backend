@@ -29,7 +29,7 @@ public class EventConverter {
                 .map(EventConverter::toEventResultDTO).collect(Collectors.toList());
 
         return EventResponseDTO.EventResultListDTO.builder()
-                .musicalId(eventList.get(0).getMusical().getId())
+                .musicalId((eventList.get(0).getMusical().getId()))
                 .musicalName(eventList.get(0).getMusical().getName())
                 .theatreName(eventList.get(0).getMusical().getTheatre().getName())
                 .perFrom(eventList.get(0).getMusical().getPerFrom())

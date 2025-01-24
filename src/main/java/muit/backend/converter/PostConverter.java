@@ -4,6 +4,7 @@ import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
+import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ public class PostConverter {
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
                 .location(requestDTO.getLocation())
+                .rating(requestDTO.getRating())
                 .build();
     }
 
@@ -37,10 +39,12 @@ public class PostConverter {
                 .postType(post.getPostType())
                 .memberId(post.getMember().getId())
                 .musicalId(post.getMusical().getId())
-                .musicalName(post.getMusical().getName())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .location(post.getLocation())
+                .rating(post.getRating())
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
                 .build();
     }
 
@@ -69,10 +73,11 @@ public class PostConverter {
                 .postType(post.getPostType())
                 .memberId(post.getMember().getId())
                 .musicalId(post.getMusical().getId())
-                .musicalName(post.getMusical().getName())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .location(post.getLocation())
+                .rating(post.getRating())
+                .createdAt(post.getCreatedAt())
                 .build();
     }
 }

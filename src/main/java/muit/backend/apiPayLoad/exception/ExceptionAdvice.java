@@ -7,6 +7,7 @@ import muit.backend.apiPayLoad.code.status.ErrorStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import jakarta.validation.ConstraintViolationException;
+import muit.backend.service.CommentService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -24,7 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
-//@RestControllerAdvice(annotations = {RestController.class})
+@RestControllerAdvice(annotations = {RestController.class})
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
     //유효성 검사에서 제약 조건이 위반되었을 때 발생하는 예외

@@ -18,7 +18,7 @@ public class SectionResponseDTO {
         private String address;
         private Long musicalId;
         private String musicalName;
-        private String seatUrl;
+        private String allSeatImg;
         private String viewPic;
         private String viewDetail;
         private SectionType sectionType;
