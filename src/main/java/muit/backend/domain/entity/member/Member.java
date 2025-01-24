@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import muit.backend.domain.common.BaseEntity;
 import muit.backend.domain.entity.amateur.AmateurShow;
-import muit.backend.domain.entity.amateur.AmateurTicket;
 import muit.backend.domain.enums.ActiveStatus;
 import muit.backend.domain.enums.Gender;
 import muit.backend.domain.enums.LoginType;
@@ -87,7 +86,7 @@ public class Member extends BaseEntity {
         this.password = password;
     }
 
-    public Member updateMember(ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO) {
+    public void updateMember(ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO) {
         if(requestDTO.getUsername()!=null){this.username = requestDTO.getUsername();}
         if(requestDTO.getName()!=null){this.name = requestDTO.getName();}
         if(requestDTO.getPhone()!=null){this.phone = requestDTO.getPhone();}
@@ -95,6 +94,5 @@ public class Member extends BaseEntity {
         if(requestDTO.getBirthDate()!=null){this.birthDate = requestDTO.getBirthDate();}
         if(requestDTO.getGender()!=null){this.gender = requestDTO.getGender();}
         if(requestDTO.getAddress()!=null){this.address = requestDTO.getAddress();}
-        return this;
     }
 }

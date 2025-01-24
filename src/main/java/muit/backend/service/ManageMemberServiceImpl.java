@@ -64,9 +64,8 @@ public class ManageMemberServiceImpl implements ManageMemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
-        Member updateMember = member.updateMember(requestDTO);
-        memberRepository.save(updateMember);
+        member.updateMember(requestDTO);
 
-        return ManageMemberConverter.toManageMemberResultDTO(updateMember);
+        return ManageMemberConverter.toManageMemberResultDTO(member);
     }
 }
