@@ -13,7 +13,7 @@ public class ManageAmateurShowRequestDTO {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UpdateDTO {
+    public static class ManageAmateurShowUpdateDTO {
 
         private String schedule;
         private String hashtag;
@@ -27,7 +27,7 @@ public class ManageAmateurShowRequestDTO {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class DecideDTO {
+    public static class ManageAmateurShowDecideDTO {
 
         private String rejectReason;
     }

@@ -2,6 +2,8 @@ package muit.backend.service;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.ManageAmateurShowConverter;
 import muit.backend.domain.entity.amateur.AmateurShow;
 import muit.backend.domain.enums.AmateurStatus;
@@ -24,7 +26,7 @@ public class ManageAmateurShowServiceImpl implements ManageAmateurShowService {
 
     // 소극장 공연 전체 조회
     @Override
-    public Page<ManageAmateurShowResponseDTO.ResultListDTO> getAllAmateurShows(Pageable pageable, String keyword, Set<String> selectedFields) {
+    public Page<ManageAmateurShowResponseDTO.ManageAmateurShowResultListDTO> getAllAmateurShows(Pageable pageable, String keyword, Set<String> selectedFields) {
 
         // 검색어가 있는지 확인
         boolean isKeywordSearch = keyword != null && !keyword.trim().isEmpty(); // 그냥 빈 검색어도 없다고 침
@@ -42,39 +44,39 @@ public class ManageAmateurShowServiceImpl implements ManageAmateurShowService {
         }
 
         return amateurShows.map(amateurShow ->
-                ManageAmateurShowConverter.toResultListDTO(amateurShow, selectedFields, isKeywordSearch)
+                ManageAmateurShowConverter.toManageAmateurShowResultListDTO(amateurShow, selectedFields, isKeywordSearch)
         );
     }
 
     // 특정 소극장 공연 조회
     @Override
-    public ManageAmateurShowResponseDTO.ResultDTO getAmateurShow(Long amateurShowId) {
+    public ManageAmateurShowResponseDTO.ManageAmateurShowResultDTO getAmateurShow(Long amateurShowId) {
         AmateurShow amateurShow = amateurShowRepository.findByIdWithMemberAndSummary(amateurShowId)
-                .orElseThrow(() -> new RuntimeException("AmateurShow not found"));
+                .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
-        return ManageAmateurShowConverter.toResultDTO(amateurShow);
+        return ManageAmateurShowConverter.toManageAmateurShowResultDTO(amateurShow);
     }
 
     // 특정 소극장 공연 정보 수정
     @Transactional
     @Override
-    public ManageAmateurShowResponseDTO.ResultDTO updateAmateurShow(Long amateurShowId, ManageAmateurShowRequestDTO.UpdateDTO requestDTO) {
+    public ManageAmateurShowResponseDTO.ManageAmateurShowResultDTO updateAmateurShow(Long amateurShowId, ManageAmateurShowRequestDTO.ManageAmateurShowUpdateDTO requestDTO) {
         AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
-                .orElseThrow(() -> new RuntimeException("amateurShow not found"));
+                .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
         amateurShow.updateAmateurShow(requestDTO);
 
-        return ManageAmateurShowConverter.toResultDTO(amateurShow);
+        return ManageAmateurShowConverter.toManageAmateurShowResultDTO(amateurShow);
     }
 
     // 소극장 공연 최종 등록/반려
     @Transactional
     @Override
-    public ManageAmateurShowResponseDTO.DecideDTO decideAmateurShow(Long amateurShowId, @NotNull AmateurStatus amateurStatus, ManageAmateurShowRequestDTO.DecideDTO requestDTO) {
+    public ManageAmateurShowResponseDTO.ManageAmateurShowDecideDTO decideAmateurShow(Long amateurShowId, @NotNull AmateurStatus amateurStatus, ManageAmateurShowRequestDTO.ManageAmateurShowDecideDTO requestDTO) {
         AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
-                .orElseThrow(() -> new RuntimeException("amateurShow not found"));
+                .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
         amateurShow.decideAmateurShow(amateurStatus, requestDTO);
-        return ManageAmateurShowConverter.toDecideDTO(amateurShow);
+        return ManageAmateurShowConverter.toManageAmateurShowDecideDTO(amateurShow);
     }
 }
