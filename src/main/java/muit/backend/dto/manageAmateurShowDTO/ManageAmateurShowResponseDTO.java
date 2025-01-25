@@ -14,7 +14,7 @@ public class ManageAmateurShowResponseDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonInclude(JsonInclude.Include.NON_NULL) // null 값을 가진 필드는 JSON 응답에서 제외
-    public static class ResultListDTO { // 소극장 공연 관리 내역 전체 조회
+    public static class ManageAmateurShowResultListDTO { // 소극장 공연 관리 내역 전체 조회
         private Long amateurShowId; // 소극장 공연 id
         private String amateurShowName; // 소극장 공연명
         private String schedule; // 소극장 공연 날짜/시간
@@ -26,7 +26,7 @@ public class ManageAmateurShowResponseDTO {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ResultDTO { // 특정 소극장 공연 조회, 특정 소극장 공연 수정
+    public static class ManageAmateurShowResultDTO { // 특정 소극장 공연 조회, 특정 소극장 공연 수정
 
         private Long amateurShowId; // 소극장 공연 id
         private String amateurShowName; // 소극장 공연명
@@ -44,7 +44,7 @@ public class ManageAmateurShowResponseDTO {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class DecideDTO { // 소극장 공연 등록/반려
+    public static class ManageAmateurShowDecideDTO { // 소극장 공연 등록/반려
 
         private Long amateurShowId; // 소극장 공연 id
         private String amateurShowName; // 소극장 공연명

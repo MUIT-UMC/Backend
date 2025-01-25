@@ -11,11 +11,11 @@ import java.util.Set;
 
 public class ManageAmateurShowConverter {
 
-    public static ManageAmateurShowResponseDTO.ResultListDTO toResultListDTO(AmateurShow amateurShow, Set<String> selectedFields, boolean isKeywordSearch) {
+    public static ManageAmateurShowResponseDTO.ManageAmateurShowResultListDTO toManageAmateurShowResultListDTO(AmateurShow amateurShow, Set<String> selectedFields, boolean isKeywordSearch) {
 
         // 키워드 검색이거나 전체 조회인 경우 모든 필드 포함
         if (isKeywordSearch || selectedFields == null || selectedFields.isEmpty()) {
-            return ManageAmateurShowResponseDTO.ResultListDTO.builder()
+            return ManageAmateurShowResponseDTO.ManageAmateurShowResultListDTO.builder()
                     .amateurShowId(amateurShow.getId())
                     .amateurShowName(amateurShow.getName())
                     .schedule(amateurShow.getSchedule())
@@ -25,7 +25,7 @@ public class ManageAmateurShowConverter {
         }
 
         // selectedFields로 특정 필드만 선택한 경우
-        return ManageAmateurShowResponseDTO.ResultListDTO.builder()
+        return ManageAmateurShowResponseDTO.ManageAmateurShowResultListDTO.builder()
                 .amateurShowId(amateurShow.getId())  // ID는 항상 포함
                 .amateurShowName(selectedFields.contains("amateurShowName") ? amateurShow.getName() : null)
                 .schedule(selectedFields.contains("schedule") ? amateurShow.getSchedule() : null)
@@ -33,8 +33,8 @@ public class ManageAmateurShowConverter {
                 .build();
     }
 
-    public static ManageAmateurShowResponseDTO.ResultDTO toResultDTO(AmateurShow amateurShow) {
-        return ManageAmateurShowResponseDTO.ResultDTO.builder()
+    public static ManageAmateurShowResponseDTO.ManageAmateurShowResultDTO toManageAmateurShowResultDTO(AmateurShow amateurShow) {
+        return ManageAmateurShowResponseDTO.ManageAmateurShowResultDTO.builder()
                 .amateurShowId(amateurShow.getId())
                 .amateurShowName(amateurShow.getName())
                 .memberName(amateurShow.getMember().getName())
@@ -48,8 +48,8 @@ public class ManageAmateurShowConverter {
                 .build();
     }
 
-    public static ManageAmateurShowResponseDTO.DecideDTO toDecideDTO(AmateurShow amateurShow) {
-        return ManageAmateurShowResponseDTO.DecideDTO.builder()
+    public static ManageAmateurShowResponseDTO.ManageAmateurShowDecideDTO toManageAmateurShowDecideDTO(AmateurShow amateurShow) {
+        return ManageAmateurShowResponseDTO.ManageAmateurShowDecideDTO.builder()
                 .amateurShowId(amateurShow.getId())
                 .amateurShowName(amateurShow.getName())
                 .memberName(amateurShow.getMember().getName())

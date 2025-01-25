@@ -83,7 +83,7 @@ public class AmateurShow extends BaseEntity {
 //    @OneToMany(mappedBy = "coProduct", cascade = CascadeType.ALL)
 //    private List<Ticket> ticketList = new ArrayList<>();
 
-    public void updateAmateurShow(ManageAmateurShowRequestDTO.UpdateDTO requestDTO) {
+    public void updateAmateurShow(ManageAmateurShowRequestDTO.ManageAmateurShowUpdateDTO requestDTO) {
         if(requestDTO.getSchedule()!=null){this.schedule = requestDTO.getSchedule();}
         if(requestDTO.getHashtag()!=null){this.hashtag = requestDTO.getHashtag();}
         if(requestDTO.getContent()!=null && this.amateurSummary!=null){this.amateurSummary.updateContent(requestDTO.getContent());}
@@ -91,7 +91,7 @@ public class AmateurShow extends BaseEntity {
         if(requestDTO.getAmateurStatus()!=null){this.amateurStatus = requestDTO.getAmateurStatus();}
     }
 
-    public void decideAmateurShow(AmateurStatus amateurStatus, ManageAmateurShowRequestDTO.DecideDTO requestDTO) {
+    public void decideAmateurShow(AmateurStatus amateurStatus, ManageAmateurShowRequestDTO.ManageAmateurShowDecideDTO requestDTO) {
 
         // 상태 업데이트 (등록/반려)
         this.amateurStatus = amateurStatus;

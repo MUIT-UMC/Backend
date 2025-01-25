@@ -13,8 +13,8 @@ import java.util.Set;
 @Service
 public interface ManageAmateurShowService {
 
-    public Page<ManageAmateurShowResponseDTO.ResultListDTO> getAllAmateurShows(Pageable pageable, String keyword, Set<String> selectedFields);
-    public ManageAmateurShowResponseDTO.ResultDTO getAmateurShow(Long amateurShowId);
-    public ManageAmateurShowResponseDTO.ResultDTO updateAmateurShow(Long amateurShowId, ManageAmateurShowRequestDTO.UpdateDTO requestDTO);
-    public ManageAmateurShowResponseDTO.DecideDTO decideAmateurShow(Long amateurShowId, @NotNull AmateurStatus amateurStatus, ManageAmateurShowRequestDTO.DecideDTO requestDTO);
+    public Page<ManageAmateurShowResponseDTO.ManageAmateurShowResultListDTO> getAllAmateurShows(Pageable pageable, String keyword, Set<String> selectedFields);
+    public ManageAmateurShowResponseDTO.ManageAmateurShowResultDTO getAmateurShow(Long amateurShowId);
+    public ManageAmateurShowResponseDTO.ManageAmateurShowResultDTO updateAmateurShow(Long amateurShowId, ManageAmateurShowRequestDTO.ManageAmateurShowUpdateDTO requestDTO);
+    public ManageAmateurShowResponseDTO.ManageAmateurShowDecideDTO decideAmateurShow(Long amateurShowId, @NotNull AmateurStatus amateurStatus, ManageAmateurShowRequestDTO.ManageAmateurShowDecideDTO requestDTO);
 }
