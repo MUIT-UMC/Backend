@@ -52,7 +52,7 @@ public class ManageMemberServiceImpl implements ManageMemberService {
     @Override
     public ManageMemberResponseDTO.ManageMemberResultDTO getMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(()-> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
         return ManageMemberConverter.toManageMemberResultDTO(member);
     }
@@ -62,7 +62,7 @@ public class ManageMemberServiceImpl implements ManageMemberService {
     @Transactional
     public ManageMemberResponseDTO.ManageMemberResultDTO updateMember(Long memberId, ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(()-> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
         member.updateMember(requestDTO);
 
