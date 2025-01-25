@@ -1,8 +1,11 @@
 package muit.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.AmateurTicketConverter;
 import muit.backend.domain.entity.amateur.AmateurShow;
+import muit.backend.dto.amateurTicketDTO.AmateurTicketRequestDTO;
 import muit.backend.dto.amateurTicketDTO.AmateurTicketResponseDTO;
 import muit.backend.repository.AmateurShowRepository;
 import org.springframework.data.domain.Page;
@@ -42,5 +45,24 @@ public class AmateurTicketServiceImpl implements AmateurTicketService {
         return amateurShows.map(amateurShow ->
                 AmateurTicketConverter.toResultListDTO(amateurShow, selectedFields, isKeywordSearch)
         );
+    }
+
+    @Override
+    public AmateurTicketResponseDTO.ResultDTO getTicket(Long amateurShowId) {
+        AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
+                .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
+
+        return AmateurTicketConverter.toResultDTO(amateurShow);
+    }
+
+    @Transactional
+    @Override
+    public AmateurTicketResponseDTO.ResultDTO updateTicket(Long amateurShowId, AmateurTicketRequestDTO.UpdateDTO requestDTO) {
+        AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
+                .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
+
+        amateurShow.updateAmateurTicket(requestDTO);
+
+        return AmateurTicketConverter.toResultDTO(amateurShow);
     }
 }

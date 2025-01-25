@@ -21,4 +21,16 @@ public class AmateurTicketResponseDTO {
         private Integer soldTicket; // 예매된 티켓 수
         private Integer totalTicket; // 전체 티켓 수
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ResultDTO { // 특정 티켓 조회, 수정
+        private Long amateurShowId; // 소극장 공연 아이디
+        private String name; // 소극장 공연 이름
+        private String schedule; // 공연 날짜/시간
+        private Integer soldTicket; // 예매된 티켓 수
+        private Integer totalTicket; // 전체 티켓 수
+    }
 }

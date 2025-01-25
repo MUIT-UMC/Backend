@@ -29,4 +29,14 @@ public class AmateurTicketConverter {
                 .totalTicket(selectedFields.contains("reservationStatus") ? amateurShow.getTotalTicket() : null)
                 .build();
     }
+
+    public static AmateurTicketResponseDTO.ResultDTO toResultDTO(AmateurShow amateurShow) {
+        return AmateurTicketResponseDTO.ResultDTO.builder()
+                .amateurShowId(amateurShow.getId())
+                .name(amateurShow.getName())
+                .schedule(amateurShow.getSchedule())
+                .soldTicket(amateurShow.getSoldTicket())
+                .totalTicket(amateurShow.getTotalTicket())
+                .build();
+    }
 }

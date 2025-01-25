@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.enums.AmateurStatus;
+import muit.backend.dto.amateurTicketDTO.AmateurTicketRequestDTO;
 import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
 
 import java.util.ArrayList;
@@ -103,6 +104,13 @@ public class AmateurShow extends BaseEntity {
             this.rejectReason = null;  // APPROVED일 때는 명시적으로 null 설정
         }
 
+    }
+
+    public void updateAmateurTicket(AmateurTicketRequestDTO.UpdateDTO requestDTO) {
+        if(requestDTO.getName()!=null){this.name = requestDTO.getName();}
+        if(requestDTO.getSchedule()!=null){this.schedule = requestDTO.getSchedule();}
+        if(requestDTO.getSoldTicket()!=null){this.soldTicket = requestDTO.getSoldTicket();}
+        if(requestDTO.getTotalTicket()!=null){this.totalTicket = requestDTO.getTotalTicket();}
     }
 
 }
