@@ -28,4 +28,10 @@ public interface AmateurShowRepository extends JpaRepository<AmateurShow, Long> 
             "LEFT JOIN FETCH a.amateurSummary " +
             "WHERE a.id = :amateurShowId")
     Optional<AmateurShow> findByIdWithMemberAndSummary(@Param("amateurShowId") Long amateurShowId);
+
+    // 티켓 검색 조회
+    @Query("SELECT a FROM AmateurShow a WHERE " +
+            "a.name LIKE %:keyword% " +
+            "OR a.schedule LIKE %:keyword%")
+    Page<AmateurShow> findTicketsByKeyword(Pageable pageable, @Param("keyword") String keyword);
 }
