@@ -25,25 +25,25 @@ public class AmateurTicketController {
 
     @Operation(summary = "전체 소극장 티켓 조회")
     @GetMapping
-    public ApiResponse<Page<AmateurTicketResponseDTO.ResultListDTO>> getAllTickets(@ParameterObject Pageable pageable,
+    public ApiResponse<Page<AmateurTicketResponseDTO.AmateurTicketResultListDTO>> getAllTickets(@ParameterObject Pageable pageable,
                                                                                    @RequestParam(required = false) String keyword,
                                                                                    @RequestParam(required = false) Set<String> selectedFields) {
-        Page<AmateurTicketResponseDTO.ResultListDTO> tickets = amateurTicketService.getAllTickets(pageable, keyword, selectedFields);
+        Page<AmateurTicketResponseDTO.AmateurTicketResultListDTO> tickets = amateurTicketService.getAllTickets(pageable, keyword, selectedFields);
         return ApiResponse.onSuccess(tickets);
     }
 
     @Operation(summary = "특정 소극장 티켓 조회")
     @GetMapping("/{amateurShowId}")
-    public ApiResponse<AmateurTicketResponseDTO.ResultDTO> getTicket(@PathVariable("amateurShowId") Long amateurShowId) {
-        AmateurTicketResponseDTO.ResultDTO ticket = amateurTicketService.getTicket(amateurShowId);
+    public ApiResponse<AmateurTicketResponseDTO.AmateurTicketResultDTO> getTicket(@PathVariable("amateurShowId") Long amateurShowId) {
+        AmateurTicketResponseDTO.AmateurTicketResultDTO ticket = amateurTicketService.getTicket(amateurShowId);
         return ApiResponse.onSuccess(ticket);
     }
 
     @Operation(summary = "특정 소극장 티켓 정보 수정")
     @PatchMapping("/{amateurShowId}/update")
-    public ApiResponse<AmateurTicketResponseDTO.ResultDTO> updateTicket(@PathVariable("amateurShowId") Long amateurShowId,
-                                                                        @RequestBody AmateurTicketRequestDTO.UpdateDTO requestDTO) {
-        AmateurTicketResponseDTO.ResultDTO ticket = amateurTicketService.updateTicket(amateurShowId, requestDTO);
+    public ApiResponse<AmateurTicketResponseDTO.AmateurTicketResultDTO> updateTicket(@PathVariable("amateurShowId") Long amateurShowId,
+                                                                        @RequestBody AmateurTicketRequestDTO.AmateurTicketUpdateDTO requestDTO) {
+        AmateurTicketResponseDTO.AmateurTicketResultDTO ticket = amateurTicketService.updateTicket(amateurShowId, requestDTO);
         return ApiResponse.onSuccess(ticket);
     }
  }

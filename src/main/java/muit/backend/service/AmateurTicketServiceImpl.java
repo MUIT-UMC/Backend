@@ -23,7 +23,7 @@ public class AmateurTicketServiceImpl implements AmateurTicketService {
     private final AmateurShowRepository amateurShowRepository;
 
     @Override
-    public Page<AmateurTicketResponseDTO.ResultListDTO> getAllTickets(Pageable pageable,
+    public Page<AmateurTicketResponseDTO.AmateurTicketResultListDTO> getAllTickets(Pageable pageable,
                                                                       String keyword,
                                                                       Set<String> selectedFields) {
 
@@ -43,26 +43,26 @@ public class AmateurTicketServiceImpl implements AmateurTicketService {
         }
 
         return amateurShows.map(amateurShow ->
-                AmateurTicketConverter.toResultListDTO(amateurShow, selectedFields, isKeywordSearch)
+                AmateurTicketConverter.toAmateurTicketResultListDTO(amateurShow, selectedFields, isKeywordSearch)
         );
     }
 
     @Override
-    public AmateurTicketResponseDTO.ResultDTO getTicket(Long amateurShowId) {
+    public AmateurTicketResponseDTO.AmateurTicketResultDTO getTicket(Long amateurShowId) {
         AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
                 .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
-        return AmateurTicketConverter.toResultDTO(amateurShow);
+        return AmateurTicketConverter.toAmateurTicketResultDTO(amateurShow);
     }
 
     @Transactional
     @Override
-    public AmateurTicketResponseDTO.ResultDTO updateTicket(Long amateurShowId, AmateurTicketRequestDTO.UpdateDTO requestDTO) {
+    public AmateurTicketResponseDTO.AmateurTicketResultDTO updateTicket(Long amateurShowId, AmateurTicketRequestDTO.AmateurTicketUpdateDTO requestDTO) {
         AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
                 .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
         amateurShow.updateAmateurTicket(requestDTO);
 
-        return AmateurTicketConverter.toResultDTO(amateurShow);
+        return AmateurTicketConverter.toAmateurTicketResultDTO(amateurShow);
     }
 }

@@ -11,7 +11,7 @@ public class AmateurTicketRequestDTO {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UpdateDTO {
+    public static class AmateurTicketUpdateDTO {
         private String name; // 소극장 공연 이름
         private String schedule; // 공연 날짜/시간
         private Integer soldTicket; // 예매된 티켓 수

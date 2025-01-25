@@ -11,9 +11,9 @@ import java.util.Set;
 @Service
 public interface AmateurTicketService {
 
-    public Page<AmateurTicketResponseDTO.ResultListDTO> getAllTickets(Pageable pageable,
+    public Page<AmateurTicketResponseDTO.AmateurTicketResultListDTO> getAllTickets(Pageable pageable,
                                                                       String keyword,
                                                                       Set<String> selectedFields);
-    public AmateurTicketResponseDTO.ResultDTO getTicket(Long amateurShowId);
-    public AmateurTicketResponseDTO.ResultDTO updateTicket(Long amateurShowId, AmateurTicketRequestDTO.UpdateDTO requestDTO);
+    public AmateurTicketResponseDTO.AmateurTicketResultDTO getTicket(Long amateurShowId);
+    public AmateurTicketResponseDTO.AmateurTicketResultDTO updateTicket(Long amateurShowId, AmateurTicketRequestDTO.AmateurTicketUpdateDTO requestDTO);
 }

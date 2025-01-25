@@ -106,7 +106,7 @@ public class AmateurShow extends BaseEntity {
 
     }
 
-    public void updateAmateurTicket(AmateurTicketRequestDTO.UpdateDTO requestDTO) {
+    public void updateAmateurTicket(AmateurTicketRequestDTO.AmateurTicketUpdateDTO requestDTO) {
         if(requestDTO.getName()!=null){this.name = requestDTO.getName();}
         if(requestDTO.getSchedule()!=null){this.schedule = requestDTO.getSchedule();}
         if(requestDTO.getSoldTicket()!=null){this.soldTicket = requestDTO.getSoldTicket();}
