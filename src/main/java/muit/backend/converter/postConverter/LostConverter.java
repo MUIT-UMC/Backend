@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public class LostConverter {
 
     // requestDTO -> Entity
-    // 게시글 생성
     public static Post toPost(Member member, PostType postType, LostRequestDTO requestDTO) {
         return Post.builder()
                 .postType(postType)
@@ -27,11 +26,10 @@ public class LostConverter {
     }
 
     // Entity -> ResultDTO
-    // 게시글 조회 - 단건
-    public static LostResponseDTO.LostResultDTO toLostResultDTO(Post post) {
-        return LostResponseDTO.LostResultDTO.builder()
+    // 게시글 조회 - 단건, 생성, 수정 시
+    public static LostResponseDTO.GeneralLostResponseDTO toGeneralLostResponseDTO(Post post) {
+        return LostResponseDTO.GeneralLostResponseDTO.builder()
                 .id(post.getId())
-                .postType(post.getPostType())
                 .memberId(post.getMember().getId())
                 .title(post.getTitle())
                 .content(post.getContent())
@@ -46,8 +44,8 @@ public class LostConverter {
     // List<Entity> -> ResultListDTO
     //게시판 조회 - 리스트
     public static LostResponseDTO.LostResultListDTO toLostResultListDTO(Page<Post> postPage) {
-        List<LostResponseDTO.LostResultDTO> lostResultListDTO = postPage.stream()
-                .map(LostConverter::toLostResultDTO).collect(Collectors.toList());
+        List<LostResponseDTO.GeneralLostResponseDTO> lostResultListDTO = postPage.stream()
+                .map(LostConverter::toGeneralLostResponseDTO).collect(Collectors.toList());
 
         return LostResponseDTO.LostResultListDTO.builder()
                 .postResultListDTO(lostResultListDTO)
@@ -58,21 +56,4 @@ public class LostConverter {
                 .totalElements(postPage.getTotalElements())
                 .build();
     };
-
-    // Entity -> ResponseDTO
-    // 게시글 생성 후 Response
-    public static LostResponseDTO.CreateLostResponseDTO toCreateLostResponseDTO(String message, Post post) {
-        return LostResponseDTO.CreateLostResponseDTO.builder()
-                .message(message)
-                .id(post.getId())
-                .postType(post.getPostType())
-                .memberId(post.getMember().getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .location(post.getLocation())
-                .lostItem(post.getLostItem())
-                .lostDate(post.getLostDate())
-                .createdAt(post.getCreatedAt())
-                .build();
-    }
 }

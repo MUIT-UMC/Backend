@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/reviews")
-@Tag(name="게시글")
+@Tag(name="리뷰 게시글")
 @RequiredArgsConstructor
 public class ReviewController {
 

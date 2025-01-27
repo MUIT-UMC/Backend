@@ -31,17 +31,17 @@ public class LostServiceImpl implements LostService {
 
     //특정 게시판 특정 게시글 단건 조회
     @Override
-    public LostResponseDTO.LostResultDTO getLostPost(Long id) {
+    public LostResponseDTO.GeneralLostResponseDTO getLostPost(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
-        return LostConverter.toLostResultDTO(post);
+        return LostConverter.toGeneralLostResponseDTO(post);
     }
 
     //게시글 작성
     @Override
     @Transactional
-    public LostResponseDTO.CreateLostResponseDTO createLostPost(PostType postType, LostRequestDTO requestDTO) {
+    public LostResponseDTO.GeneralLostResponseDTO createLostPost(PostType postType, LostRequestDTO requestDTO) {
 
         Member member = memberRepository.findById(requestDTO.getMemberId())
                 .orElseThrow(() -> new RuntimeException("Member not found"));
@@ -53,22 +53,19 @@ public class LostServiceImpl implements LostService {
         // 엔티티 저장
         postRepository.save(post);
 
-        // Entity -> ResponseDTO 변환
-        String message = "등록 완료";
-        return LostConverter.toCreateLostResponseDTO(message, post);
+        return LostConverter.toGeneralLostResponseDTO(post);
     }
 
     @Override
     @Transactional
-    public LostResponseDTO.CreateLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO) {
+    public LostResponseDTO.GeneralLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO) {
         //post 유효성 검사
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
         //나머지 필드 수정
         Post changedPost = post.changeLost(lostRequestDTO);
-
-        String message = "수정 완료";
-        return LostConverter.toCreateLostResponseDTO(message, changedPost);
+        
+        return LostConverter.toGeneralLostResponseDTO(changedPost);
     }
 }

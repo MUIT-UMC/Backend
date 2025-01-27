@@ -25,7 +25,7 @@ public class PostController {
     @Parameters({
             @Parameter(name = "postType", description = "REVIEW, BLIND 중에서만 선택해주세요")
     })
-    public ApiResponse<PostResponseDTO.CreatePostResponseDTO> addPost(@PathVariable("postType") PostType postType, @RequestBody PostRequestDTO postRequestDTO) {
+    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> addPost(@PathVariable("postType") PostType postType, @RequestBody PostRequestDTO postRequestDTO) {
         return ApiResponse.onSuccess(postService.createPost(postType, postRequestDTO));
     }
 
@@ -42,14 +42,14 @@ public class PostController {
 
     @GetMapping("/{postId}")
     @Operation(summary = "익명 게시글 단건 조회 API", description = "익명 게시판의 특정 게시글을 조회하는 API 입니다.")
-    public ApiResponse<PostResponseDTO.PostResultDTO> getPost(@PathVariable("postId") Long postId) {
+    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> getPost(@PathVariable("postId") Long postId) {
         return ApiResponse.onSuccess(postService.getPost(postId));
     }
 
 
     @PatchMapping("/{postId}")
     @Operation(summary = "게시글 수정 API", description = "특정 게시글을 수정하는 API 입니다.")
-    public ApiResponse<PostResponseDTO.CreatePostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestBody PostRequestDTO postRequestDTO) {
+    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestBody PostRequestDTO postRequestDTO) {
         return ApiResponse.onSuccess(postService.editPost(postId, postRequestDTO));
     }
 

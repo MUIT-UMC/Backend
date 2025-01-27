@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 public interface LostService {
 
     //특정 게시글 조회
-    public LostResponseDTO.LostResultDTO getLostPost(Long PostId);
+    public LostResponseDTO.GeneralLostResponseDTO getLostPost(Long PostId);
 
     //게시판 조회
     public LostResponseDTO.LostResultListDTO getLostPostList(PostType postType, Integer page);
 
     //게시글 생성
-    public LostResponseDTO.CreateLostResponseDTO createLostPost(PostType postType, LostRequestDTO lostRequestDTO);
+    public LostResponseDTO.GeneralLostResponseDTO createLostPost(PostType postType, LostRequestDTO lostRequestDTO);
 
     //게시글 수정
-    LostResponseDTO.CreateLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO);
+    LostResponseDTO.GeneralLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO);
 }

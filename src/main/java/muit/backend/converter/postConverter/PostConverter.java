@@ -2,7 +2,6 @@ package muit.backend.converter.postConverter;
 
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
-import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
@@ -29,8 +28,8 @@ public class PostConverter {
 
     // Entity -> ResultDTO
     // 게시글 조회 - 단건
-    public static PostResponseDTO.PostResultDTO toPostResultDTO(Post post) {
-        return PostResponseDTO.PostResultDTO.builder()
+    public static PostResponseDTO.GeneralPostResponseDTO toGeneralPostResponseDTO(Post post) {
+        return PostResponseDTO.GeneralPostResponseDTO.builder()
                 .id(post.getId())
                 .memberId(post.getMember().getId())
                 .title(post.getTitle())
@@ -43,8 +42,8 @@ public class PostConverter {
     // List<Entity> -> ResultListDTO
     //게시판 조회 - 리스트
     public static PostResponseDTO.PostResultListDTO toPostResultListDTO(Page<Post> postPage) {
-        List<PostResponseDTO.PostResultDTO> postResultListDTO = postPage.stream()
-                .map(PostConverter::toPostResultDTO).collect(Collectors.toList());
+        List<PostResponseDTO.GeneralPostResponseDTO> postResultListDTO = postPage.stream()
+                .map(PostConverter::toGeneralPostResponseDTO).collect(Collectors.toList());
 
         return PostResponseDTO.PostResultListDTO.builder()
                 .postResultListDTO(postResultListDTO)
@@ -55,17 +54,4 @@ public class PostConverter {
                 .totalElements(postPage.getTotalElements())
                 .build();
     };
-
-    // Entity -> ResponseDTO
-    // 게시글 생성 후 Response
-    public static PostResponseDTO.CreatePostResponseDTO toCreatePostResponseDTO(String message, Post post) {
-        return PostResponseDTO.CreatePostResponseDTO.builder()
-                .message(message)
-                .id(post.getId())
-                .memberId(post.getMember().getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .createdAt(post.getCreatedAt())
-                .build();
-    }
 }

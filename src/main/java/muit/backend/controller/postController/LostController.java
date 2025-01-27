@@ -25,7 +25,7 @@ public class LostController {
     @Parameters({
             @Parameter(name = "postType", description = "게시판 종류, LOST, FOUND")
     })
-    public ApiResponse<LostResponseDTO.CreateLostResponseDTO> addPost(@RequestParam("postType") PostType postType, @RequestBody LostRequestDTO lostRequestDTO) {
+    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> addPost(@RequestParam("postType") PostType postType, @RequestBody LostRequestDTO lostRequestDTO) {
         return ApiResponse.onSuccess(lostService.createLostPost(postType, lostRequestDTO));
     }
 
@@ -41,14 +41,14 @@ public class LostController {
 
     @GetMapping("/{postId}")
     @Operation(summary = "분실 게시글 단건 조회 API", description = "분실 게시글 단건을 조회하는 API 입니다.")
-    public ApiResponse<LostResponseDTO.LostResultDTO> getPost(@PathVariable("postId") Long postId) {
+    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> getPost(@PathVariable("postId") Long postId) {
         return ApiResponse.onSuccess(lostService.getLostPost(postId));
     }
 
 
     @PatchMapping("/{postId}")
     @Operation(summary = "분실 게시글 수정 API", description = "분실 게시글을 수정하는 API 입니다.")
-    public ApiResponse<LostResponseDTO.CreateLostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestBody LostRequestDTO lostRequestDTO) {
+    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestBody LostRequestDTO lostRequestDTO) {
         return ApiResponse.onSuccess(lostService.editLostPost(postId, lostRequestDTO));
     }
 
