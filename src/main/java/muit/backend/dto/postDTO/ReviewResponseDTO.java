@@ -1,4 +1,4 @@
-package muit.backend.dto.commentDTO;
+package muit.backend.dto.postDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,52 +8,46 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class CommentReplyResponseDTO {
-
+public class ReviewResponseDTO
+{
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CommentResponseDTO{
-        private Long commentId;
-        private String nickname;
-        private String content;
+    public static class GeneralReviewResponseDTO{
+        //삭제 예정
         private Long memberId;
+        private String nickname;
+        private Long id;
+        private String title;
+        private String content;
+        private Long musicalId;
+        private String location;
+        private Integer rating;
+        private List<String> imgUrls;
         private LocalDateTime createdAt;
-        private List<ReplyResponseDTO> replies;
+        private LocalDateTime updatedAt;
     }
 
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ReplyResponseDTO{
-        private Long commentId;
-        private String nickname;
-        private Long replyId;
-        private String content;
-        private Long memberId;
-        private LocalDateTime createdAt;
-    }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CommentListResponseDTO{
-        private List<CommentResponseDTO> comments;
+    public static class ReviewListResponseDTO{
+        private List<GeneralReviewResponseDTO> reviews;
         private Integer listSize;
         private Integer totalPage;
         private Long totalElements;
         private Boolean isFirst;
         private Boolean isLast;
+
     }
 
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class DeleteResultDTO {
+    public static class DeleteReviewResponseDTO{
         private String message;
     }
 

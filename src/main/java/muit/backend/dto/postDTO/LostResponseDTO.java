@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import muit.backend.domain.enums.PostType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,13 +15,14 @@ public class LostResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class LostResultDTO{
+    public static class GeneralLostResponseDTO {
         private Long id;
-        private PostType postType;
         private Long memberId;
+        private String nickname;
         private String musicalName;
         private String title;
         private String content;
+        private List<String> imgUrls;
         private String location;
         private LocalDateTime lostDate;
         private String lostItem;
@@ -35,31 +35,12 @@ public class LostResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class LostResultListDTO{
-        private List<LostResponseDTO.LostResultDTO> postResultListDTO;
+        private List<GeneralLostResponseDTO> postResultListDTO;
         private Integer listSize;
         private Integer totalPage;
         private Long totalElements;
         private Boolean isFirst;
         private Boolean isLast;
-    }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CreateLostResponseDTO {
-        private String message;
-        private Long id;
-        private PostType postType;
-        private Long memberId;
-        private String musicalName;
-        private String title;
-        private String content;
-        private String location;
-        private LocalDateTime lostDate;
-        private String lostItem;
-        private LocalDateTime createdAt;
-
     }
 
     @Builder
