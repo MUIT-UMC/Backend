@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LostRequestDTO {
-
-
+        //삭제 예정
         private Long memberId;
+        private Boolean isAnonymous;
         private String musicalName;
         private String title;
         private String content;

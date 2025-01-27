@@ -31,6 +31,8 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PostType postType;
 
+    private Boolean isAnonymous;
+
     private String title;
 
     private String content;

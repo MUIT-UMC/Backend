@@ -18,6 +18,7 @@ public class LostResponseDTO {
     public static class GeneralLostResponseDTO {
         private Long id;
         private Long memberId;
+        private String nickname;
         private String musicalName;
         private String title;
         private String content;

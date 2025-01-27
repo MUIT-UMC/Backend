@@ -13,7 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostRequestDTO {
+    //삭제예정
     private Long memberId;
+    private Boolean isAnonymous;
     private String title;
     private String content;
 }

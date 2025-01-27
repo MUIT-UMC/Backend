@@ -15,12 +15,14 @@ public class ReviewResponseDTO
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GeneralReviewResponseDTO{
+        //삭제 예정
+        private Long memberId;
+        private String nickname;
         private Long id;
         private String title;
         private String content;
         private Long musicalId;
         private String location;
-        private Long memberId;
         private Integer rating;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;

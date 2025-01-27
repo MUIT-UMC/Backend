@@ -17,6 +17,7 @@ public class ReviewConverter {
     public static Post toReview(PostType postType, Member member, Musical musical, ReviewRequestDTO requestDTO) {
         Post review = Post.builder()
                 .member(member)
+                .isAnonymous(requestDTO.getIsAnonymous())
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
                 .postType(postType)
@@ -30,8 +31,11 @@ public class ReviewConverter {
     //to 단건 DTO
     public static ReviewResponseDTO.GeneralReviewResponseDTO toReviewResponseDTO(Post review) {
 
+        String name = review.getIsAnonymous() ? "익명" :review.getMember().getName();
+
         return ReviewResponseDTO.GeneralReviewResponseDTO.builder()
                 .id(review.getId())
+                .nickname(name)
                 .memberId(review.getMember().getId())
                 .musicalId(review.getMusical().getId())
                 .location(review.getLocation())

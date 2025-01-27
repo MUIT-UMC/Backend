@@ -17,6 +17,7 @@ public class LostConverter {
         return Post.builder()
                 .postType(postType)
                 .member(member)
+                .isAnonymous(requestDTO.getIsAnonymous())
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
                 .location(requestDTO.getLocation())
@@ -28,9 +29,11 @@ public class LostConverter {
     // Entity -> ResultDTO
     // 게시글 조회 - 단건, 생성, 수정 시
     public static LostResponseDTO.GeneralLostResponseDTO toGeneralLostResponseDTO(Post post) {
+        String name = post.getIsAnonymous() ? "익명" :post.getMember().getName();
         return LostResponseDTO.GeneralLostResponseDTO.builder()
                 .id(post.getId())
                 .memberId(post.getMember().getId())
+                .nickname(name)
                 .title(post.getTitle())
                 .content(post.getContent())
                 .location(post.getLocation())

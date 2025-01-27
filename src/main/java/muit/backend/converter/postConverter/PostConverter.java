@@ -21,6 +21,7 @@ public class PostConverter {
         return Post.builder()
                 .postType(postType)
                 .member(member)
+                .isAnonymous(requestDTO.getIsAnonymous())
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
                 .build();
@@ -29,9 +30,12 @@ public class PostConverter {
     // Entity -> ResultDTO
     // 게시글 조회 - 단건
     public static PostResponseDTO.GeneralPostResponseDTO toGeneralPostResponseDTO(Post post) {
+
+        String name = post.getIsAnonymous() ? "익명" :post.getMember().getName();
         return PostResponseDTO.GeneralPostResponseDTO.builder()
                 .id(post.getId())
                 .memberId(post.getMember().getId())
+                .nickname(name)
                 .title(post.getTitle())
                 .content(post.getContent())
                 .createdAt(post.getCreatedAt())
