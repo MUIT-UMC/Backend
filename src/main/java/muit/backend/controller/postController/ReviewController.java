@@ -12,8 +12,13 @@ import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.dto.postDTO.ReviewRequestDTO;
 import muit.backend.dto.postDTO.ReviewResponseDTO;
+import muit.backend.s3.UuidFile;
 import muit.backend.service.postService.ReviewService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/reviews")
@@ -22,14 +27,23 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    public enum ReviewType{
+        REVIEW,SIGHT
+    }
 
-    @PostMapping("/")
+    @PostMapping(value="/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "리뷰 생성 API", description = "리뷰 게시판에 글을 작성하는 API 입니다.")
     @Parameters({
-            @Parameter(name = "postType", description = "REVIEW/SIGHT 중에서만 선택해주세요")
+            @Parameter(name = "postType", description = "REVIEW/SIGHT 중에서만 선택해주세요"),
     })
-    public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> addReview(@RequestParam("postType") PostType postType, @RequestBody ReviewRequestDTO reviewRequestDTO) {
-        return ApiResponse.onSuccess(reviewService.createReview(postType, reviewRequestDTO));
+    public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> addReview(@RequestParam("postType") ReviewType reviewType, @RequestPart("reviewRequestDTO") ReviewRequestDTO reviewRequestDTO, @RequestPart("imageFile") List<MultipartFile> img) {
+
+        PostType postType = switch (reviewType){
+            case REVIEW -> PostType.REVIEW;
+            case SIGHT -> PostType.SIGHT;
+        };
+
+        return ApiResponse.onSuccess(reviewService.createReview(postType, reviewRequestDTO, img));
     }
 
     @GetMapping("/")
@@ -37,7 +51,13 @@ public class ReviewController {
     @Parameters({
             @Parameter(name = "postType", description = "REVIEW/SIGHT 중에서만 선택해주세요")
     })
-    public ApiResponse<ReviewResponseDTO.ReviewListResponseDTO> getReviewList(@RequestParam("postType") PostType postType, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "20") Integer size) {
+    public ApiResponse<ReviewResponseDTO.ReviewListResponseDTO> getReviewList(@RequestParam("postType") ReviewType reviewType, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "20") Integer size) {
+
+        PostType postType = switch (reviewType){
+            case REVIEW -> PostType.REVIEW;
+            case SIGHT -> PostType.SIGHT;
+        };
+
         return ApiResponse.onSuccess(reviewService.getReviewList(postType, page, size));
     }
 
@@ -50,10 +70,10 @@ public class ReviewController {
         return ApiResponse.onSuccess(reviewService.getReview(postId));
     }
 
-    @PatchMapping("/{postId}")
+    @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "리뷰 게시글 수정 API", description = "특정 리뷰 게시글을 수정하는 API 입니다.")
-    public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> editReview(@PathVariable("postId") Long postId, @RequestBody ReviewRequestDTO reviewRequestDTO) {
-        return ApiResponse.onSuccess(reviewService.editReview(postId, reviewRequestDTO));
+    public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> editReview(@PathVariable("postId") Long postId, @RequestPart("reviewRequestDTO") ReviewRequestDTO reviewRequestDTO, @RequestPart("imageFile")List<MultipartFile> img) {
+        return ApiResponse.onSuccess(reviewService.editReview(postId, reviewRequestDTO, img));
     }
 
 }

@@ -20,6 +20,7 @@ public class PostResponseDTO {
         private String nickname;
         private String title;
         private String content;
+        private List<String> imgUrls;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }

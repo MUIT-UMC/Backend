@@ -98,7 +98,11 @@ public class CommentConverter {
         List<CommentReplyResponseDTO.ReplyResponseDTO> replies = comment.getReplyList().stream()
                 .map(CommentConverter::toReplyResponseDTO).collect(Collectors.toList());
 
-        String nickname = comment.getAnonymousIndex()>-1 ? "익명"+comment.getAnonymousIndex():comment.getMember().getName();
+        String nickname = switch (comment.getAnonymousIndex()) {
+            case -1 -> comment.getMember().getName();
+            case 0 -> "글쓴이";
+            default -> "익명" + comment.getAnonymousIndex();
+        };
 
         return CommentReplyResponseDTO.CommentResponseDTO.builder()
                 .commentId(comment.getId())
@@ -128,7 +132,11 @@ public class CommentConverter {
     //생성 시 단건 답, 댓글 DTO 내부 대댓글 형식
     public static CommentReplyResponseDTO.ReplyResponseDTO toReplyResponseDTO(Reply reply) {
 
-        String nickname = reply.getAnonymousIndex()>0 ? "익명"+reply.getAnonymousIndex():reply.getMember().getName();
+        String nickname = switch (reply.getAnonymousIndex()) {
+            case -1 -> reply.getMember().getName();
+            case 0 -> "글쓴이";
+            default -> "익명" + reply.getAnonymousIndex();
+        };
 
         return CommentReplyResponseDTO.ReplyResponseDTO.builder()
                 .commentId(reply.getComment().getId())

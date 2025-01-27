@@ -4,13 +4,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.Multipart;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.service.postService.PostService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Tag(name = "게시글")
 @RestController
@@ -19,14 +24,10 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
-
-    @PostMapping("/")
+    @PostMapping(value="/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "게시글 생성 API", description = "특정 게시판에 글을 작성하는 API 입니다.")
-    @Parameters({
-            @Parameter(name = "postType", description = "REVIEW, BLIND 중에서만 선택해주세요")
-    })
-    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> addPost(@RequestParam("postType") PostType postType, @RequestBody PostRequestDTO postRequestDTO) {
-        return ApiResponse.onSuccess(postService.createPost(postType, postRequestDTO));
+    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> addPost(@RequestPart("postRequestDTO") PostRequestDTO postRequestDTO, @RequestPart("imageFiles")List<MultipartFile> img) {
+        return ApiResponse.onSuccess(postService.createPost(PostType.BLIND, postRequestDTO, img));
     }
 
     @GetMapping("/")
@@ -47,10 +48,10 @@ public class PostController {
     }
 
 
-    @PatchMapping("/{postId}")
+    @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "게시글 수정 API", description = "특정 게시글을 수정하는 API 입니다.")
-    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestBody PostRequestDTO postRequestDTO) {
-        return ApiResponse.onSuccess(postService.editPost(postId, postRequestDTO));
+    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestPart("postRequestDTO") PostRequestDTO postRequestDTO, @RequestPart("imageFiles")List<MultipartFile> img) {
+        return ApiResponse.onSuccess(postService.editPost(postId, postRequestDTO, img));
     }
 
     @DeleteMapping("/{postId}")

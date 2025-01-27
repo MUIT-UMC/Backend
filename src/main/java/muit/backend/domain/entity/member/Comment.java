@@ -29,7 +29,7 @@ public class Comment extends BaseEntity {
 
     private Integer replyCount;
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "comment")
     private List<Reply> replyList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

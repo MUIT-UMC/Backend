@@ -24,6 +24,7 @@ public class ReviewResponseDTO
         private Long musicalId;
         private String location;
         private Integer rating;
+        private List<String> imgUrls;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }

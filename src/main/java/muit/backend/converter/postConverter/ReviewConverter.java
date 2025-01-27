@@ -6,6 +6,7 @@ import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.ReviewRequestDTO;
 import muit.backend.dto.postDTO.ReviewResponseDTO;
+import muit.backend.s3.UuidFile;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -14,19 +15,20 @@ import java.util.stream.Collectors;
 public class ReviewConverter {
 
     //DTO -> Review
-    public static Post toReview(PostType postType, Member member, Musical musical, ReviewRequestDTO requestDTO) {
-        Post review = Post.builder()
+    public static Post toReview(PostType postType, Member member, Musical musical, ReviewRequestDTO requestDTO, List<UuidFile> imgList) {
+        return  Post.builder()
                 .member(member)
                 .isAnonymous(requestDTO.getIsAnonymous())
                 .maxIndex(0)
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
+                .images(imgList)
                 .postType(postType)
                 .musical(musical)
                 .rating(requestDTO.getRating())
                 .build();
 
-        return review;
+
     }
 
     //to 단건 DTO
@@ -43,7 +45,7 @@ public class ReviewConverter {
                 .rating(review.getRating())
                 .title(review.getTitle())
                 .content(review.getContent())
-
+                .imgUrls(review.getImages().stream().map(UuidFile::getFileUrl).collect(Collectors.toList()))
                 .build();
 
     }

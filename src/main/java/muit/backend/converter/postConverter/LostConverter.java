@@ -5,6 +5,7 @@ import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.LostResponseDTO;
+import muit.backend.s3.UuidFile;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 public class LostConverter {
 
     // requestDTO -> Entity
-    public static Post toPost(Member member, PostType postType, LostRequestDTO requestDTO) {
+    public static Post toPost(Member member, PostType postType, LostRequestDTO requestDTO, List<UuidFile> imgList) {
         return Post.builder()
                 .postType(postType)
                 .member(member)
@@ -21,6 +22,7 @@ public class LostConverter {
                 .maxIndex(0)
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
+                .images(imgList)
                 .location(requestDTO.getLocation())
                 .lostItem(requestDTO.getLostItem())
                 .lostDate(requestDTO.getLostDate())
@@ -37,6 +39,7 @@ public class LostConverter {
                 .nickname(name)
                 .title(post.getTitle())
                 .content(post.getContent())
+                .imgUrls(post.getImages().stream().map(UuidFile::getFileUrl).collect(Collectors.toList()))
                 .location(post.getLocation())
                 .lostItem(post.getLostItem())
                 .lostDate(post.getLostDate())

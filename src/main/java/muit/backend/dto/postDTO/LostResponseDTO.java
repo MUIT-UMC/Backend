@@ -22,6 +22,7 @@ public class LostResponseDTO {
         private String musicalName;
         private String title;
         private String content;
+        private List<String> imgUrls;
         private String location;
         private LocalDateTime lostDate;
         private String lostItem;

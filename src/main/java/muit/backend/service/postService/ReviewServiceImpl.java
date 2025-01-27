@@ -11,12 +11,18 @@ import muit.backend.dto.postDTO.ReviewResponseDTO;
 import muit.backend.repository.MemberRepository;
 import muit.backend.repository.MusicalRepository;
 import muit.backend.repository.PostRepository;
+import muit.backend.s3.FilePath;
+import muit.backend.s3.UuidFile;
+import muit.backend.s3.UuidFileService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -26,15 +32,21 @@ public class ReviewServiceImpl implements ReviewService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final MusicalRepository musicalRepository;
+    private final UuidFileService uuidFileService;
 
     //리뷰 생성
     @Override
     @Transactional
-    public ReviewResponseDTO.GeneralReviewResponseDTO createReview(PostType postType, ReviewRequestDTO reviewRequestDTO) {
+    public ReviewResponseDTO.GeneralReviewResponseDTO createReview(PostType postType, ReviewRequestDTO reviewRequestDTO, List<MultipartFile> imgFile) {
         Member member = memberRepository.findById(reviewRequestDTO.getMemberId()).orElseThrow(()->new RuntimeException("member not found"));
         Musical musical = musicalRepository.findById(reviewRequestDTO.getMusicalId()).orElseThrow(()->new RuntimeException("musical not found"));
 
-        Post review = ReviewConverter.toReview(postType, member, musical, reviewRequestDTO);
+        List<UuidFile> imgArr = new ArrayList<>();
+        if(imgFile!=null&&!imgFile.isEmpty()){
+            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, FilePath.REVIEW)).collect(Collectors.toList());
+        }
+
+        Post review = ReviewConverter.toReview(postType, member, musical, reviewRequestDTO, imgArr);
 
         postRepository.save(review);
 
@@ -59,7 +71,7 @@ public class ReviewServiceImpl implements ReviewService {
     //리뷰 수정
     @Override
     @Transactional
-    public ReviewResponseDTO.GeneralReviewResponseDTO editReview(Long postId, ReviewRequestDTO requestDTO) {
+    public ReviewResponseDTO.GeneralReviewResponseDTO editReview(Long postId, ReviewRequestDTO requestDTO, List<MultipartFile> imgFile) {
 
         //post 유효성 검사
         Post review = postRepository.findById(postId)
@@ -70,6 +82,20 @@ public class ReviewServiceImpl implements ReviewService {
                     .orElseThrow(() -> new RuntimeException("Musical not found"));
             //musical 먼저 수정
             review.changeMusical(musical);}
+
+        //기존 이미지 먼저 삭제
+        List<UuidFile> existingImg = review.getImages();
+        if(!existingImg.isEmpty()){
+            existingImg.forEach(uuidFileService::deleteFile);
+        }
+        //수정된 이미지 삽입
+        List<UuidFile> imgArr = new ArrayList<>();
+        if(imgFile!=null&&!imgFile.isEmpty()){
+            //추후 채은에게 SIGHT 추가 해달라고 하기
+            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, FilePath.REVIEW)).collect(Collectors.toList());
+        }
+        review.changeImg(imgArr);
+
 
         //나머지 필드 수정
         Post changedPost = review.changeReview(requestDTO);

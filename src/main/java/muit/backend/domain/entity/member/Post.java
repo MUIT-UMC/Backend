@@ -11,6 +11,7 @@ import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.ReviewRequestDTO;
+import muit.backend.s3.UuidFile;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
@@ -49,6 +50,9 @@ public class Post extends BaseEntity {
 
     private String lostItem;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UuidFile> images = new ArrayList<>();
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
@@ -72,6 +76,10 @@ public class Post extends BaseEntity {
 
     public void changeMusical(Musical musical){
         this.musical = musical;
+    }
+
+    public void changeImg(List<UuidFile> imgList){
+        this.images = imgList;
     }
 
     public void increaseMaxIndex(){

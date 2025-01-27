@@ -10,10 +10,18 @@ import muit.backend.dto.postDTO.LostResponseDTO;
 import muit.backend.repository.MemberRepository;
 import muit.backend.repository.MusicalRepository;
 import muit.backend.repository.PostRepository;
+import muit.backend.s3.FilePath;
+import muit.backend.s3.UuidFile;
+import muit.backend.s3.UuidFileService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LostServiceImpl implements LostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-    private final MusicalRepository musicalRepository;
+    private final UuidFileService uuidFileService;
     //게시판 조회
     @Override
     public LostResponseDTO.LostResultListDTO getLostPostList(PostType postType, Integer page){
@@ -41,14 +49,24 @@ public class LostServiceImpl implements LostService {
     //게시글 작성
     @Override
     @Transactional
-    public LostResponseDTO.GeneralLostResponseDTO createLostPost(PostType postType, LostRequestDTO requestDTO) {
+    public LostResponseDTO.GeneralLostResponseDTO createLostPost(PostType postType, LostRequestDTO requestDTO, List<MultipartFile> imgFile) {
+
+        FilePath filePath = switch (postType){
+            case LOST -> FilePath.LOST;
+            case FOUND -> FilePath.FOUND;
+            default -> throw new RuntimeException("Unsupported post type");
+        };
+        List<UuidFile> imgArr = new ArrayList<>();
+        if(imgFile!=null&&!imgFile.isEmpty()){
+            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, filePath)).collect(Collectors.toList());
+        }
 
         Member member = memberRepository.findById(requestDTO.getMemberId())
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
 
         // DTO -> Entity 변환
-        Post post = LostConverter.toPost(member, postType, requestDTO);
+        Post post = LostConverter.toPost(member, postType, requestDTO, imgArr);
 
         // 엔티티 저장
         postRepository.save(post);
@@ -58,10 +76,28 @@ public class LostServiceImpl implements LostService {
 
     @Override
     @Transactional
-    public LostResponseDTO.GeneralLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO) {
+    public LostResponseDTO.GeneralLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO, List<MultipartFile> imgFile) {
         //post 유효성 검사
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        FilePath filePath = switch (post.getPostType()){
+            case LOST -> FilePath.LOST;
+            case FOUND -> FilePath.FOUND;
+            default -> throw new RuntimeException("Unsupported post type");
+        };
+
+        //기존 이미지 먼저 삭제
+        List<UuidFile> existingImg = post.getImages();
+        if(!existingImg.isEmpty()){
+            existingImg.forEach(uuidFileService::deleteFile);
+        }
+        //수정된 이미지 삽입
+        List<UuidFile> imgArr = new ArrayList<>();
+        if(imgFile!=null&&!imgFile.isEmpty()){
+            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, FilePath.REVIEW)).collect(Collectors.toList());
+        }
+        post.changeImg(imgArr);
 
         //나머지 필드 수정
         Post changedPost = post.changeLost(lostRequestDTO);

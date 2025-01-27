@@ -5,6 +5,7 @@ import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
+import muit.backend.s3.UuidFile;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class PostConverter {
 
     // requestDTO -> Entity
     // 게시글 생성
-    public static Post toPost(Member member, PostType postType, PostRequestDTO requestDTO) {
+    public static Post toPost(Member member, PostType postType, PostRequestDTO requestDTO, List<UuidFile> imgList) {
         return Post.builder()
                 .postType(postType)
                 .member(member)
@@ -25,6 +26,7 @@ public class PostConverter {
                 .maxIndex(0)
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
+                .images(imgList)
                 .build();
     }
 
@@ -39,6 +41,7 @@ public class PostConverter {
                 .nickname(name)
                 .title(post.getTitle())
                 .content(post.getContent())
+                .imgUrls(post.getImages().stream().map(UuidFile::getFileUrl).collect(Collectors.toList()))
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();

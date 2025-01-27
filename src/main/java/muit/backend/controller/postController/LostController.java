@@ -10,7 +10,11 @@ import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.LostResponseDTO;
 import muit.backend.service.postService.LostService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Tag(name = " 분실물 게시글")
 @RestController
@@ -19,14 +23,21 @@ import org.springframework.web.bind.annotation.*;
 public class LostController {
 
     private final LostService lostService;
+    public enum LostType{
+        LOST,FOUND
+    }
 
-    @PostMapping("/")
+    @PostMapping(value="/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "분실물글 생성 API", description = "분실물 게시판에 글을 작성하는 API 입니다.")
     @Parameters({
             @Parameter(name = "postType", description = "게시판 종류, LOST, FOUND")
     })
-    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> addPost(@RequestParam("postType") PostType postType, @RequestBody LostRequestDTO lostRequestDTO) {
-        return ApiResponse.onSuccess(lostService.createLostPost(postType, lostRequestDTO));
+    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> addPost(@RequestParam("postType") LostType lostType, @RequestPart("lostRequestDTO") LostRequestDTO lostRequestDTO, @RequestPart("imageFiles")List<MultipartFile> img) {
+        PostType postType = switch (lostType){
+            case LOST -> PostType.LOST;
+            case FOUND -> PostType.FOUND;
+        };
+        return ApiResponse.onSuccess(lostService.createLostPost(postType, lostRequestDTO,img));
     }
 
     @GetMapping("/")
@@ -46,10 +57,10 @@ public class LostController {
     }
 
 
-    @PatchMapping("/{postId}")
+    @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "분실 게시글 수정 API", description = "분실 게시글을 수정하는 API 입니다.")
-    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestBody LostRequestDTO lostRequestDTO) {
-        return ApiResponse.onSuccess(lostService.editLostPost(postId, lostRequestDTO));
+    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestPart("lostRequestDTO") LostRequestDTO lostRequestDTO, @RequestPart("imageFiles")List<MultipartFile> img) {
+        return ApiResponse.onSuccess(lostService.editLostPost(postId, lostRequestDTO,img));
     }
 
 }
