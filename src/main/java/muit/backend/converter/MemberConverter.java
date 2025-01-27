@@ -8,13 +8,14 @@ import muit.backend.dto.memberDTO.EmailRegisterResponseDTO;
 
 public class MemberConverter {
 
-    public static Member EmailtoMember(EmailRegisterRequestDTO dto){
+    public static Member EmailtoMember(EmailRegisterRequestDTO dto, String encodedPassword){
         return Member.builder()
                 .username(dto.getUsername())
                 .name(dto.getName())
-                .password(dto.getPw())
+                .password(encodedPassword)
                 .email(dto.getEmail())
                 .phone(dto.getPhone())
+                .oauthProvider("MUIT")
                 .address(dto.getAddress()).build();
     }
 
@@ -23,14 +24,14 @@ public class MemberConverter {
                 .id(member.getId())
                 .email(member.getEmail()).build();
     }
-//
-//    public static EmailLoginAccessTokenResponse TokenRegisterResponseDTO(TokenDTO dto, Member member){
-//        return EmailLoginAccessTokenResponse.builder()
-//                .accessToken(dto.getAccessToken())
-//                .refreshToken(dto.getRefreshToken())
-//                .id(member.getId())
-//                .name(member.getName())
-//                .username(member.getUsername())
-//                .build();
-//    }
+
+    public static EmailLoginAccessTokenResponse TokenLoginResponseDTO(TokenDTO dto, Member member){
+        return EmailLoginAccessTokenResponse.builder()
+                .accessToken(dto.getAccessToken())
+                .refreshToken(dto.getRefreshToken())
+                .id(member.getId())
+                .name(member.getName())
+                .username(member.getUsername())
+                .build();
+    }
 }

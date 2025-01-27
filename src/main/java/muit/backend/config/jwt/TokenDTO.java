@@ -1,4 +1,3 @@
-/*
 package muit.backend.config.jwt;
 
 import lombok.Builder;
@@ -10,4 +9,3 @@ public class TokenDTO {
     private String accessToken;
     private String refreshToken;
 }
-*/

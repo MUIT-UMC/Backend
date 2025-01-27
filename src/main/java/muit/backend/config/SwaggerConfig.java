@@ -21,17 +21,15 @@ public class SwaggerConfig {
 
         String jwtSchemeName = "JWT TOKEN";
 
-        // API 요청 헤더에 인증 정보 포함 -> admin을 위해
+        // API 요청 헤더에 인증 정보 포함
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
 
         // SecuritySchemes 등록
         Components components = new Components()
                 .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
-                        .type(SecurityScheme.Type.HTTP)
-                        .scheme("bearer")
-                        .bearerFormat("JWT")
-                        .in(SecurityScheme.In.HEADER)
-                        .name("Authorization"));
+                        .type(SecurityScheme.Type.APIKEY) // API 키 방식
+                        .in(SecurityScheme.In.HEADER) // 헤더에 포함
+                        .name("Authorization")); // 헤더의 이름
 
         Server localServer = new Server().url("/").description("Local Server");
 
