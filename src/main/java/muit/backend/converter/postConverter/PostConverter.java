@@ -22,6 +22,7 @@ public class PostConverter {
                 .postType(postType)
                 .member(member)
                 .isAnonymous(requestDTO.getIsAnonymous())
+                .maxIndex(0)
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
                 .build();

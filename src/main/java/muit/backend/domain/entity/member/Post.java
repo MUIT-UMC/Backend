@@ -41,6 +41,8 @@ public class Post extends BaseEntity {
 
     private Integer commentCount;
 
+    private Integer maxIndex;
+
     private Integer rating;
 
     private LocalDateTime lostDate;
@@ -70,6 +72,10 @@ public class Post extends BaseEntity {
 
     public void changeMusical(Musical musical){
         this.musical = musical;
+    }
+
+    public void increaseMaxIndex(){
+        this.maxIndex++;
     }
 
     public Post changePost(PostRequestDTO postRequestDTO) {

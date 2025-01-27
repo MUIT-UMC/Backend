@@ -18,6 +18,7 @@ public class ReviewConverter {
         Post review = Post.builder()
                 .member(member)
                 .isAnonymous(requestDTO.getIsAnonymous())
+                .maxIndex(0)
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
                 .postType(postType)

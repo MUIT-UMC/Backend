@@ -23,6 +23,10 @@ public class Comment extends BaseEntity {
 
     private String content;
 
+    private Boolean isAnonymous;
+
+    private Integer anonymousIndex;
+
     private Integer replyCount;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)

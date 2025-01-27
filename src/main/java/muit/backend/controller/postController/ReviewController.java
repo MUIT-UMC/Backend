@@ -23,21 +23,21 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping("/{postType}")
+    @PostMapping("/")
     @Operation(summary = "리뷰 생성 API", description = "리뷰 게시판에 글을 작성하는 API 입니다.")
     @Parameters({
             @Parameter(name = "postType", description = "REVIEW/SIGHT 중에서만 선택해주세요")
     })
-    public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> addReview(@PathVariable("postType") PostType postType, @RequestBody ReviewRequestDTO reviewRequestDTO) {
+    public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> addReview(@RequestParam("postType") PostType postType, @RequestBody ReviewRequestDTO reviewRequestDTO) {
         return ApiResponse.onSuccess(reviewService.createReview(postType, reviewRequestDTO));
     }
 
-    @GetMapping("/{postType}")
+    @GetMapping("/")
     @Operation(summary = "리뷰 게시판 조회 API", description = "리뷰 게시판의 글을 조회하는 API 입니다.")
     @Parameters({
             @Parameter(name = "postType", description = "REVIEW/SIGHT 중에서만 선택해주세요")
     })
-    public ApiResponse<ReviewResponseDTO.ReviewListResponseDTO> getReviewList(@PathVariable("postType") PostType postType, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "20") Integer size) {
+    public ApiResponse<ReviewResponseDTO.ReviewListResponseDTO> getReviewList(@RequestParam("postType") PostType postType, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "20") Integer size) {
         return ApiResponse.onSuccess(reviewService.getReviewList(postType, page, size));
     }
 
