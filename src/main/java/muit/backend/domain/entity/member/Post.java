@@ -10,6 +10,8 @@ import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.PostRequestDTO;
+import muit.backend.dto.postDTO.ReviewRequestDTO;
+import muit.backend.s3.UuidFile;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
@@ -30,6 +32,8 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PostType postType;
 
+    private Boolean isAnonymous;
+
     private String title;
 
     private String content;
@@ -38,13 +42,16 @@ public class Post extends BaseEntity {
 
     private Integer commentCount;
 
+    private Integer maxIndex;
+
     private Integer rating;
 
     private LocalDateTime lostDate;
 
     private String lostItem;
 
-    private String musicalName;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UuidFile> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
@@ -71,11 +78,25 @@ public class Post extends BaseEntity {
         this.musical = musical;
     }
 
+    public void changeImg(List<UuidFile> imgList){
+        this.images = imgList;
+    }
+
+    public void increaseMaxIndex(){
+        this.maxIndex++;
+    }
+
+    public void changeCommentCount(Boolean isAdd){
+        if(isAdd){
+            this.commentCount++;
+        }else{
+            this.commentCount--;
+        }
+    }
+
     public Post changePost(PostRequestDTO postRequestDTO) {
         if(postRequestDTO.getTitle()!=null){this.title = postRequestDTO.getTitle();}
         if(postRequestDTO.getContent()!=null){this.content = postRequestDTO.getContent();}
-        if(postRequestDTO.getLocation()!=null){this.location = postRequestDTO.getLocation();}
-        if(postRequestDTO.getRating()!=null){this.rating = postRequestDTO.getRating();}
         return this;
 
     }
@@ -86,7 +107,14 @@ public class Post extends BaseEntity {
         if(lostRequestDTO.getLocation()!=null){this.location = lostRequestDTO.getLocation();}
         if(lostRequestDTO.getLostItem()!=null){this.lostItem = lostRequestDTO.getLostItem();}
         if(lostRequestDTO.getLostDate()!=null){this.lostDate = lostRequestDTO.getLostDate();}
-        if(lostRequestDTO.getMusicalName()!=null){this.musicalName = lostRequestDTO.getMusicalName();}
+        return this;
+    }
+
+    public Post changeReview(ReviewRequestDTO reviewRequestDTO){
+        if(reviewRequestDTO.getTitle()!=null){this.title = reviewRequestDTO.getTitle();}
+        if(reviewRequestDTO.getContent()!=null){this.content = reviewRequestDTO.getContent();}
+        if(reviewRequestDTO.getRating()!=null){this.rating = reviewRequestDTO.getRating();}
+
         return this;
     }
 }

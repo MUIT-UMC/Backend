@@ -59,6 +59,7 @@ public class MusicalResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MusicalHomeListDTO{
+        private String message;
         private List<MusicalHomeDTO> musicalHomeList;
     }
 

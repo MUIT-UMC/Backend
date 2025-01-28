@@ -8,18 +8,22 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
-public class PostResponseDTO {
+public class ReviewResponseDTO
+{
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GeneralPostResponseDTO {
+    public static class GeneralReviewResponseDTO{
         private Long id;
+        //삭제 예정
         private Long memberId;
         private String nickname;
         private String title;
         private String content;
+        private Long musicalId;
+        private String location;
+        private Integer rating;
         private List<String> imgUrls;
         private Integer commentCount;
         private LocalDateTime createdAt;
@@ -30,20 +34,22 @@ public class PostResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PostResultListDTO{
-        private List<GeneralPostResponseDTO> posts;
+    public static class ReviewListResponseDTO{
+        private List<GeneralReviewResponseDTO> posts;
         private Integer listSize;
         private Integer totalPage;
         private Long totalElements;
         private Boolean isFirst;
         private Boolean isLast;
+
     }
 
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class DeleteResultDTO {
+    public static class DeleteReviewResponseDTO{
         private String message;
     }
+
 }

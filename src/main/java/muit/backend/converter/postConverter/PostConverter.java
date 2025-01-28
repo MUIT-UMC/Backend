@@ -1,12 +1,11 @@
-package muit.backend.converter;
+package muit.backend.converter.postConverter;
 
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
-import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
-import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
+import muit.backend.s3.UuidFile;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -19,30 +18,32 @@ public class PostConverter {
 
     // requestDTO -> Entity
     // 게시글 생성
-    public static Post toPost(Member member, Musical musical, PostType postType, PostRequestDTO requestDTO) {
+    public static Post toPost(Member member, PostType postType, PostRequestDTO requestDTO, List<UuidFile> imgList) {
         return Post.builder()
                 .postType(postType)
                 .member(member)
-                .musical(musical)
+                .isAnonymous(requestDTO.getIsAnonymous())
+                .maxIndex(0)
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
-                .location(requestDTO.getLocation())
-                .rating(requestDTO.getRating())
+                .commentCount(0)
+                .images(imgList)
                 .build();
     }
 
     // Entity -> ResultDTO
     // 게시글 조회 - 단건
-    public static PostResponseDTO.PostResultDTO toPostResultDTO(Post post) {
-        return PostResponseDTO.PostResultDTO.builder()
+    public static PostResponseDTO.GeneralPostResponseDTO toGeneralPostResponseDTO(Post post) {
+
+        String name = post.getIsAnonymous() ? "익명" :post.getMember().getName();
+        return PostResponseDTO.GeneralPostResponseDTO.builder()
                 .id(post.getId())
-                .postType(post.getPostType())
                 .memberId(post.getMember().getId())
-                .musicalId(post.getMusical().getId())
+                .nickname(name)
                 .title(post.getTitle())
                 .content(post.getContent())
-                .location(post.getLocation())
-                .rating(post.getRating())
+                .imgUrls(post.getImages().stream().map(UuidFile::getFileUrl).collect(Collectors.toList()))
+                .commentCount(post.getCommentCount())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();
@@ -51,11 +52,11 @@ public class PostConverter {
     // List<Entity> -> ResultListDTO
     //게시판 조회 - 리스트
     public static PostResponseDTO.PostResultListDTO toPostResultListDTO(Page<Post> postPage) {
-        List<PostResponseDTO.PostResultDTO> postResultListDTO = postPage.stream()
-                .map(PostConverter::toPostResultDTO).collect(Collectors.toList());
+        List<PostResponseDTO.GeneralPostResponseDTO> postResultListDTO = postPage.stream()
+                .map(PostConverter::toGeneralPostResponseDTO).collect(Collectors.toList());
 
         return PostResponseDTO.PostResultListDTO.builder()
-                .postResultListDTO(postResultListDTO)
+                .posts(postResultListDTO)
                 .listSize(postResultListDTO.size())
                 .isFirst(postPage.isFirst())
                 .isLast(postPage.isLast())
@@ -63,21 +64,4 @@ public class PostConverter {
                 .totalElements(postPage.getTotalElements())
                 .build();
     };
-
-    // Entity -> ResponseDTO
-    // 게시글 생성 후 Response
-    public static PostResponseDTO.CreatePostResponseDTO toCreatePostResponseDTO(String message, Post post) {
-        return PostResponseDTO.CreatePostResponseDTO.builder()
-                .message(message)
-                .id(post.getId())
-                .postType(post.getPostType())
-                .memberId(post.getMember().getId())
-                .musicalId(post.getMusical().getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .location(post.getLocation())
-                .rating(post.getRating())
-                .createdAt(post.getCreatedAt())
-                .build();
-    }
 }

@@ -16,6 +16,7 @@ public class CommentReplyResponseDTO {
     @AllArgsConstructor
     public static class CommentResponseDTO{
         private Long commentId;
+        private String nickname;
         private String content;
         private Long memberId;
         private LocalDateTime createdAt;
@@ -28,6 +29,7 @@ public class CommentReplyResponseDTO {
     @AllArgsConstructor
     public static class ReplyResponseDTO{
         private Long commentId;
+        private String nickname;
         private Long replyId;
         private String content;
         private Long memberId;
