@@ -12,7 +12,7 @@ public class JwtSecurityConfig implements SecurityConfigurer<DefaultSecurityFilt
 
     @Override
     public void init(HttpSecurity builder) throws Exception {
-        System.out.println("test");
+        System.out.println("JWT security init");
     }
 
     // TokenProvider 를 주입받아서 JwtFilter 를 통해 Security 로직에 필터를 등록
