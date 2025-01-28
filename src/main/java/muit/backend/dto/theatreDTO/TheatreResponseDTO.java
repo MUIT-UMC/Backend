@@ -27,6 +27,7 @@ public class TheatreResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class TheatreResultListDTO{
+        private String message;
         private List<TheatreResultDTO> theatreResults;
     }
 }

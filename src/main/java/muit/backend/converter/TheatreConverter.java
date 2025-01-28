@@ -36,12 +36,13 @@ public class TheatreConverter {
                .build();
    }
 
-   public static TheatreResponseDTO.TheatreResultListDTO toTheatreResultListDTO(List<Theatre> theatres) {
+   public static TheatreResponseDTO.TheatreResultListDTO toTheatreResultListDTO(List<Theatre> theatres, String message) {
 
        List<TheatreResponseDTO.TheatreResultDTO> theatreResultsDTO = theatres.stream()
                .map(TheatreConverter::toTheatreResultDTO).toList();
 
         return TheatreResponseDTO.TheatreResultListDTO.builder()
+                .message(message)
                 .theatreResults(theatreResultsDTO)
                 .build();
    }
