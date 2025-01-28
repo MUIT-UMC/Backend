@@ -1,11 +1,11 @@
-package muit.backend.controller;
+package muit.backend.controller.adminController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
-import muit.backend.dto.manageReservDTO.ManageReservResponseDTO;
-import muit.backend.service.ManageReservService;
+import muit.backend.dto.adminDTO.manageReservDTO.ManageReservResponseDTO;
+import muit.backend.service.adminService.ManageReservService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

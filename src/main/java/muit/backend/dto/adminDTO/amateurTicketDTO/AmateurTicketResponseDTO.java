@@ -1,4 +1,4 @@
-package muit.backend.dto.amateurTicketDTO;
+package muit.backend.dto.adminDTO.amateurTicketDTO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

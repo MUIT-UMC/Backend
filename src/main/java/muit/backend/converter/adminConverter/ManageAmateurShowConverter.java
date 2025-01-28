@@ -1,11 +1,7 @@
-package muit.backend.converter;
+package muit.backend.converter.adminConverter;
 
 import muit.backend.domain.entity.amateur.AmateurShow;
-import muit.backend.domain.entity.member.Member;
-import muit.backend.domain.enums.AmateurStatus;
-import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
-import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowResponseDTO;
-import muit.backend.dto.manageMemberDTO.ManageMemberResponseDTO;
+import muit.backend.dto.adminDTO.manageAmateurShowDTO.ManageAmateurShowResponseDTO;
 
 import java.util.Set;
 

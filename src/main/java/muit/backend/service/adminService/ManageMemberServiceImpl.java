@@ -1,13 +1,13 @@
-package muit.backend.service;
+package muit.backend.service.adminService;
 
 
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.code.status.ErrorStatus;
 import muit.backend.apiPayLoad.exception.GeneralException;
-import muit.backend.converter.ManageMemberConverter;
+import muit.backend.converter.adminConverter.ManageMemberConverter;
 import muit.backend.domain.entity.member.Member;
-import muit.backend.dto.manageMemberDTO.ManageMemberRequestDTO;
-import muit.backend.dto.manageMemberDTO.ManageMemberResponseDTO;
+import muit.backend.dto.adminDTO.manageMemberDTO.ManageMemberRequestDTO;
+import muit.backend.dto.adminDTO.manageMemberDTO.ManageMemberResponseDTO;
 import muit.backend.repository.MemberRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +52,7 @@ public class ManageMemberServiceImpl implements ManageMemberService {
     @Override
     public ManageMemberResponseDTO.ManageMemberResultDTO getMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
         return ManageMemberConverter.toManageMemberResultDTO(member);
     }
@@ -62,7 +62,7 @@ public class ManageMemberServiceImpl implements ManageMemberService {
     @Transactional
     public ManageMemberResponseDTO.ManageMemberResultDTO updateMember(Long memberId, ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
         member.updateMember(requestDTO);
 

@@ -1,7 +1,7 @@
-package muit.backend.service;
+package muit.backend.service.adminService;
 
-import muit.backend.dto.amateurTicketDTO.AmateurTicketRequestDTO;
-import muit.backend.dto.amateurTicketDTO.AmateurTicketResponseDTO;
+import muit.backend.dto.adminDTO.amateurTicketDTO.AmateurTicketRequestDTO;
+import muit.backend.dto.adminDTO.amateurTicketDTO.AmateurTicketResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,8 +12,10 @@ import java.util.Set;
 public interface AmateurTicketService {
 
     public Page<AmateurTicketResponseDTO.AmateurTicketResultListDTO> getAllTickets(Pageable pageable,
-                                                                      String keyword,
-                                                                      Set<String> selectedFields);
+                                                                                   String keyword,
+                                                                                   Set<String> selectedFields);
+
     public AmateurTicketResponseDTO.AmateurTicketResultDTO getTicket(Long amateurShowId);
+
     public AmateurTicketResponseDTO.AmateurTicketResultDTO updateTicket(Long amateurShowId, AmateurTicketRequestDTO.AmateurTicketUpdateDTO requestDTO);
 }

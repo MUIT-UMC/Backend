@@ -1,4 +1,4 @@
-package muit.backend.dto.amateurTicketDTO;
+package muit.backend.dto.adminDTO.amateurTicketDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

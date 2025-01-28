@@ -1,7 +1,7 @@
-package muit.backend.converter;
+package muit.backend.converter.adminConverter;
 
 import muit.backend.domain.entity.member.Member;
-import muit.backend.dto.manageMemberDTO.ManageMemberResponseDTO;
+import muit.backend.dto.adminDTO.manageMemberDTO.ManageMemberResponseDTO;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package muit.backend.dto.manageAmateurShowDTO;
+package muit.backend.dto.adminDTO.manageAmateurShowDTO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

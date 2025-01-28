@@ -7,20 +7,21 @@ import muit.backend.domain.entity.amateur.AmateurShow;
 import muit.backend.domain.enums.ActiveStatus;
 import muit.backend.domain.enums.Gender;
 import muit.backend.domain.enums.LoginType;
-import muit.backend.domain.enums.Role;
-import muit.backend.dto.manageMemberDTO.ManageMemberRequestDTO;
+import muit.backend.dto.adminDTO.manageMemberDTO.ManageMemberRequestDTO;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Builder
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 //    @Enumerated(EnumType.STRING)
@@ -87,12 +88,26 @@ public class Member extends BaseEntity {
     }
 
     public void updateMember(ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO) {
-        if(requestDTO.getUsername()!=null){this.username = requestDTO.getUsername();}
-        if(requestDTO.getName()!=null){this.name = requestDTO.getName();}
-        if(requestDTO.getPhone()!=null){this.phone = requestDTO.getPhone();}
-        if(requestDTO.getEmail()!=null){this.email = requestDTO.getEmail();}
-        if(requestDTO.getBirthDate()!=null){this.birthDate = requestDTO.getBirthDate();}
-        if(requestDTO.getGender()!=null){this.gender = requestDTO.getGender();}
-        if(requestDTO.getAddress()!=null){this.address = requestDTO.getAddress();}
+        if (requestDTO.getUsername() != null) {
+            this.username = requestDTO.getUsername();
+        }
+        if (requestDTO.getName() != null) {
+            this.name = requestDTO.getName();
+        }
+        if (requestDTO.getPhone() != null) {
+            this.phone = requestDTO.getPhone();
+        }
+        if (requestDTO.getEmail() != null) {
+            this.email = requestDTO.getEmail();
+        }
+        if (requestDTO.getBirthDate() != null) {
+            this.birthDate = requestDTO.getBirthDate();
+        }
+        if (requestDTO.getGender() != null) {
+            this.gender = requestDTO.getGender();
+        }
+        if (requestDTO.getAddress() != null) {
+            this.address = requestDTO.getAddress();
+        }
     }
 }

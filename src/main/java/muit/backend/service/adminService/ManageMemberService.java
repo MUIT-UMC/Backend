@@ -1,7 +1,7 @@
-package muit.backend.service;
+package muit.backend.service.adminService;
 
-import muit.backend.dto.manageMemberDTO.ManageMemberRequestDTO;
-import muit.backend.dto.manageMemberDTO.ManageMemberResponseDTO;
+import muit.backend.dto.adminDTO.manageMemberDTO.ManageMemberRequestDTO;
+import muit.backend.dto.adminDTO.manageMemberDTO.ManageMemberResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

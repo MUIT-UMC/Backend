@@ -1,4 +1,4 @@
-package muit.backend.dto.manageReservDTO;
+package muit.backend.dto.adminDTO.manageReservDTO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

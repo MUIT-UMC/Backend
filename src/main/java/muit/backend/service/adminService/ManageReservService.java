@@ -1,6 +1,6 @@
-package muit.backend.service;
+package muit.backend.service.adminService;
 
-import muit.backend.dto.manageReservDTO.ManageReservResponseDTO;
+import muit.backend.dto.adminDTO.manageReservDTO.ManageReservResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

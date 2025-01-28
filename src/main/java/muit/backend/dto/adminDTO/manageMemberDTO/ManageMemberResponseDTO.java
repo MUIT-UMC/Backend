@@ -1,4 +1,4 @@
-package muit.backend.dto.manageMemberDTO;
+package muit.backend.dto.adminDTO.manageMemberDTO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

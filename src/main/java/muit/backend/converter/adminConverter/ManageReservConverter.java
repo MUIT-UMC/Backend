@@ -1,9 +1,9 @@
-package muit.backend.converter;
+package muit.backend.converter.adminConverter;
 
 import muit.backend.domain.entity.amateur.AmateurShow;
 import muit.backend.domain.entity.member.MemberTicket;
 import muit.backend.domain.entity.member.Reservation;
-import muit.backend.dto.manageReservDTO.ManageReservResponseDTO;
+import muit.backend.dto.adminDTO.manageReservDTO.ManageReservResponseDTO;
 
 import java.util.Set;
 

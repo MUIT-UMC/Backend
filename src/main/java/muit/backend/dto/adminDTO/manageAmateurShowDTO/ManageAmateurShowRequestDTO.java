@@ -1,4 +1,4 @@
-package muit.backend.dto.manageAmateurShowDTO;
+package muit.backend.dto.adminDTO.manageAmateurShowDTO;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

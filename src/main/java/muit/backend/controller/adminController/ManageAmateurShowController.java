@@ -1,15 +1,13 @@
-package muit.backend.controller;
+package muit.backend.controller.adminController;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.domain.enums.AmateurStatus;
-import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
-import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowResponseDTO;
-import muit.backend.service.ManageAmateurShowService;
+import muit.backend.dto.adminDTO.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
+import muit.backend.dto.adminDTO.manageAmateurShowDTO.ManageAmateurShowResponseDTO;
+import muit.backend.service.adminService.ManageAmateurShowService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +26,8 @@ public class ManageAmateurShowController {
     @Operation(summary = "전체 소극장 공연 조회")
     @GetMapping
     public ApiResponse<Page<ManageAmateurShowResponseDTO.ManageAmateurShowResultListDTO>> getAllAmateurShows(@ParameterObject Pageable pageable,
-                                                                                            @RequestParam(required = false) String keyword,
-                                                                                            @RequestParam(required = false) Set<String> selectedFields) {
+                                                                                                             @RequestParam(required = false) String keyword,
+                                                                                                             @RequestParam(required = false) Set<String> selectedFields) {
         Page<ManageAmateurShowResponseDTO.ManageAmateurShowResultListDTO> amateurShows = manageAmateurShowService.getAllAmateurShows(pageable, keyword, selectedFields);
         return ApiResponse.onSuccess(amateurShows);
     }

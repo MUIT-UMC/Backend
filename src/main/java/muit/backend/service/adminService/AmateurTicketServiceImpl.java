@@ -1,12 +1,12 @@
-package muit.backend.service;
+package muit.backend.service.adminService;
 
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.code.status.ErrorStatus;
 import muit.backend.apiPayLoad.exception.GeneralException;
-import muit.backend.converter.AmateurTicketConverter;
+import muit.backend.converter.adminConverter.AmateurTicketConverter;
 import muit.backend.domain.entity.amateur.AmateurShow;
-import muit.backend.dto.amateurTicketDTO.AmateurTicketRequestDTO;
-import muit.backend.dto.amateurTicketDTO.AmateurTicketResponseDTO;
+import muit.backend.dto.adminDTO.amateurTicketDTO.AmateurTicketRequestDTO;
+import muit.backend.dto.adminDTO.amateurTicketDTO.AmateurTicketResponseDTO;
 import muit.backend.repository.AmateurShowRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +24,8 @@ public class AmateurTicketServiceImpl implements AmateurTicketService {
 
     @Override
     public Page<AmateurTicketResponseDTO.AmateurTicketResultListDTO> getAllTickets(Pageable pageable,
-                                                                      String keyword,
-                                                                      Set<String> selectedFields) {
+                                                                                   String keyword,
+                                                                                   Set<String> selectedFields) {
 
         // 검색어가 있는지 확인
         boolean isKeywordSearch = keyword != null && !keyword.trim().isEmpty(); // 그냥 빈 검색어도 없다고 침
@@ -35,7 +35,7 @@ public class AmateurTicketServiceImpl implements AmateurTicketService {
         // 검색어가 있으면 해당 키워드로 검색
         if (isKeywordSearch) {
             amateurShows = amateurShowRepository.findTicketsByKeyword(pageable, keyword);
-            if(amateurShows.isEmpty()) {
+            if (amateurShows.isEmpty()) {
                 return Page.empty(pageable);
             }
         } else { // 검색어가 없으면 모든 소극장 공연 정보 조회
@@ -50,7 +50,7 @@ public class AmateurTicketServiceImpl implements AmateurTicketService {
     @Override
     public AmateurTicketResponseDTO.AmateurTicketResultDTO getTicket(Long amateurShowId) {
         AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
-                .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
         return AmateurTicketConverter.toAmateurTicketResultDTO(amateurShow);
     }
@@ -59,7 +59,7 @@ public class AmateurTicketServiceImpl implements AmateurTicketService {
     @Override
     public AmateurTicketResponseDTO.AmateurTicketResultDTO updateTicket(Long amateurShowId, AmateurTicketRequestDTO.AmateurTicketUpdateDTO requestDTO) {
         AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
-                .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
         amateurShow.updateAmateurTicket(requestDTO);
 

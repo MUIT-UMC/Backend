@@ -1,14 +1,14 @@
-package muit.backend.service;
+package muit.backend.service.adminService;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.code.status.ErrorStatus;
 import muit.backend.apiPayLoad.exception.GeneralException;
-import muit.backend.converter.ManageAmateurShowConverter;
+import muit.backend.converter.adminConverter.ManageAmateurShowConverter;
 import muit.backend.domain.entity.amateur.AmateurShow;
 import muit.backend.domain.enums.AmateurStatus;
-import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
-import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowResponseDTO;
+import muit.backend.dto.adminDTO.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
+import muit.backend.dto.adminDTO.manageAmateurShowDTO.ManageAmateurShowResponseDTO;
 import muit.backend.repository.AmateurShowRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +36,7 @@ public class ManageAmateurShowServiceImpl implements ManageAmateurShowService {
         // 검색어가 있으면 해당 키워드로 검색
         if (isKeywordSearch) {
             amateurShows = amateurShowRepository.findByKeyword(pageable, keyword);
-            if(amateurShows.isEmpty()) {
+            if (amateurShows.isEmpty()) {
                 return Page.empty(pageable);
             }
         } else { // 검색어가 없으면 모든 소극장 공연 정보 조회
@@ -52,7 +52,7 @@ public class ManageAmateurShowServiceImpl implements ManageAmateurShowService {
     @Override
     public ManageAmateurShowResponseDTO.ManageAmateurShowResultDTO getAmateurShow(Long amateurShowId) {
         AmateurShow amateurShow = amateurShowRepository.findByIdWithMemberAndSummary(amateurShowId)
-                .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
         return ManageAmateurShowConverter.toManageAmateurShowResultDTO(amateurShow);
     }
@@ -62,7 +62,7 @@ public class ManageAmateurShowServiceImpl implements ManageAmateurShowService {
     @Override
     public ManageAmateurShowResponseDTO.ManageAmateurShowResultDTO updateAmateurShow(Long amateurShowId, ManageAmateurShowRequestDTO.ManageAmateurShowUpdateDTO requestDTO) {
         AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
-                .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
         amateurShow.updateAmateurShow(requestDTO);
 
@@ -74,7 +74,7 @@ public class ManageAmateurShowServiceImpl implements ManageAmateurShowService {
     @Override
     public ManageAmateurShowResponseDTO.ManageAmateurShowDecideDTO decideAmateurShow(Long amateurShowId, @NotNull AmateurStatus amateurStatus, ManageAmateurShowRequestDTO.ManageAmateurShowDecideDTO requestDTO) {
         AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
-                .orElseThrow(()-> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
         amateurShow.decideAmateurShow(amateurStatus, requestDTO);
         return ManageAmateurShowConverter.toManageAmateurShowDecideDTO(amateurShow);
