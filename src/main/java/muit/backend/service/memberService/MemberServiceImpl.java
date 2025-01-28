@@ -2,6 +2,8 @@ package muit.backend.service.memberService;
 
 import lombok.RequiredArgsConstructor;
 
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.config.jwt.TokenDTO;
 import muit.backend.config.jwt.TokenProvider;
 import muit.backend.converter.MemberConverter;
@@ -70,7 +72,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 해당 이메일이 있는지 검증
         Member member = memberRepository.checkEmail(clientEmail, "MUIT")
-                .orElseThrow(() -> new IllegalArgumentException("회원이 아닙니다. 회원가입을 해주세요."));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
         // 비밀번호 검증
         if (!encoder.matches(clientPw, member.getPassword())) {
