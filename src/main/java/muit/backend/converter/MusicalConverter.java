@@ -95,12 +95,13 @@ public class MusicalConverter {
                 .build();
     }
 
-    public static MusicalResponseDTO.MusicalHomeListDTO toMusicalHomeListDTO(List<Musical> musicals) {
+    public static MusicalResponseDTO.MusicalHomeListDTO toMusicalHomeListDTO(List<Musical> musicals, String message) {
         List<MusicalResponseDTO.MusicalHomeDTO> musicalHomeList = musicals.stream()
                 .map(MusicalConverter::toMusicalHomeDTO).collect(Collectors.toList());
 
         return MusicalResponseDTO.MusicalHomeListDTO.builder()
                 .musicalHomeList(musicalHomeList)
+                .message(message)
                 .build();
     }
 

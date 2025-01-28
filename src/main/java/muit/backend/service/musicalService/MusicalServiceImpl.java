@@ -84,15 +84,19 @@ public class MusicalServiceImpl implements MusicalService {
     @Override
     public MusicalResponseDTO.MusicalHomeListDTO getFiveMusicals(){
         List<Musical> musicals = musicalRepository.findTop5ByOrderByIdAsc();
+        String message = "검색 성공";
+        if (musicals.isEmpty()) message = "뮤지컬이 존재하지 않습니다";
 
-        return MusicalConverter.toMusicalHomeListDTO(musicals);
+        return MusicalConverter.toMusicalHomeListDTO(musicals, message);
     }
 
     @Override
     public MusicalResponseDTO.MusicalHomeListDTO getAllHotMusicals(Integer page){
         Pageable pageable = PageRequest.of(page,20);
         List<Musical> musicals = musicalRepository.findAllByOrderByIdAsc(pageable);
-        return MusicalConverter.toMusicalHomeListDTO(musicals);
+        String message = "검색 성공";
+        if (musicals.isEmpty()) message = "뮤지컬이 존재하지 않습니다";
+        return MusicalConverter.toMusicalHomeListDTO(musicals, message);
     }
 
     @Override
@@ -115,6 +119,8 @@ public class MusicalServiceImpl implements MusicalService {
     public MusicalResponseDTO.MusicalHomeListDTO findMusicalsByName(String musicalName){
         List<Musical> musicals = musicalRepository.findByNameContaining(musicalName);
 
-        return MusicalConverter.toMusicalHomeListDTO(musicals);
+        String message = "검색 결과";
+        if(musicals.isEmpty()) message = "검색 결과가 존재하지 않습니다.";
+        return MusicalConverter.toMusicalHomeListDTO(musicals, message);
     }
 }

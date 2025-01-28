@@ -35,9 +35,10 @@ public class TheatreServiceImpl implements TheatreService {
 
     @Override
     public TheatreResponseDTO.TheatreResultListDTO findTheatreByName(String theatreName){
-        List<Theatre> theatre = theatreRepository.findByNameContaining(theatreName);
-
-        return TheatreConverter.toTheatreResultListDTO(theatre);
+        List<Theatre> theatres = theatreRepository.findByNameContaining(theatreName);
+        String message = "검색 결과";
+        if(theatres.isEmpty()) message = "검색결과가 존재하지 않습니다.";
+        return TheatreConverter.toTheatreResultListDTO(theatres, message);
     }
 
     @Override
