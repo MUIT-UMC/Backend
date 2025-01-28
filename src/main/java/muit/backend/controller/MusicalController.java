@@ -22,13 +22,6 @@ public class MusicalController {
         return ApiResponse.onSuccess(musicalService.getMusical(musicalId));
     }
 
-    @GetMapping("/getMusicalInfoFromKopis")
-    @Operation(summary = "Kopis로부터 뮤지컬 정보 추출하는 API", description = "Kopis 에서 정보를 가져오고 싶은 뮤지컬의 Kopis Id를 입력 (미아 파밀리아 = PF253515)")
-    public ApiResponse<String> createMusical(@RequestParam("kopisMusicalId") String kopisMusicalId) {
-
-        musicalService.createMusical(kopisMusicalId);
-        return ApiResponse.onSuccess("뮤지컬 정보를 성공적으로 저장하였습니다.");
-    }
 
     @GetMapping("/hot")
     @Operation(summary = "뮤지컬 조회 - 리스트 HOT NOW", description = "Home에서 현재 HOT한 뮤지컬 5개 조회하는 API, HOT한 기준은 불명")
@@ -44,7 +37,7 @@ public class MusicalController {
     }
 
     @GetMapping("/rank")
-    @Operation(summary = "뮤지컬 조회 - 리스트 RANKING", description = "Home에서 Ranking 5개 뮤지컬 조회하는 API, Ranking 기준은 불명")
+    @Operation(summary = "뮤지컬 조회 - 리스트 RANKING", description = "Home에서 Ranking 5개 뮤지컬 조회하는 API, Ranking은 playDB 기준")
     public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> getFiveRankMusicals() {
         return ApiResponse.onSuccess(musicalService.getFiveMusicals());
     }
