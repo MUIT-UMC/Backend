@@ -86,6 +86,14 @@ public class Post extends BaseEntity {
         this.maxIndex++;
     }
 
+    public void changeCommentCount(Boolean isAdd){
+        if(isAdd){
+            this.commentCount++;
+        }else{
+            this.commentCount--;
+        }
+    }
+
     public Post changePost(PostRequestDTO postRequestDTO) {
         if(postRequestDTO.getTitle()!=null){this.title = postRequestDTO.getTitle();}
         if(postRequestDTO.getContent()!=null){this.content = postRequestDTO.getContent();}

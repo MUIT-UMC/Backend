@@ -26,6 +26,7 @@ public class PostConverter {
                 .maxIndex(0)
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
+                .commentCount(0)
                 .images(imgList)
                 .build();
     }
@@ -42,6 +43,7 @@ public class PostConverter {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .imgUrls(post.getImages().stream().map(UuidFile::getFileUrl).collect(Collectors.toList()))
+                .commentCount(post.getCommentCount())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();
@@ -54,7 +56,7 @@ public class PostConverter {
                 .map(PostConverter::toGeneralPostResponseDTO).collect(Collectors.toList());
 
         return PostResponseDTO.PostResultListDTO.builder()
-                .postResultListDTO(postResultListDTO)
+                .posts(postResultListDTO)
                 .listSize(postResultListDTO.size())
                 .isFirst(postPage.isFirst())
                 .isLast(postPage.isLast())

@@ -25,6 +25,7 @@ public class ReviewConverter {
                 .images(imgList)
                 .postType(postType)
                 .musical(musical)
+                .commentCount(0)
                 .rating(requestDTO.getRating())
                 .build();
 
@@ -45,6 +46,7 @@ public class ReviewConverter {
                 .rating(review.getRating())
                 .title(review.getTitle())
                 .content(review.getContent())
+                .commentCount(review.getCommentCount())
                 .imgUrls(review.getImages().stream().map(UuidFile::getFileUrl).collect(Collectors.toList()))
                 .build();
 
@@ -56,7 +58,7 @@ public class ReviewConverter {
                 map(ReviewConverter::toReviewResponseDTO).collect(Collectors.toList());
 
         return ReviewResponseDTO.ReviewListResponseDTO.builder()
-                .reviews(reviewListDTO)
+                .posts(reviewListDTO)
                 .listSize(reviewListDTO.size())
                 .totalElements(reviewPage.getTotalElements())
                 .totalPage(reviewPage.getTotalPages())

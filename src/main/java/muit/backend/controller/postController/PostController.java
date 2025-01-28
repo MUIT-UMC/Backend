@@ -26,19 +26,18 @@ public class PostController {
     private final PostService postService;
     @PostMapping(value="/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "게시글 생성 API", description = "특정 게시판에 글을 작성하는 API 입니다.")
-    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> addPost(@RequestPart("postRequestDTO") PostRequestDTO postRequestDTO, @RequestPart("imageFiles")List<MultipartFile> img) {
+    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> addPost(@RequestPart("postRequestDTO") PostRequestDTO postRequestDTO, @RequestPart(name = "imageFiles", required = false)List<MultipartFile> img) {
         return ApiResponse.onSuccess(postService.createPost(PostType.BLIND, postRequestDTO, img));
     }
 
     @GetMapping("/")
     @Operation(summary = "게시판 게시글 리스트 조회 API", description = "특정 게시판의 게시글 목록을 조회하는 API 이며 query string 으로 postType과 page를 받음")
     @Parameters({
-            @Parameter(name = "postType", description = "REVIEW, BLIND, HOT 중에서만 선택해주세요"),
             @Parameter( name = "page", description = "페이지를 정수로 입력"),
             @Parameter(name = "size", description = "한 페이지 당 게시물 수")
     })
-    public ApiResponse<PostResponseDTO.PostResultListDTO> getPostList(@RequestParam("postType") PostType postType, @RequestParam(defaultValue = "0", name = "page") Integer page, @RequestParam(defaultValue = "20", name = "size")Integer size) {
-        return ApiResponse.onSuccess(postService.getPostList(postType, page));
+    public ApiResponse<PostResponseDTO.PostResultListDTO> getPostList( @RequestParam(defaultValue = "0", name = "page") Integer page, @RequestParam(defaultValue = "20", name = "size")Integer size) {
+        return ApiResponse.onSuccess(postService.getPostList(PostType.BLIND, page));
     }
 
     @GetMapping("/{postId}")
@@ -50,7 +49,7 @@ public class PostController {
 
     @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "게시글 수정 API", description = "특정 게시글을 수정하는 API 입니다.")
-    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestPart("postRequestDTO") PostRequestDTO postRequestDTO, @RequestPart("imageFiles")List<MultipartFile> img) {
+    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestPart("postRequestDTO") PostRequestDTO postRequestDTO, @RequestPart(name = "imageFiles", required = false)List<MultipartFile> img) {
         return ApiResponse.onSuccess(postService.editPost(postId, postRequestDTO, img));
     }
 

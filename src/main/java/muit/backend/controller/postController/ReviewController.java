@@ -36,7 +36,7 @@ public class ReviewController {
     @Parameters({
             @Parameter(name = "postType", description = "REVIEW/SIGHT 중에서만 선택해주세요"),
     })
-    public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> addReview(@RequestParam("postType") ReviewType reviewType, @RequestPart("reviewRequestDTO") ReviewRequestDTO reviewRequestDTO, @RequestPart("imageFile") List<MultipartFile> img) {
+    public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> addReview(@RequestParam("postType") ReviewType reviewType, @RequestPart("reviewRequestDTO") ReviewRequestDTO reviewRequestDTO, @RequestPart(name = "imageFiles", required = false) List<MultipartFile> img) {
 
         PostType postType = switch (reviewType){
             case REVIEW -> PostType.REVIEW;
@@ -72,7 +72,7 @@ public class ReviewController {
 
     @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "리뷰 게시글 수정 API", description = "특정 리뷰 게시글을 수정하는 API 입니다.")
-    public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> editReview(@PathVariable("postId") Long postId, @RequestPart("reviewRequestDTO") ReviewRequestDTO reviewRequestDTO, @RequestPart("imageFile")List<MultipartFile> img) {
+    public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> editReview(@PathVariable("postId") Long postId, @RequestPart("reviewRequestDTO") ReviewRequestDTO reviewRequestDTO, @RequestPart(name = "imageFiles", required = false)List<MultipartFile> img) {
         return ApiResponse.onSuccess(reviewService.editReview(postId, reviewRequestDTO, img));
     }
 
