@@ -32,7 +32,7 @@ public class LostController {
     @Parameters({
             @Parameter(name = "postType", description = "게시판 종류, LOST, FOUND")
     })
-    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> addPost(@RequestParam("postType") LostType lostType, @RequestPart("lostRequestDTO") LostRequestDTO lostRequestDTO, @RequestPart("imageFiles")List<MultipartFile> img) {
+    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> addPost(@RequestParam("postType") LostType lostType, @RequestPart("lostRequestDTO") LostRequestDTO lostRequestDTO, @RequestPart(name = "imageFiles", required = false)List<MultipartFile> img) {
         PostType postType = switch (lostType){
             case LOST -> PostType.LOST;
             case FOUND -> PostType.FOUND;
@@ -59,7 +59,7 @@ public class LostController {
 
     @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "분실 게시글 수정 API", description = "분실 게시글을 수정하는 API 입니다.")
-    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestPart("lostRequestDTO") LostRequestDTO lostRequestDTO, @RequestPart("imageFiles")List<MultipartFile> img) {
+    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> editPost(@PathVariable("postId") Long postId, @RequestPart("lostRequestDTO") LostRequestDTO lostRequestDTO, @RequestPart(name = "imageFiles", required = false)List<MultipartFile> img) {
         return ApiResponse.onSuccess(lostService.editLostPost(postId, lostRequestDTO,img));
     }
 

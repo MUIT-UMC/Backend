@@ -15,16 +15,17 @@ public class ReviewResponseDTO
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GeneralReviewResponseDTO{
+        private Long id;
         //삭제 예정
         private Long memberId;
         private String nickname;
-        private Long id;
         private String title;
         private String content;
         private Long musicalId;
         private String location;
         private Integer rating;
         private List<String> imgUrls;
+        private Integer commentCount;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -34,7 +35,7 @@ public class ReviewResponseDTO
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ReviewListResponseDTO{
-        private List<GeneralReviewResponseDTO> reviews;
+        private List<GeneralReviewResponseDTO> posts;
         private Integer listSize;
         private Integer totalPage;
         private Long totalElements;
