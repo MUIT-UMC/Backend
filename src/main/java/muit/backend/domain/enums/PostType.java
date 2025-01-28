@@ -1,5 +1,5 @@
 package muit.backend.domain.enums;
 
 public enum PostType {
-    LOST, FOUND, REVIEW, BLIND, HOT
+    LOST, FOUND, REVIEW, SIGHT, BLIND, HOT
 }

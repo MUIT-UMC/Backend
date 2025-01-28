@@ -13,6 +13,7 @@ public class CommentReplyRequestDTO {
         private String content;
         //삭제예정
         private Long memberId;
+        private Boolean isAnonymous;
     }
 
     @AllArgsConstructor
@@ -23,6 +24,7 @@ public class CommentReplyRequestDTO {
         private String content;
         //삭제 예정
         private Long memberId;
+        private Boolean isAnonymous;
     }
 
     @AllArgsConstructor

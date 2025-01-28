@@ -21,6 +21,10 @@ public class Reply extends BaseEntity {
 
     private String content;
 
+    private Boolean isAnonymous;
+
+    private Integer anonymousIndex;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import muit.backend.domain.enums.PostType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,15 +14,13 @@ public class PostResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PostResultDTO{
+    public static class GeneralPostResponseDTO {
         private Long id;
-        private PostType postType;
         private Long memberId;
-        private Long musicalId;
+        private String nickname;
         private String title;
         private String content;
-        private String location;
-        private Integer rating;
+        private List<String> imgUrls;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -33,30 +30,12 @@ public class PostResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PostResultListDTO{
-        private List<PostResponseDTO.PostResultDTO> postResultListDTO;
+        private List<GeneralPostResponseDTO> postResultListDTO;
         private Integer listSize;
         private Integer totalPage;
         private Long totalElements;
         private Boolean isFirst;
         private Boolean isLast;
-    }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CreatePostResponseDTO {
-        private String message;
-        private Long id;
-        private PostType postType;
-        private Long memberId;
-        private Long musicalId;
-        private String title;
-        private String content;
-        private String location;
-        private Integer rating;
-        private LocalDateTime createdAt;
-
     }
 
     @Builder
