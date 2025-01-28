@@ -2,6 +2,7 @@ package muit.backend.service.musicalService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import muit.backend.config.InterparkConfig;
 import muit.backend.config.KopisConfig;
 import muit.backend.converter.EventConverter;
 import muit.backend.converter.MusicalConverter;
@@ -15,13 +16,18 @@ import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 import muit.backend.repository.EventRepository;
 import muit.backend.repository.MusicalRepository;
 import muit.backend.service.theatreService.TheatreService;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,6 +40,7 @@ public class MusicalServiceImpl implements MusicalService {
     private final EventRepository eventRepository;
     private final KopisConfig kopisConfig;
     private final TheatreService theatreService;
+    private final InterparkConfig interparkConfig;
 
     @Override
     public MusicalResponseDTO.MusicalResultDTO getMusical(Long musicalId){
@@ -122,5 +129,91 @@ public class MusicalServiceImpl implements MusicalService {
         String message = "검색 결과";
         if(musicals.isEmpty()) message = "검색 결과가 존재하지 않습니다.";
         return MusicalConverter.toMusicalHomeListDTO(musicals, message);
+    }
+
+    @Override
+    public List<String> getWeeklyRanking(){
+        String rankingUrl = interparkConfig.getRankingUrl();
+        try {
+            Document doc = Jsoup.connect(rankingUrl).get();
+
+            List<String> rankingList = new ArrayList<>();
+            Elements elements = doc.select("#contents > article:nth-child(3) > section > div > div > div.responsive-ranking-list_rankingListWrap__GM0yK.responsive-ranking-list_topRated__axfTY > div:nth-child(1) > div.responsive-ranking-list_rankingItemInner__mMLxe > ul > div.responsive-ranking-list_rankingContentsInner__8FuZE > li");
+            if (!elements.isEmpty()) {
+                rankingList.add("1. " + elements.get(0).text());
+            } else {
+                System.out.println("선택된 요소가 없습니다.");
+            }
+
+            elements = doc.select("#contents > article:nth-child(3) > section > div > div > div.responsive-ranking-list_rankingListWrap__GM0yK.responsive-ranking-list_topRated__axfTY > div:nth-child(2) > div.responsive-ranking-list_rankingItemInner__mMLxe > ul > div.responsive-ranking-list_rankingContentsInner__8FuZE > li");
+            if (!elements.isEmpty()) {
+                rankingList.add("2. " + elements.get(0).text());
+            } else {
+                System.out.println("선택된 요소가 없습니다.");
+            }
+
+            elements = doc.select("#contents > article:nth-child(3) > section > div > div > div.responsive-ranking-list_rankingListWrap__GM0yK.responsive-ranking-list_topRated__axfTY > div:nth-child(3) > div.responsive-ranking-list_rankingItemInner__mMLxe > ul > div.responsive-ranking-list_rankingContentsInner__8FuZE > li");
+            if (!elements.isEmpty()) {
+                rankingList.add("3. " + elements.get(0).text());
+            } else {
+                System.out.println("선택된 요소가 없습니다.");
+            }
+
+            elements = doc.select("#contents > article:nth-child(3) > section > div > div > div:nth-child(2) > div:nth-child(1) > div.responsive-ranking-list_rankingItemInner__mMLxe > ul > div.responsive-ranking-list_rankingContentsInner__8FuZE > li");
+            if (!elements.isEmpty()) {
+                rankingList.add("4. " + elements.get(0).text());
+            } else {
+                System.out.println("선택된 요소가 없습니다.");
+            }
+
+            elements = doc.select("#contents > article:nth-child(3) > section > div > div > div:nth-child(2) > div:nth-child(2) > div.responsive-ranking-list_rankingItemInner__mMLxe > ul > div.responsive-ranking-list_rankingContentsInner__8FuZE > li");
+            if (!elements.isEmpty()) {
+                rankingList.add("5. " + elements.get(0).text());
+            } else {
+                System.out.println("선택된 요소가 없습니다.");
+            }
+
+            elements = doc.select("#contents > article:nth-child(3) > section > div > div > div:nth-child(2) > div:nth-child(3) > div.responsive-ranking-list_rankingItemInner__mMLxe > ul > div.responsive-ranking-list_rankingContentsInner__8FuZE > li");
+            if (!elements.isEmpty()) {
+                rankingList.add("6. " + elements.get(0).text());
+            } else {
+                System.out.println("선택된 요소가 없습니다.");
+            }
+
+            elements = doc.select("#contents > article:nth-child(3) > section > div > div > div:nth-child(2) > div:nth-child(4) > div.responsive-ranking-list_rankingItemInner__mMLxe > ul > div.responsive-ranking-list_rankingContentsInner__8FuZE > li");
+            if (!elements.isEmpty()) {
+                rankingList.add("7. " + elements.get(0).text());
+            } else {
+                System.out.println("선택된 요소가 없습니다.");
+            }
+
+            elements = doc.select("#contents > article:nth-child(3) > section > div > div > div:nth-child(2) > div:nth-child(5) > div.responsive-ranking-list_rankingItemInner__mMLxe > ul > div.responsive-ranking-list_rankingContentsInner__8FuZE > li");
+            if (!elements.isEmpty()) {
+                rankingList.add("8. " + elements.get(0).text());
+            } else {
+                System.out.println("선택된 요소가 없습니다.");
+            }
+
+            elements = doc.select("#contents > article:nth-child(3) > section > div > div > div:nth-child(2) > div:nth-child(6) > div.responsive-ranking-list_rankingItemInner__mMLxe > ul > div.responsive-ranking-list_rankingContentsInner__8FuZE > li");
+            if (!elements.isEmpty()) {
+                rankingList.add("9. " + elements.get(0).text());
+            } else {
+                System.out.println("선택된 요소가 없습니다.");
+            }
+
+            elements = doc.select("#contents > article:nth-child(3) > section > div > div > div:nth-child(2) > div:nth-child(7) > div.responsive-ranking-list_rankingItemInner__mMLxe > ul > div.responsive-ranking-list_rankingContentsInner__8FuZE > li");
+            if (!elements.isEmpty()) {
+                rankingList.add("10. " + elements.get(0).text());
+            } else {
+                System.out.println("선택된 요소가 없습니다.");
+            }
+
+            System.out.println(rankingList);
+            return rankingList;
+
+        } catch (IOException e) {
+            throw new RuntimeException("사이트 접속 실패", e);
+        }
+
     }
 }
