@@ -23,6 +23,7 @@ public class LostConverter {
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
                 .images(imgList)
+                .commentCount(0)
                 .location(requestDTO.getLocation())
                 .lostItem(requestDTO.getLostItem())
                 .lostDate(requestDTO.getLostDate())
@@ -43,6 +44,7 @@ public class LostConverter {
                 .location(post.getLocation())
                 .lostItem(post.getLostItem())
                 .lostDate(post.getLostDate())
+                .commentCount(post.getCommentCount())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();
@@ -55,7 +57,7 @@ public class LostConverter {
                 .map(LostConverter::toGeneralLostResponseDTO).collect(Collectors.toList());
 
         return LostResponseDTO.LostResultListDTO.builder()
-                .postResultListDTO(lostResultListDTO)
+                .posts(lostResultListDTO)
                 .listSize(lostResultListDTO.size())
                 .isFirst(postPage.isFirst())
                 .isLast(postPage.isLast())

@@ -21,6 +21,7 @@ public class PostResponseDTO {
         private String title;
         private String content;
         private List<String> imgUrls;
+        private Integer commentCount;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -30,7 +31,7 @@ public class PostResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PostResultListDTO{
-        private List<GeneralPostResponseDTO> postResultListDTO;
+        private List<GeneralPostResponseDTO> posts;
         private Integer listSize;
         private Integer totalPage;
         private Long totalElements;
