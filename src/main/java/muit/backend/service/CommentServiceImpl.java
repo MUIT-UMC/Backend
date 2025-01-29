@@ -46,6 +46,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = CommentConverter.toComment(requestDTO, post, member);
 
         commentRepository.save(comment);
+        post.changeCommentCount(true);
 
         //comment -> responseDTO
         return CommentConverter.toCommentResponseDTO(comment);
@@ -76,8 +77,12 @@ public class CommentServiceImpl implements CommentService {
             }else{
                 commentRepository.delete(comment);
             }
+            comment.getPost().changeCommentCount(false);
         }else if(commentType.equals("REPLY")){
+            Reply reply = replyRepository.findById(commentId).orElseThrow(()->new RuntimeException("reply not found"));
             replyRepository.deleteById(commentId);
+            reply.getComment().getPost().changeCommentCount(false);
+
         }else{
             throw new RuntimeException("comment type not supported");
         }

@@ -19,13 +19,14 @@ public class LostResponseDTO {
         private Long id;
         private Long memberId;
         private String nickname;
-        private String musicalName;
         private String title;
-        private String content;
-        private List<String> imgUrls;
+        private String musicalName;
         private String location;
         private LocalDateTime lostDate;
         private String lostItem;
+        private String content;
+        private List<String> imgUrls;
+        private Integer commentCount;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -35,7 +36,7 @@ public class LostResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class LostResultListDTO{
-        private List<GeneralLostResponseDTO> postResultListDTO;
+        private List<GeneralLostResponseDTO> posts;
         private Integer listSize;
         private Integer totalPage;
         private Long totalElements;
