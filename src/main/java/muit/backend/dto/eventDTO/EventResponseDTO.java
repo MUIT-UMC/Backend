@@ -20,7 +20,6 @@ public class EventResponseDTO {
         private String name;
         private LocalDate evFrom;
         private LocalDate evTo;
-        private String place;
     }
 
     @Builder

@@ -2,6 +2,8 @@ package muit.backend.converter;
 
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Event;
+import muit.backend.domain.entity.musical.Musical;
+import muit.backend.dto.eventDTO.EventRequestDTO;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
 import org.springframework.data.domain.Page;
@@ -19,7 +21,6 @@ public class EventConverter {
                 .name(event.getName())
                 .evFrom(event.getEvFrom())
                 .evTo(event.getEvTo())
-                .place(event.getPlace())
                 .build();
     }
 
@@ -47,6 +48,16 @@ public class EventConverter {
 
         return EventResponseDTO.EventGroupListDTO.builder()
                 .eventResultListDTOList(eventResultListDTOList)
+                .build();
+    }
+
+    public static Event toEvent(EventRequestDTO.EventCreateDTO eventCreateDTO, Musical musical) {
+        return Event.builder()
+                .musical(musical)
+                .name(eventCreateDTO.getEventName())
+                .evFrom(eventCreateDTO.getEvFrom())
+                .evTo(eventCreateDTO.getEvTo())
+                .eventType(eventCreateDTO.getEventType())
                 .build();
     }
 }
