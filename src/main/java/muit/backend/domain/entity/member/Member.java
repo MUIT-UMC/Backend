@@ -53,6 +53,9 @@ public class Member extends BaseEntity {
 
     //private String deliveryAddress;
 
+    private String oauthProvider;
+
+
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
     private ActiveStatus activeStatus;
