@@ -33,6 +33,15 @@ public enum ErrorStatus implements BaseErrorCode {
     JOIN_FORMAT_ERROR(HttpStatus.BAD_REQUEST, "JOIN4000", "아이디와 비밀번호는 필수 입력 값입니다."),
     USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "JOIN4001", "이미 존재하는 아이디입니다"),
 
+    //POST ERROR
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4000", "존재하지 않는 게시글입니다."),
+
+    //COMMENT ERROR
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT4000", "존재하지 않는 댓글입니다."),
+
+    //MUSICAL ERROR
+    MUSICAL_NOT_FOUND(HttpStatus.NOT_FOUND, "MUSICAL4000", "존재하지 않는 뮤지컬입니다."),
+    
     // AMATEURSHOW ERROR
     AMATEURSHOW_NOT_FOUND(HttpStatus.NOT_FOUND, "AMATEURSHOW4000", "존재하지 않는 소극장 공연입니다.");
 

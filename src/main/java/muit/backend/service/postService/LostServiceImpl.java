@@ -1,6 +1,8 @@
 package muit.backend.service.postService;
 
 import lombok.RequiredArgsConstructor;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.postConverter.LostConverter;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
@@ -41,7 +43,7 @@ public class LostServiceImpl implements LostService {
     @Override
     public LostResponseDTO.GeneralLostResponseDTO getLostPost(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
         return LostConverter.toGeneralLostResponseDTO(post);
     }
@@ -62,7 +64,7 @@ public class LostServiceImpl implements LostService {
         }
 
         Member member = memberRepository.findById(requestDTO.getMemberId())
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
 
         // DTO -> Entity 변환
@@ -79,7 +81,7 @@ public class LostServiceImpl implements LostService {
     public LostResponseDTO.GeneralLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO, List<MultipartFile> imgFile) {
         //post 유효성 검사
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
         FilePath filePath = switch (post.getPostType()){
             case LOST -> FilePath.LOST;

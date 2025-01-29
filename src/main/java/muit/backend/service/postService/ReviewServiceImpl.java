@@ -1,6 +1,8 @@
 package muit.backend.service.postService;
 
 import lombok.RequiredArgsConstructor;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.postConverter.ReviewConverter;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
@@ -38,8 +40,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public ReviewResponseDTO.GeneralReviewResponseDTO createReview(PostType postType, ReviewRequestDTO reviewRequestDTO, List<MultipartFile> imgFile) {
-        Member member = memberRepository.findById(reviewRequestDTO.getMemberId()).orElseThrow(()->new RuntimeException("member not found"));
-        Musical musical = musicalRepository.findById(reviewRequestDTO.getMusicalId()).orElseThrow(()->new RuntimeException("musical not found"));
+        Member member = memberRepository.findById(reviewRequestDTO.getMemberId()).orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+        Musical musical = musicalRepository.findById(reviewRequestDTO.getMusicalId()).orElseThrow(()->new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
 
         List<UuidFile> imgArr = new ArrayList<>();
         if(imgFile!=null&&!imgFile.isEmpty()){
@@ -64,7 +66,7 @@ public class ReviewServiceImpl implements ReviewService {
     //리뷰 단건 조회
     @Override
     public ReviewResponseDTO.GeneralReviewResponseDTO getReview(Long postId) {
-        Post review = postRepository.findById(postId).orElseThrow(()->new RuntimeException("post not found"));
+        Post review = postRepository.findById(postId).orElseThrow(()->new GeneralException(ErrorStatus.POST_NOT_FOUND));
         return ReviewConverter.toReviewResponseDTO(review);
     }
 
@@ -75,11 +77,11 @@ public class ReviewServiceImpl implements ReviewService {
 
         //post 유효성 검사
         Post review = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
         //musical 유효성 검사
         if(requestDTO.getMusicalId()!=null){Long musicalId = requestDTO.getMusicalId();
             Musical musical = musicalRepository.findById(musicalId)
-                    .orElseThrow(() -> new RuntimeException("Musical not found"));
+                    .orElseThrow(() -> new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
             //musical 먼저 수정
             review.changeMusical(musical);}
 
