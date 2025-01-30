@@ -37,6 +37,7 @@ public class ManageEventResponseDTO {
     @Getter
     @AllArgsConstructor
     public static class EventInfo {
+        private Long eventId;
         private LocalDate evFrom;
         private LocalDate evTo;
         private String eventName;

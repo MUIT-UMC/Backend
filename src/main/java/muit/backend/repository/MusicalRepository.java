@@ -1,8 +1,6 @@
 package muit.backend.repository;
 
-import muit.backend.domain.entity.musical.Event;
 import muit.backend.domain.entity.musical.Musical;
-import muit.backend.dto.adminDTO.manageEventDTO.ManageEventRequestDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,9 +31,11 @@ public interface MusicalRepository extends JpaRepository<Musical, Long> {
             "OR m.place LIKE %:keyword%")
     Page<Musical> findByKeyword(Pageable pageable, @Param("keyword") String keyword);
 
-    // 이벤트가 있는 뮤지컬 전체 조회
-    @Query("SELECT DISTINCT m FROM Musical m JOIN m.eventList e WHERE e IS NOT NULL")
-    Page<Musical> findAllWithEvents(Pageable pageable);
+    // 이벤트가 있는 뮤지컬을 우선 정렬
+    @Query("SELECT m FROM Musical m ORDER BY CASE WHEN SIZE(m.eventList) > 0 THEN 0 ELSE 1 END")
+    Page<Musical> findAllWithEventPriority(Pageable pageable);
 
-    Optional<Musical> findByName(String name);
+    // 이벤트 날짜순 정렬
+    @Query("SELECT m FROM Musical m LEFT JOIN FETCH m.eventList e WHERE m.id = :musicalId ORDER BY e.evFrom ASC")
+    Optional<Musical> findByIdWithEventsSortedByEvFrom(@Param("musicalId") Long musicalId);
 }
