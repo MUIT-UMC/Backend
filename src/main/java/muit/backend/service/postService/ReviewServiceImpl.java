@@ -1,6 +1,8 @@
 package muit.backend.service.postService;
 
 import lombok.RequiredArgsConstructor;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.postConverter.ReviewConverter;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
@@ -37,13 +39,19 @@ public class ReviewServiceImpl implements ReviewService {
     //리뷰 생성
     @Override
     @Transactional
-    public ReviewResponseDTO.GeneralReviewResponseDTO createReview(PostType postType, ReviewRequestDTO reviewRequestDTO, List<MultipartFile> imgFile) {
-        Member member = memberRepository.findById(reviewRequestDTO.getMemberId()).orElseThrow(()->new RuntimeException("member not found"));
-        Musical musical = musicalRepository.findById(reviewRequestDTO.getMusicalId()).orElseThrow(()->new RuntimeException("musical not found"));
+    public ReviewResponseDTO.GeneralReviewResponseDTO createReview(PostType postType, ReviewRequestDTO reviewRequestDTO, List<MultipartFile> imgFile, Member member) {
+
+        Musical musical = musicalRepository.findById(reviewRequestDTO.getMusicalId()).orElseThrow(()->new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
+
+        FilePath filePath = switch (postType){
+            case REVIEW -> FilePath.REVIEW;
+            case SIGHT -> FilePath.SIGHT;
+            default -> throw new RuntimeException("Unsupported post type");
+        };
 
         List<UuidFile> imgArr = new ArrayList<>();
         if(imgFile!=null&&!imgFile.isEmpty()){
-            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, FilePath.REVIEW)).collect(Collectors.toList());
+            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, filePath)).collect(Collectors.toList());
         }
 
         Post review = ReviewConverter.toReview(postType, member, musical, reviewRequestDTO, imgArr);
@@ -64,24 +72,36 @@ public class ReviewServiceImpl implements ReviewService {
     //리뷰 단건 조회
     @Override
     public ReviewResponseDTO.GeneralReviewResponseDTO getReview(Long postId) {
-        Post review = postRepository.findById(postId).orElseThrow(()->new RuntimeException("post not found"));
+        Post review = postRepository.findById(postId).orElseThrow(()->new GeneralException(ErrorStatus.POST_NOT_FOUND));
         return ReviewConverter.toReviewResponseDTO(review);
     }
 
     //리뷰 수정
     @Override
     @Transactional
-    public ReviewResponseDTO.GeneralReviewResponseDTO editReview(Long postId, ReviewRequestDTO requestDTO, List<MultipartFile> imgFile) {
+    public ReviewResponseDTO.GeneralReviewResponseDTO editReview(Long postId, ReviewRequestDTO requestDTO, List<MultipartFile> imgFile,Member member) {
 
         //post 유효성 검사
         Post review = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
+        //작성자와 동일인인지 검사
+        if(review.getMember()!=member){
+            throw(new GeneralException(ErrorStatus._FORBIDDEN));
+        }
+
         //musical 유효성 검사
         if(requestDTO.getMusicalId()!=null){Long musicalId = requestDTO.getMusicalId();
             Musical musical = musicalRepository.findById(musicalId)
-                    .orElseThrow(() -> new RuntimeException("Musical not found"));
+                    .orElseThrow(() -> new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
             //musical 먼저 수정
             review.changeMusical(musical);}
+
+        FilePath filePath = switch (review.getPostType()){
+            case REVIEW -> FilePath.REVIEW;
+            case SIGHT -> FilePath.SIGHT;
+            default -> throw new RuntimeException("Unsupported post type");
+        };
 
         //기존 이미지 먼저 삭제
         List<UuidFile> existingImg = review.getImages();
@@ -92,7 +112,7 @@ public class ReviewServiceImpl implements ReviewService {
         List<UuidFile> imgArr = new ArrayList<>();
         if(imgFile!=null&&!imgFile.isEmpty()){
             //추후 채은에게 SIGHT 추가 해달라고 하기
-            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, FilePath.REVIEW)).collect(Collectors.toList());
+            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, filePath)).collect(Collectors.toList());
         }
         review.changeImg(imgArr);
 
