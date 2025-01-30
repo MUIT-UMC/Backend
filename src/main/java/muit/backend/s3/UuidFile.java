@@ -20,7 +20,7 @@ public class UuidFile {
     private String uuid;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "file_path")
+    @Column(name = "file_path", length = 50)
     private FilePath filePath;
 
     @Column(name = "file_url")

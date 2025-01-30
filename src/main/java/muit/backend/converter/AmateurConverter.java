@@ -7,17 +7,19 @@ import muit.backend.dto.amateurDTO.AmateurEnrollRequestDTO;
 import muit.backend.dto.amateurDTO.AmateurEnrollResponseDTO;
 import muit.backend.dto.amateurDTO.AmateurShowResponseDTO;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class AmateurConverter {
 
     // == REQUEST == //
-    public static AmateurShow toEntityWithDetails(Member member, AmateurEnrollRequestDTO dto) {
+    public static AmateurShow toEntityWithDetails(Member member, AmateurEnrollRequestDTO dto, String posterUrl) {
         return AmateurShow.builder()
                 .member(member)
                 .name(dto.getName())
-                .posterImgUrl(dto.getPosterImgUrl())
+                .posterImgUrl(posterUrl) // ✅ 포스터 이미지만 저장
                 .place(dto.getPlace())
                 .schedule(dto.getSchedule())
                 .age(dto.getAge())
@@ -31,57 +33,74 @@ public class AmateurConverter {
                 .build();
     }
 
-    public static List<AmateurCasting> toCastingEntity(List<AmateurEnrollRequestDTO.AmateurCastingDTO> dtos, AmateurShow show){
-        if(dtos == null || dtos.isEmpty()) return null;
-        return dtos.stream()
-                .map(dto -> AmateurCasting.builder()
-                        .imageUrl(dto.getImgUrl())
-                        .actorName(dto.getActorName())
-                        .castingName(dto.getCastingName())
-                        .amateurShow(show).build())
+
+    public static List<AmateurCasting> toCastingEntity(List<AmateurEnrollRequestDTO.AmateurCastingDTO> dtos,
+                                                       List<String> urls, AmateurShow show) {
+        if (dtos == null || dtos.isEmpty() || urls == null) return Collections.emptyList();
+
+        return IntStream.range(0, dtos.size())
+                .mapToObj(i -> AmateurCasting.builder()
+                        .amateurShow(show) // ✅ 연관관계 설정
+                        .imageUrl(urls.get(i)) // ✅ S3 업로드된 URL 적용
+                        .actorName(dtos.get(i).getActorName())
+                        .castingName(dtos.get(i).getCastingName())
+                        .build())
                 .collect(Collectors.toList());
     }
 
-    public static AmateurNotice toNoticeEntity(AmateurEnrollRequestDTO.AmateurNoticeDTO dto, AmateurShow show) {
-        if (dto == null) return null;
+    public static AmateurNotice toNoticeEntity(AmateurEnrollRequestDTO.AmateurNoticeDTO dto,
+                                               List<String> urls, AmateurShow show) {
+        if (dto == null || urls == null) return null;
 
         return AmateurNotice.builder()
-                .amateurShow(show)
-                .noticeImageUrls(dto.getImgUrls())
+                .amateurShow(show) // ✅ 연관관계 설정
+                .noticeImageUrls(urls) // ✅ 공지 이미지 URL 적용
                 .content(dto.getContent())
                 .build();
     }
 
-    public static AmateurSummary toSummaryEntity(AmateurEnrollRequestDTO.AmateurSummaryDTO dtos, AmateurShow show) {
-        if(dtos == null) return null;
+    public static AmateurSummary toSummaryEntity(AmateurEnrollRequestDTO.AmateurSummaryDTO dto,
+                                                 String url, AmateurShow show) {
+        if (dto == null || url == null) return null;
+
         return AmateurSummary.builder()
-                .amateurShow(show)
-                .summaryImage(dtos.getImgUrl())
-                .content(dtos.getContent())
+                .amateurShow(show) // ✅ 연관관계 설정
+                .summaryImage(url) // ✅ S3 업로드된 URL 적용
+                .content(dto.getContent())
                 .build();
     }
 
-    public static List<AmateurTicket> toTicketEntity(List<AmateurEnrollRequestDTO.AmateurTicketDTO> dtos, AmateurShow show){
-        if(dtos == null || dtos.isEmpty()) return null;
-        return dtos.stream().map(dto -> AmateurTicket.builder()
-                .amateurShow(show)
-                .ticketType(TicketType.valueOf(dto.getTicketType()))
-                .price(Integer.parseInt(dto.getPrice()))
-                .build()).collect(Collectors.toList());
+    public static List<AmateurTicket> toTicketEntity(List<AmateurEnrollRequestDTO.AmateurTicketDTO> dtos,
+                                                     AmateurShow show) {
+        if (dtos == null || dtos.isEmpty()) return Collections.emptyList();
+
+        return dtos.stream()
+                .map(dto -> AmateurTicket.builder()
+                        .amateurShow(show) // ✅ 연관관계 설정
+                        .ticketType(TicketType.valueOf(dto.getTicketType()))
+                        .price(Integer.parseInt(dto.getPrice()))
+                        .build())
+                .collect(Collectors.toList());
     }
 
-    public static List<AmateurStaff> toStaffEntity(List<AmateurEnrollRequestDTO.AmateurStaffDTO> dtos, AmateurShow show){
-        if(dtos == null || dtos.isEmpty()) return null;
+    public static List<AmateurStaff> toStaffEntity(List<AmateurEnrollRequestDTO.AmateurStaffDTO> dtos,
+                                                   AmateurShow show) {
+        if (dtos == null || dtos.isEmpty()) return Collections.emptyList();
+
         return dtos.stream()
                 .map(dto -> AmateurStaff.builder()
-                        .amateurShow(show)
+                        .amateurShow(show) // ✅ 연관관계 설정
                         .position(dto.getPosition())
                         .name(dto.getName())
-                        .build()).collect(Collectors.toList());
+                        .build())
+                .collect(Collectors.toList());
     }
+
 
 
     // == RESPONSE == //
+
+
     public static AmateurEnrollResponseDTO.EnrollResponseDTO enrolledResponseDTO(AmateurShow show){
         return AmateurEnrollResponseDTO.EnrollResponseDTO.builder()
                 .id(show.getId())

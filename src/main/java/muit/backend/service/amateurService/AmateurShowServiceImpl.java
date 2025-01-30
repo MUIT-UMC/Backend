@@ -13,6 +13,8 @@ import muit.backend.dto.amateurDTO.AmateurShowResponseDTO;
 import muit.backend.repository.AmateurShowRepository;
 import muit.backend.repository.MemberRepository;
 import muit.backend.repository.amateurRepository.*;
+import muit.backend.s3.FilePath;
+import muit.backend.s3.UuidFileService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +33,7 @@ public class AmateurShowServiceImpl  implements  AmateurShowService{
     private final AmateurSummaryRepository amateurSummaryRepository;
     private final AmateurStaffRepository amateurStaffRepository;
     private final MemberRepository memberRepository;
+    private final UuidFileService uuidFileService;
 
     @Transactional
     public AmateurEnrollResponseDTO.EnrollResponseDTO enrollShow(Member member, AmateurEnrollRequestDTO dto,
@@ -38,22 +41,39 @@ public class AmateurShowServiceImpl  implements  AmateurShowService{
                                                                  List<MultipartFile> castingImages,
                                                                  List<MultipartFile> noticeImages,
                                                                  MultipartFile summaryImage){
-        AmateurShow amateurShow = AmateurConverter.toEntityWithDetails(member, dto);
+        String posterUrl = (posterImage != null) ?
+                uuidFileService.createFile(posterImage, FilePath.AMATEUR).getFileUrl() : null;
+
+        List<String> castingUrls = (castingImages != null) ?
+                castingImages.stream()
+                        .map(file -> uuidFileService.createFile(file, FilePath.AMATEUR_CASTING).getFileUrl())
+                        .toList() : null;
+
+        List<String> noticeUrls = (noticeImages != null) ?
+                noticeImages.stream()
+                        .map(file -> uuidFileService.createFile(file, FilePath.AMATEUR_NOTICE).getFileUrl())
+                        .toList() : null;
+
+        String summaryUrl = (summaryImage != null) ?
+                uuidFileService.createFile(summaryImage, FilePath.AMATEUR_SUMMARY).getFileUrl() : null;
+        AmateurShow amateurShow = AmateurConverter.toEntityWithDetails(member, dto, posterUrl);
         showRepository.save(amateurShow);
-        saveRelatedEntity(dto, amateurShow);
+        //여기서 posterUrl 까지만 저장해주고
+
+        saveRelatedEntity(dto, amateurShow, castingUrls, noticeUrls, summaryUrl);
 
         return AmateurConverter.enrolledResponseDTO(amateurShow);
     }
 
     // 등록하기전에 합치기
-    private void saveRelatedEntity(AmateurEnrollRequestDTO dto, AmateurShow show){
-        List<AmateurCasting> castings = AmateurConverter.toCastingEntity(dto.getCastings(), show);
+    private void saveRelatedEntity(AmateurEnrollRequestDTO dto, AmateurShow show,  List<String> castingUrls, List<String> noticeUrls, String summaryUrl){
+        List<AmateurCasting> castings = AmateurConverter.toCastingEntity(dto.getCastings(), castingUrls, show);
         if (!castings.isEmpty()) {
             amateurCastingRepository.saveAll(castings);
             log.info("캐스팅 등록하기, 총 {}명 등록됨", castings.size());
         }
 
-        AmateurNotice notice = AmateurConverter.toNoticeEntity(dto.getNotice(), show);
+        AmateurNotice notice = AmateurConverter.toNoticeEntity(dto.getNotice(), noticeUrls, show);
         if (notice != null) {
             amateurNoticeRepository.save(notice);
         }
@@ -64,7 +84,7 @@ public class AmateurShowServiceImpl  implements  AmateurShowService{
             log.info("티켓도 등록 해줘요");
         }
 
-        AmateurSummary summaries = AmateurConverter.toSummaryEntity( dto.getSummaries(), show);
+        AmateurSummary summaries = AmateurConverter.toSummaryEntity( dto.getSummaries(),  summaryUrl, show);
         amateurSummaryRepository.save(summaries);
         log.info("줄거리도 등록 완료");
 
