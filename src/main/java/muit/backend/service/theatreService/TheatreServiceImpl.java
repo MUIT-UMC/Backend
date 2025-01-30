@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import muit.backend.config.KopisConfig;
 import muit.backend.converter.MusicalConverter;
 import muit.backend.converter.TheatreConverter;
+import muit.backend.converter.adminConverter.ManageViewConverter;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.entity.musical.Section;
 import muit.backend.domain.entity.musical.Theatre;
 import muit.backend.domain.enums.SectionType;
+import muit.backend.dto.adminDTO.manageViewDTO.ManageViewResponseDTO;
 import muit.backend.dto.kopisDTO.KopisMusicalResponseDTO;
 import muit.backend.dto.kopisDTO.KopisTheatreResponseDTO;
 import muit.backend.dto.musicalDTO.MusicalRequestDTO;
@@ -18,6 +20,8 @@ import muit.backend.repository.MusicalRepository;
 import muit.backend.repository.SectionRepository;
 import muit.backend.repository.TheatreRepository;
 import muit.backend.service.musicalService.KopisXmlParser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,7 +89,20 @@ public class TheatreServiceImpl implements TheatreService {
         } catch (Exception e) {
             throw new RuntimeException("공연장 저장 실패", e);
         }
+    }
 
+    @Override
+    public ManageViewResponseDTO.AdminTheatreResultListDTO getTheatres(Pageable pageable){
+
+        Page<Theatre> theatres = theatreRepository.findAll(pageable);
+        return ManageViewConverter.toAdminTheatreResultListDTO(theatres);
+    }
+
+    @Override
+    public TheatreResponseDTO.AdminTheatreDetailDTO getTheatreDetail(Long theatreId){
+
+        Theatre theatre = theatreRepository.findById(theatreId).orElse(null);
+        return TheatreConverter.toAdminTheatreDetailDTO(theatre);
     }
 
 }

@@ -1,5 +1,7 @@
 package muit.backend.service;
 
+import muit.backend.domain.entity.musical.Event;
+import muit.backend.dto.eventDTO.EventRequestDTO;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Pageable;
@@ -13,4 +15,6 @@ public interface EventService {
     public EventResponseDTO.EventResultListDTO getEvent (Long musicalId);
 
     public EventResponseDTO.EventGroupListDTO getEventListOrderByEvFrom (LocalDate today);
+
+    public EventResponseDTO.EventResultDTO createEvent(Long musicalId, EventRequestDTO.EventCreateDTO eventCreateDTO);
 }
