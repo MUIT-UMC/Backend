@@ -1,6 +1,8 @@
 package muit.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.CommentConverter;
 import muit.backend.domain.entity.member.Comment;
 import muit.backend.domain.entity.member.Member;
@@ -40,9 +42,9 @@ public class CommentServiceImpl implements CommentService {
     //특정 게시물에 댓글 생성
     @Override
     @Transactional
-    public CommentReplyResponseDTO.CommentResponseDTO writeComment(CommentReplyRequestDTO.CommentRequestDTO requestDTO, Long postId) {
+    public CommentReplyResponseDTO.CommentResponseDTO writeComment(CommentReplyRequestDTO.CommentRequestDTO requestDTO, Long postId, Member member) {
         Post post = postRepository.findById(postId).orElseThrow(()->new RuntimeException("post not found"));
-        Member member = memberRepository.findById(requestDTO.getMemberId()).orElseThrow(()->new RuntimeException("member not found"));
+
         Comment comment = CommentConverter.toComment(requestDTO, post, member);
 
         commentRepository.save(comment);
@@ -55,9 +57,9 @@ public class CommentServiceImpl implements CommentService {
     //특정 댓글에 대댓글 생성
     @Override
     @Transactional
-    public CommentReplyResponseDTO.ReplyResponseDTO writeReply(CommentReplyRequestDTO.ReplyRequestDTO requestDTO, Long commentId) {
+    public CommentReplyResponseDTO.ReplyResponseDTO writeReply(CommentReplyRequestDTO.ReplyRequestDTO requestDTO, Long commentId, Member member) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(()->new RuntimeException("comment not found"));
-        Member member = memberRepository.findById(requestDTO.getMemberId()).orElseThrow(()->new RuntimeException("Member not found"));
+
 
         Reply reply = CommentConverter.toReply(requestDTO, comment, member);
 
@@ -69,9 +71,15 @@ public class CommentServiceImpl implements CommentService {
     //특정 댓글 삭제
     @Override
     @Transactional
-    public CommentReplyResponseDTO.DeleteResultDTO deleteComment(String commentType, Long commentId) {
+    public CommentReplyResponseDTO.DeleteResultDTO deleteComment(String commentType, Long commentId, Member member) {
+
+
         if(commentType.equals("COMMENT")){
             Comment comment = commentRepository.findById(commentId).orElseThrow(()->new RuntimeException("comment not found"));
+            //작성자와 동일인인지 검사
+            if(comment.getMember()!=member){
+                throw(new GeneralException(ErrorStatus._FORBIDDEN));
+            }
             if(!comment.getReplyList().isEmpty()){
                 comment.deleteContent("삭제된 댓글입니다.");
             }else{
@@ -80,6 +88,10 @@ public class CommentServiceImpl implements CommentService {
             comment.getPost().changeCommentCount(false);
         }else if(commentType.equals("REPLY")){
             Reply reply = replyRepository.findById(commentId).orElseThrow(()->new RuntimeException("reply not found"));
+            //작성자와 동일인인지 검사
+            if(reply.getMember()!=member){
+                throw(new GeneralException(ErrorStatus._FORBIDDEN));
+            }
             replyRepository.deleteById(commentId);
             reply.getComment().getPost().changeCommentCount(false);
 
