@@ -12,6 +12,9 @@ import muit.backend.service.MemberService;
 import muit.backend.service.amateurService.AmateurShowService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Tag(name = "소극장 공연")
 @RestController
@@ -24,9 +27,13 @@ public class AmateurController {
 
     @PostMapping(value = "/enroll", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "소극장 공연 생성 API")
-    public ApiResponse<AmateurEnrollResponseDTO.EnrollResponseDTO> enroll(@RequestHeader("Authorization") String authorizationHeader, @RequestPart AmateurEnrollRequestDTO amateurEnrollRequestDTO){
+    public ApiResponse<AmateurEnrollResponseDTO.EnrollResponseDTO> enroll(@RequestHeader("Authorization") String authorizationHeader, @RequestPart("data") AmateurEnrollRequestDTO amateurEnrollRequestDTO, // JSON 데이터
+                                                                          @RequestPart(name = "posterImage", required = false) MultipartFile posterImage,
+                                                                          @RequestPart(name = "castingImages", required = false) List<MultipartFile> castingImages,
+                                                                          @RequestPart(name = "noticeImages", required = false) List<MultipartFile> noticeImages,
+                                                                          @RequestPart(name = "summaryImage", required = false) MultipartFile summaryImage){
         Member member = memberService.getMemberByToken(authorizationHeader);
-        AmateurEnrollResponseDTO.EnrollResponseDTO enrollResponseDTO = showService.enrollShow(member, amateurEnrollRequestDTO);
+        AmateurEnrollResponseDTO.EnrollResponseDTO enrollResponseDTO = showService.enrollShow(member, amateurEnrollRequestDTO, posterImage, castingImages, noticeImages, summaryImage);
         return ApiResponse.onSuccess(enrollResponseDTO);
 
     }

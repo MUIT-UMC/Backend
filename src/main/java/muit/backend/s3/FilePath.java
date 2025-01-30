@@ -11,7 +11,10 @@ public enum FilePath {
     FOUND("found"),
     LOST("lost"),
     REVIEW("review"),
-    SIGHT("sight");
+    SIGHT("sight"),
+    AMATEUR_CASTING("amateur_casting"),
+    AMATEUR_NOTICE("amateur_notice"),
+    AMATEUR_SUMMARY("amateur_summary");
 
     private final String path;
 }

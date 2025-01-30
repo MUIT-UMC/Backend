@@ -15,6 +15,7 @@ import muit.backend.repository.MemberRepository;
 import muit.backend.repository.amateurRepository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,7 +33,11 @@ public class AmateurShowServiceImpl  implements  AmateurShowService{
     private final MemberRepository memberRepository;
 
     @Transactional
-    public AmateurEnrollResponseDTO.EnrollResponseDTO enrollShow(Member member, AmateurEnrollRequestDTO dto){
+    public AmateurEnrollResponseDTO.EnrollResponseDTO enrollShow(Member member, AmateurEnrollRequestDTO dto,
+                                                                 MultipartFile posterImage,
+                                                                 List<MultipartFile> castingImages,
+                                                                 List<MultipartFile> noticeImages,
+                                                                 MultipartFile summaryImage){
         AmateurShow amateurShow = AmateurConverter.toEntityWithDetails(member, dto);
         showRepository.save(amateurShow);
         saveRelatedEntity(dto, amateurShow);
