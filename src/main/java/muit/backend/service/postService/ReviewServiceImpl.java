@@ -43,9 +43,15 @@ public class ReviewServiceImpl implements ReviewService {
 
         Musical musical = musicalRepository.findById(reviewRequestDTO.getMusicalId()).orElseThrow(()->new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
 
+        FilePath filePath = switch (postType){
+            case REVIEW -> FilePath.REVIEW;
+            case SIGHT -> FilePath.SIGHT;
+            default -> throw new RuntimeException("Unsupported post type");
+        };
+
         List<UuidFile> imgArr = new ArrayList<>();
         if(imgFile!=null&&!imgFile.isEmpty()){
-            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, FilePath.REVIEW)).collect(Collectors.toList());
+            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, filePath)).collect(Collectors.toList());
         }
 
         Post review = ReviewConverter.toReview(postType, member, musical, reviewRequestDTO, imgArr);
@@ -91,6 +97,12 @@ public class ReviewServiceImpl implements ReviewService {
             //musical 먼저 수정
             review.changeMusical(musical);}
 
+        FilePath filePath = switch (review.getPostType()){
+            case REVIEW -> FilePath.REVIEW;
+            case SIGHT -> FilePath.SIGHT;
+            default -> throw new RuntimeException("Unsupported post type");
+        };
+
         //기존 이미지 먼저 삭제
         List<UuidFile> existingImg = review.getImages();
         if(!existingImg.isEmpty()){
@@ -100,7 +112,7 @@ public class ReviewServiceImpl implements ReviewService {
         List<UuidFile> imgArr = new ArrayList<>();
         if(imgFile!=null&&!imgFile.isEmpty()){
             //추후 채은에게 SIGHT 추가 해달라고 하기
-            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, FilePath.REVIEW)).collect(Collectors.toList());
+            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, filePath)).collect(Collectors.toList());
         }
         review.changeImg(imgArr);
 
