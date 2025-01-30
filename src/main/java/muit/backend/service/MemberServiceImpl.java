@@ -31,10 +31,10 @@ public class MemberServiceImpl implements MemberService {
     public EmailRegisterResponseDTO emailSignUp(EmailRegisterRequestDTO dto) {
 
         if (memberRepository.findByEmail(dto.getEmail()).isPresent()) {
-            throw new IllegalStateException("이미 사용 중인 이메일입니다.");
+            throw new GeneralException(ErrorStatus.MEMBER_ALREADY_EXIST);
         }
         if (!dto.getPw().equals(dto.getPw_check())) {
-            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+            throw new GeneralException(ErrorStatus.PASSWORD_NOT_MATCH);
         }
 
         String encodedPw = encoder.encode(dto.getPw());
@@ -58,7 +58,7 @@ public class MemberServiceImpl implements MemberService {
         String email = dto.getEmail();
         TokenDTO token = login(dto);
         Member member = memberRepository.findMemberByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Member with email " + email + " not found."));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
         return MemberConverter.TokenLoginResponseDTO(token, member);
     }
 
@@ -74,7 +74,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 비밀번호 검증
         if (!encoder.matches(clientPw, member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호 불일치");
+            throw new GeneralException(ErrorStatus.PASSWORD_NOT_MATCH);
         }
 
 
@@ -88,7 +88,7 @@ public class MemberServiceImpl implements MemberService {
     public Member getMemberByToken(String token) {
         // 토큰이 유효한지 검증
         if (!tokenProvider.validateToken(token)) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+            throw new GeneralException(ErrorStatus.MEMBER_INVALID_CODE);
         }
 
         // 토큰에서 인증 정보를 추출
@@ -99,15 +99,15 @@ public class MemberServiceImpl implements MemberService {
         System.out.println("회원조회 체크 "+email);
 
         return memberRepository.findMemberByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
     }
 
 
     @Override
     public MyPageResponseDTO getMyPage(Long tokenId, Long  memberId){
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
         if (!tokenId.equals(memberId)) {
-            throw new IllegalArgumentException("요청된 회원 ID와 인증된 회원 ID가 일치하지 않습니다.");
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_AUTHORIZED);
         }
         return MyPageResponseDTO.builder()
                 .id(memberId)
