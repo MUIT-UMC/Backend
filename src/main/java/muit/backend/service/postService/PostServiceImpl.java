@@ -36,10 +36,8 @@ public class PostServiceImpl implements PostService {
     //게시글 작성
     @Override
     @Transactional
-    public PostResponseDTO.GeneralPostResponseDTO createPost(PostType postType, PostRequestDTO requestDTO, List<MultipartFile> imgFile) {
+    public PostResponseDTO.GeneralPostResponseDTO createPost(PostType postType, PostRequestDTO requestDTO, List<MultipartFile> imgFile, Member member) {
 
-        Member member = memberRepository.findById(requestDTO.getMemberId())
-                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
         List<UuidFile> imgArr = new ArrayList<>();
         if(imgFile!=null&&!imgFile.isEmpty()){
@@ -79,10 +77,16 @@ public class PostServiceImpl implements PostService {
     //게시글 삭제
     @Override
     @Transactional
-    public PostResponseDTO.DeleteResultDTO deletePost(Long id) {
+    public PostResponseDTO.DeleteResultDTO deletePost(Long id, Member member) {
 
+        //게시글 검사
         Post post = postRepository.findById(id).
                 orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
+        //작성자와 동일인인지 검사
+        if(post.getMember()!=member){
+            throw(new GeneralException(ErrorStatus._FORBIDDEN));
+        }
 
         // 엔티티 삭제
         postRepository.delete(post);
@@ -95,11 +99,16 @@ public class PostServiceImpl implements PostService {
     //게시글 수정
     @Override
     @Transactional
-    public PostResponseDTO.GeneralPostResponseDTO editPost(Long postId, PostRequestDTO requestDTO, List<MultipartFile> imgFile) {
+    public PostResponseDTO.GeneralPostResponseDTO editPost(Long postId, PostRequestDTO requestDTO, List<MultipartFile> imgFile, Member member) {
 
         //post 유효성 검사
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
+        //작성자와 동일인인지 검사
+        if(post.getMember()!=member){
+            throw(new GeneralException(ErrorStatus._FORBIDDEN));
+        }
 
         //기존 이미지 먼저 삭제
         List<UuidFile> existingImg = post.getImages();

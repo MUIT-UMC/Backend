@@ -38,9 +38,6 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //COMMENT ERROR
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT4000", "존재하지 않는 댓글입니다."),
-
-    //MUSICAL ERROR
-    MUSICAL_NOT_FOUND(HttpStatus.NOT_FOUND, "MUSICAL4000", "존재하지 않는 뮤지컬입니다."),
     
     // AMATEURSHOW ERROR
     AMATEURSHOW_NOT_FOUND(HttpStatus.NOT_FOUND, "AMATEURSHOW4000", "존재하지 않는 소극장 공연입니다."),

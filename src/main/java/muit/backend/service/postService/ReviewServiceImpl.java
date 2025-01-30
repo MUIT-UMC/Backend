@@ -39,8 +39,8 @@ public class ReviewServiceImpl implements ReviewService {
     //리뷰 생성
     @Override
     @Transactional
-    public ReviewResponseDTO.GeneralReviewResponseDTO createReview(PostType postType, ReviewRequestDTO reviewRequestDTO, List<MultipartFile> imgFile) {
-        Member member = memberRepository.findById(reviewRequestDTO.getMemberId()).orElseThrow(()->new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+    public ReviewResponseDTO.GeneralReviewResponseDTO createReview(PostType postType, ReviewRequestDTO reviewRequestDTO, List<MultipartFile> imgFile, Member member) {
+
         Musical musical = musicalRepository.findById(reviewRequestDTO.getMusicalId()).orElseThrow(()->new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
 
         List<UuidFile> imgArr = new ArrayList<>();
@@ -73,11 +73,17 @@ public class ReviewServiceImpl implements ReviewService {
     //리뷰 수정
     @Override
     @Transactional
-    public ReviewResponseDTO.GeneralReviewResponseDTO editReview(Long postId, ReviewRequestDTO requestDTO, List<MultipartFile> imgFile) {
+    public ReviewResponseDTO.GeneralReviewResponseDTO editReview(Long postId, ReviewRequestDTO requestDTO, List<MultipartFile> imgFile,Member member) {
 
         //post 유효성 검사
         Post review = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
+        //작성자와 동일인인지 검사
+        if(review.getMember()!=member){
+            throw(new GeneralException(ErrorStatus._FORBIDDEN));
+        }
+
         //musical 유효성 검사
         if(requestDTO.getMusicalId()!=null){Long musicalId = requestDTO.getMusicalId();
             Musical musical = musicalRepository.findById(musicalId)

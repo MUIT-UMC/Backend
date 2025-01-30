@@ -1,5 +1,6 @@
 package muit.backend.service.postService;
 
+import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.LostResponseDTO;
@@ -18,8 +19,8 @@ public interface LostService {
     public LostResponseDTO.LostResultListDTO getLostPostList(PostType postType, Integer page);
 
     //게시글 생성
-    public LostResponseDTO.GeneralLostResponseDTO createLostPost(PostType postType, LostRequestDTO lostRequestDTO, List<MultipartFile> img);
+    public LostResponseDTO.GeneralLostResponseDTO createLostPost(PostType postType, LostRequestDTO lostRequestDTO, List<MultipartFile> img, Member member);
 
     //게시글 수정
-    LostResponseDTO.GeneralLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO, List<MultipartFile> img);
+    LostResponseDTO.GeneralLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO, List<MultipartFile> img, Member member);
 }
