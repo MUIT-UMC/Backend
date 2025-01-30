@@ -49,7 +49,7 @@ public class MusicalServiceImpl implements MusicalService {
                 .orElseThrow(() -> new RuntimeException("Musical not found"));
 
         //이벤트 정보를 List<EventResultDTO>로 구성된 EventResultListDTO 에 담아서 반환
-        List<Event> eventList = eventRepository.findByMusicalId(musicalId);
+        List<Event> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId);
         EventResponseDTO.EventResultListDTO eventResultListDTO = EventConverter.toEventResultListDTO(eventList);
 
         return MusicalConverter.toMusicalResultDTO(musical, eventResultListDTO);
@@ -91,7 +91,7 @@ public class MusicalServiceImpl implements MusicalService {
     @Override
     public MusicalResponseDTO.MusicalHomeListDTO getFiveMusicals(){
         List<Musical> musicals = musicalRepository.findTop5ByOrderByIdAsc();
-        String message = "검색 성공";
+        String message = "검색 결과";
         if (musicals.isEmpty()) message = "뮤지컬이 존재하지 않습니다";
 
         return MusicalConverter.toMusicalHomeListDTO(musicals, message);
@@ -101,14 +101,14 @@ public class MusicalServiceImpl implements MusicalService {
     public MusicalResponseDTO.MusicalHomeListDTO getAllHotMusicals(Integer page){
         Pageable pageable = PageRequest.of(page,20);
         List<Musical> musicals = musicalRepository.findAllByOrderByIdAsc(pageable);
-        String message = "검색 성공";
+        String message = "검색 결과";
         if (musicals.isEmpty()) message = "뮤지컬이 존재하지 않습니다";
         return MusicalConverter.toMusicalHomeListDTO(musicals, message);
     }
 
     @Override
     public MusicalResponseDTO.MusicalOpenListDTO getFiveOpenMusicals(){
-        Pageable pageable = PageRequest.of(0,5);
+        Pageable pageable = PageRequest.of(0,5); //첫 페이지 5개만 보이도록 함
         List<Musical> musicals = musicalRepository.getFiveOpenWithin7Days(pageable);
 
         return MusicalConverter.toMusicalOpenListDTO(musicals);

@@ -26,8 +26,6 @@ public class Event extends BaseEntity {
 
     private LocalDate evTo;
 
-    private String place;
-
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
