@@ -19,7 +19,7 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping("/")
-    @Operation(summary = "이벤트 조회 API", description = "시작 날짜가 오늘 날짜 이후인 이벤트를 하나라도 갖고 있는 모든 뮤지컬의 이벤트 목록을 조회하는 API")
+    @Operation(summary = "현재 진행중인 뮤지컬 이벤트 조회 API", description = "시작 날짜가 오늘 날짜 이후인 이벤트를 하나라도 갖고 있는 모든 뮤지컬의 이벤트 목록을 조회하는 API")
     public ApiResponse<EventResponseDTO.EventGroupListDTO> getEventListSortedByEvFrom(){
         LocalDate today = LocalDate.now();
         return ApiResponse.onSuccess(eventService.getEventListOrderByEvFrom(today));

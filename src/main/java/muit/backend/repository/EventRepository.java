@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-    List<Event> findByMusicalId(long musicalId);
+    List<Event> findByMusicalIdOrderByEvFromAsc(long musicalId);
 
     List<Event> findAllByEvFromIsNotNullOrderByEvFromAsc();
 }

@@ -11,8 +11,6 @@ public class CommentReplyRequestDTO {
     @Getter
     public static class CommentRequestDTO{
         private String content;
-        //삭제예정
-        private Long memberId;
         private Boolean isAnonymous;
     }
 
@@ -22,8 +20,6 @@ public class CommentReplyRequestDTO {
     @Getter
     public static class ReplyRequestDTO{
         private String content;
-        //삭제 예정
-        private Long memberId;
         private Boolean isAnonymous;
     }
 
