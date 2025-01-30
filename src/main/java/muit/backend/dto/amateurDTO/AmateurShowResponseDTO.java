@@ -78,4 +78,16 @@ public class AmateurShowResponseDTO {
         private String imgUrl;
         private String content;
     }
+
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class AmateurShowListDTO {
+        private Long id;             // 공연 ID
+        private String name;         // 공연명
+        private String posterImgUrl; // 포스터 이미지 URL
+        private String place;        // 공연 장소
+        private String schedule;     // 공연 일정
+    }
 }

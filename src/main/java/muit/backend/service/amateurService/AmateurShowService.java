@@ -16,4 +16,6 @@ public interface AmateurShowService {
                                                           List<MultipartFile> noticeImages,
                                                           MultipartFile summaryImage);
     AmateurShowResponseDTO getShow(Long amateurId);
+
+    List<AmateurShowResponseDTO.AmateurShowListDTO> getAllShows(Integer page, Integer size);
 }

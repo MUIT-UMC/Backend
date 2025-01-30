@@ -47,4 +47,14 @@ public class AmateurController {
         return ApiResponse.onSuccess(amateurShowResponseDTO);
     }
 
+    @GetMapping("/list")
+    @Operation(summary = "소극장 공연 조회 - 리스트")
+    public ApiResponse <List<AmateurShowResponseDTO.AmateurShowListDTO>> getAmateurShowList(@RequestHeader("Authorization") String authorizationHeader,
+                                                                                            @RequestParam(defaultValue = "0", name = "page") Integer page,
+                                                                                            @RequestParam(defaultValue = "10", name = "size") Integer size){
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        List<AmateurShowResponseDTO.AmateurShowListDTO> amateurShowList = showService.getAllShows(page, size);
+        return ApiResponse.onSuccess(amateurShowList);
+    }
+
 }

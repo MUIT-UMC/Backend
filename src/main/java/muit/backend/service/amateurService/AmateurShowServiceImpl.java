@@ -15,6 +15,9 @@ import muit.backend.repository.MemberRepository;
 import muit.backend.repository.amateurRepository.*;
 import muit.backend.s3.FilePath;
 import muit.backend.s3.UuidFileService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +39,7 @@ public class AmateurShowServiceImpl  implements  AmateurShowService{
     private final UuidFileService uuidFileService;
 
     @Transactional
+    @Override
     public AmateurEnrollResponseDTO.EnrollResponseDTO enrollShow(Member member, AmateurEnrollRequestDTO dto,
                                                                  MultipartFile posterImage,
                                                                  List<MultipartFile> castingImages,
@@ -61,6 +65,7 @@ public class AmateurShowServiceImpl  implements  AmateurShowService{
         //여기서 posterUrl 까지만 저장해주고
 
         saveRelatedEntity(dto, amateurShow, castingUrls, noticeUrls, summaryUrl);
+        //여기서 나머지도 저장 해줍니다
 
         return AmateurConverter.enrolledResponseDTO(amateurShow);
     }
@@ -100,6 +105,16 @@ public class AmateurShowServiceImpl  implements  AmateurShowService{
                 .orElseThrow(() -> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
         return AmateurConverter.toResponseDTO(show);
+    }
+
+    @Override
+    public List<AmateurShowResponseDTO.AmateurShowListDTO> getAllShows(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<AmateurShow> showsPage = showRepository.findAllShows(pageable);
+
+        return showsPage.map(AmateurConverter::toListDto).toList();
+
     }
 
 

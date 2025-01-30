@@ -19,7 +19,7 @@ public class AmateurConverter {
         return AmateurShow.builder()
                 .member(member)
                 .name(dto.getName())
-                .posterImgUrl(posterUrl) // ✅ 포스터 이미지만 저장
+                .posterImgUrl(posterUrl) //  포스터 이미지만 저장
                 .place(dto.getPlace())
                 .schedule(dto.getSchedule())
                 .age(dto.getAge())
@@ -40,8 +40,8 @@ public class AmateurConverter {
 
         return IntStream.range(0, dtos.size())
                 .mapToObj(i -> AmateurCasting.builder()
-                        .amateurShow(show) // ✅ 연관관계 설정
-                        .imageUrl(urls.get(i)) // ✅ S3 업로드된 URL 적용
+                        .amateurShow(show)
+                        .imageUrl(urls.get(i))
                         .actorName(dtos.get(i).getActorName())
                         .castingName(dtos.get(i).getCastingName())
                         .build())
@@ -53,8 +53,8 @@ public class AmateurConverter {
         if (dto == null || urls == null) return null;
 
         return AmateurNotice.builder()
-                .amateurShow(show) // ✅ 연관관계 설정
-                .noticeImageUrls(urls) // ✅ 공지 이미지 URL 적용
+                .amateurShow(show)
+                .noticeImageUrls(urls)
                 .content(dto.getContent())
                 .build();
     }
@@ -64,8 +64,8 @@ public class AmateurConverter {
         if (dto == null || url == null) return null;
 
         return AmateurSummary.builder()
-                .amateurShow(show) // ✅ 연관관계 설정
-                .summaryImage(url) // ✅ S3 업로드된 URL 적용
+                .amateurShow(show)
+                .summaryImage(url)
                 .content(dto.getContent())
                 .build();
     }
@@ -76,7 +76,7 @@ public class AmateurConverter {
 
         return dtos.stream()
                 .map(dto -> AmateurTicket.builder()
-                        .amateurShow(show) // ✅ 연관관계 설정
+                        .amateurShow(show)
                         .ticketType(TicketType.valueOf(dto.getTicketType()))
                         .price(Integer.parseInt(dto.getPrice()))
                         .build())
@@ -89,7 +89,7 @@ public class AmateurConverter {
 
         return dtos.stream()
                 .map(dto -> AmateurStaff.builder()
-                        .amateurShow(show) // ✅ 연관관계 설정
+                        .amateurShow(show)
                         .position(dto.getPosition())
                         .name(dto.getName())
                         .build())
@@ -107,6 +107,7 @@ public class AmateurConverter {
                 .name(show.getName()).build();
     }
 
+    // 단건 조회
     public static AmateurShowResponseDTO toResponseDTO(AmateurShow show) {
         return AmateurShowResponseDTO.builder()
                 .id(show.getId())
@@ -179,6 +180,22 @@ public class AmateurConverter {
         );
     }
 
+    // 리스트 조회
+    public static AmateurShowResponseDTO.AmateurShowListDTO toListDto(AmateurShow amateurShow) {
+        return AmateurShowResponseDTO.AmateurShowListDTO.builder()
+                .id(amateurShow.getId())
+                .name(amateurShow.getName())
+                .posterImgUrl(amateurShow.getPosterImgUrl())
+                .place(amateurShow.getPlace())
+                .schedule(amateurShow.getSchedule())
+                .build();
+    }
+
+    public static List<AmateurShowResponseDTO.AmateurShowListDTO> convertToList(List<AmateurShow> amateurShows) {
+        return amateurShows.stream()
+                .map(AmateurConverter::toListDto)
+                .collect(Collectors.toList());
+    } // 네 필요가 없게 되었군요
 
 
 }
