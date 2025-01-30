@@ -1,5 +1,6 @@
 package muit.backend.service.postService;
 
+import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
@@ -17,11 +18,11 @@ public interface PostService {
     public PostResponseDTO.PostResultListDTO getPostList(PostType postType, Integer page);
 
     //게시글 생성
-    public PostResponseDTO.GeneralPostResponseDTO createPost(PostType postType, PostRequestDTO postRequestDTO, List<MultipartFile> img);
+    public PostResponseDTO.GeneralPostResponseDTO createPost(PostType postType, PostRequestDTO postRequestDTO, List<MultipartFile> img, Member member);
 
     //게시글 삭제
-    public PostResponseDTO.DeleteResultDTO deletePost(Long id);
+    public PostResponseDTO.DeleteResultDTO deletePost(Long id, Member member);
 
     //게시글 수정
-    public PostResponseDTO.GeneralPostResponseDTO editPost(Long postId, PostRequestDTO postRequestDTO, List<MultipartFile> img);
+    public PostResponseDTO.GeneralPostResponseDTO editPost(Long postId, PostRequestDTO postRequestDTO, List<MultipartFile> img, Member member);
 }

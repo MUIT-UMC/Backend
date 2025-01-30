@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewRequestDTO {
-    //삭제예정
-    private Long memberId;
     private Boolean isAnonymous;
     private String title;
     private String content;
