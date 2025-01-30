@@ -10,7 +10,8 @@ public enum FilePath {
     BLIND("blind"),
     FOUND("found"),
     LOST("lost"),
-    REVIEW("review");
+    REVIEW("review"),
+    SIGHT("sight");
 
     private final String path;
 }
