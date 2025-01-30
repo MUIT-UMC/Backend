@@ -21,15 +21,17 @@ public class MusicalResponseDTO {
     @AllArgsConstructor
     public static class MusicalResultDTO{
 
+        private String bgImg;
+        private String fancyTitle;
+        private List<String> category;
+        private String storyDescription;
+
         private Long id;
-        private String kopisMusicalId;
-        private List<String> desImgUrl;
-        private String posterUrl;
         private String name;
+        private String posterUrl;
         private String place;
         private LocalDate perFrom;
         private LocalDate perTo;
-        private String perPattern;
         private String runTime;
         private String ageLimit;
         private List<String> actorPreview;
@@ -37,8 +39,9 @@ public class MusicalResponseDTO {
 
         private EventResponseDTO.EventResultListDTO eventList;
 
-        //직접 작성
-        private String description;
+        private String perPattern;
+
+        private List<String> desImgUrl;
     }
 
     @Builder

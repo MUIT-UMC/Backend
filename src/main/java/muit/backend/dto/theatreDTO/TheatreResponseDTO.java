@@ -31,4 +31,18 @@ public class TheatreResponseDTO {
         private List<TheatreResultDTO> theatreResults;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AdminTheatreDetailDTO{
+        private Long theatreId;
+        private String theatreName;
+        private String address;
+        private Long musicalId;
+        private String musicalName;
+        private String theatrePic;
+        private String allSeatImg;
+    }
+
 }

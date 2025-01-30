@@ -98,4 +98,11 @@ public class TheatreServiceImpl implements TheatreService {
         return ManageViewConverter.toAdminTheatreResultListDTO(theatres);
     }
 
+    @Override
+    public TheatreResponseDTO.AdminTheatreDetailDTO getTheatreDetail(Long theatreId){
+
+        Theatre theatre = theatreRepository.findById(theatreId).orElse(null);
+        return TheatreConverter.toAdminTheatreDetailDTO(theatre);
+    }
+
 }

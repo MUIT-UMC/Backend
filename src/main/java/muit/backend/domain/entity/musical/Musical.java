@@ -29,6 +29,7 @@ public class Musical extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private String kopisMusicalId;
 
     private String name;
@@ -48,8 +49,17 @@ public class Musical extends BaseEntity {
 
     private String ageLimit;
 
-    //직접 작성
+    //직접 작성 - 배경이미지
+    private String bgImg;
+    //직접 작성 - 줄거리
     private String description;
+    //직접 작성 - 영문명
+    private String fancyTitle;
+    //직접 작성 - 태그
+    @ElementCollection
+    @CollectionTable(name = "category", joinColumns = @JoinColumn(name = "musical_id"))
+    private List<String> category;
+
 
     //직접 작성
     private LocalDateTime openDate;
