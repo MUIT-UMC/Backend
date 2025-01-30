@@ -52,4 +52,6 @@ public class ManageEventController {
         ManageEventResponseDTO.ManageEventResultDTO event = manageEventService.createEvent(requestDTO);
         return ApiResponse.onSuccess(event);
     }
+
+
 }

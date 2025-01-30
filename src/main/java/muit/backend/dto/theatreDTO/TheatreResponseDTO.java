@@ -30,4 +30,5 @@ public class TheatreResponseDTO {
         private String message;
         private List<TheatreResultDTO> theatreResults;
     }
+
 }
