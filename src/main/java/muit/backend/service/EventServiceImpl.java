@@ -3,8 +3,11 @@ package muit.backend.service;
 import lombok.RequiredArgsConstructor;
 import muit.backend.converter.EventConverter;
 import muit.backend.domain.entity.musical.Event;
+import muit.backend.domain.entity.musical.Musical;
+import muit.backend.dto.eventDTO.EventRequestDTO;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.repository.EventRepository;
+import muit.backend.repository.MusicalRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,10 +26,11 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
+    private final MusicalRepository musicalRepository;
 
     @Override
     public EventResponseDTO.EventResultListDTO getEvent(Long musicalId) {
-        List<Event> eventList = eventRepository.findByMusicalId(musicalId);
+        List<Event> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId);
         return EventConverter.toEventResultListDTO(eventList);
     }
 
@@ -44,6 +48,14 @@ public class EventServiceImpl implements EventService {
 
 
         return EventConverter.toEventGroupListDTO(eventListGroupedByMusicalId);
+    }
 
+    @Override
+    @Transactional
+    public EventResponseDTO.EventResultDTO createEvent(Long musicalId, EventRequestDTO.EventCreateDTO eventCreateDTO) {
+        Musical musical = musicalRepository.findById(musicalId).orElse(null);
+        Event event = EventConverter.toEvent(eventCreateDTO, musical);
+        eventRepository.save(event);
+        return EventConverter.toEventResultDTO(event);
     }
 }

@@ -56,4 +56,16 @@ public class TheatreConverter {
                 .build();
    }
 
+   public static TheatreResponseDTO.AdminTheatreDetailDTO toAdminTheatreDetailDTO(Theatre theatre) {
+        return TheatreResponseDTO.AdminTheatreDetailDTO.builder()
+                .theatreId(theatre.getId())
+                .theatreName(theatre.getName())
+                .address(theatre.getAddress())
+                .musicalId(theatre.getMusical().getId())
+                .musicalName(theatre.getMusical().getName())
+                .theatrePic(theatre.getTheatrePic())
+                .allSeatImg(theatre.getAllSeatImg())
+                .build();
+   }
+
 }

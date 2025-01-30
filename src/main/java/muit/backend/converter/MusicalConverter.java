@@ -66,20 +66,22 @@ public class MusicalConverter {
 
     public static MusicalResponseDTO.MusicalResultDTO toMusicalResultDTO(Musical musical, EventResponseDTO.EventResultListDTO eventResultListDTO) {
         return MusicalResponseDTO.MusicalResultDTO.builder()
+                .bgImg(musical.getBgImg())
+                .fancyTitle(musical.getFancyTitle())
+                .category(musical.getCategory())
+                .storyDescription(musical.getDescription())
                 .id(musical.getId())
-                .kopisMusicalId(musical.getKopisMusicalId())
-                .posterUrl(musical.getPosterUrl())
                 .name(musical.getName())
+                .posterUrl(musical.getPosterUrl())
                 .place(musical.getPlace())
                 .perFrom(musical.getPerFrom())
                 .perTo(musical.getPerTo())
-                .perPattern(musical.getPerPattern())
                 .runTime(musical.getRuntime())
                 .ageLimit(musical.getAgeLimit())
                 .actorPreview(musical.getActorPreview())
                 .priceInfo(musical.getPriceInfo())
                 .eventList(eventResultListDTO)
-                .description(musical.getDescription())
+                .perPattern(musical.getPerPattern())
                 .desImgUrl(musical.getDesImgUrl())
                 .build();
     }

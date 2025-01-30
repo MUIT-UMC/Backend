@@ -8,19 +8,21 @@ import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.enums.AmateurStatus;
-import muit.backend.dto.amateurTicketDTO.AmateurTicketRequestDTO;
-import muit.backend.dto.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
+import muit.backend.dto.adminDTO.amateurTicketDTO.AmateurTicketRequestDTO;
+import muit.backend.dto.adminDTO.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Builder
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AmateurShow extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -85,11 +87,21 @@ public class AmateurShow extends BaseEntity {
 //    private List<Ticket> ticketList = new ArrayList<>();
 
     public void updateAmateurShow(ManageAmateurShowRequestDTO.ManageAmateurShowUpdateDTO requestDTO) {
-        if(requestDTO.getSchedule()!=null){this.schedule = requestDTO.getSchedule();}
-        if(requestDTO.getHashtag()!=null){this.hashtag = requestDTO.getHashtag();}
-        if(requestDTO.getContent()!=null && this.amateurSummary!=null){this.amateurSummary.updateContent(requestDTO.getContent());}
-        if(requestDTO.getContact()!=null){this.contact = requestDTO.getContact();}
-        if(requestDTO.getAmateurStatus()!=null){this.amateurStatus = requestDTO.getAmateurStatus();}
+        if (requestDTO.getSchedule() != null) {
+            this.schedule = requestDTO.getSchedule();
+        }
+        if (requestDTO.getHashtag() != null) {
+            this.hashtag = requestDTO.getHashtag();
+        }
+        if (requestDTO.getContent() != null && this.amateurSummary != null) {
+            this.amateurSummary.updateContent(requestDTO.getContent());
+        }
+        if (requestDTO.getContact() != null) {
+            this.contact = requestDTO.getContact();
+        }
+        if (requestDTO.getAmateurStatus() != null) {
+            this.amateurStatus = requestDTO.getAmateurStatus();
+        }
     }
 
     public void decideAmateurShow(AmateurStatus amateurStatus, ManageAmateurShowRequestDTO.ManageAmateurShowDecideDTO requestDTO) {
@@ -107,10 +119,18 @@ public class AmateurShow extends BaseEntity {
     }
 
     public void updateAmateurTicket(AmateurTicketRequestDTO.AmateurTicketUpdateDTO requestDTO) {
-        if(requestDTO.getName()!=null){this.name = requestDTO.getName();}
-        if(requestDTO.getSchedule()!=null){this.schedule = requestDTO.getSchedule();}
-        if(requestDTO.getSoldTicket()!=null){this.soldTicket = requestDTO.getSoldTicket();}
-        if(requestDTO.getTotalTicket()!=null){this.totalTicket = requestDTO.getTotalTicket();}
+        if (requestDTO.getName() != null) {
+            this.name = requestDTO.getName();
+        }
+        if (requestDTO.getSchedule() != null) {
+            this.schedule = requestDTO.getSchedule();
+        }
+        if (requestDTO.getSoldTicket() != null) {
+            this.soldTicket = requestDTO.getSoldTicket();
+        }
+        if (requestDTO.getTotalTicket() != null) {
+            this.totalTicket = requestDTO.getTotalTicket();
+        }
     }
 
 }

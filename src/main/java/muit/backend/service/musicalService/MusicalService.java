@@ -4,6 +4,8 @@ import muit.backend.dto.musicalDTO.MusicalRequestDTO;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface MusicalService {
 
@@ -22,4 +24,6 @@ public interface MusicalService {
     public MusicalResponseDTO.MusicalOpenListDTO getAllOpenMusicals(Integer page);
 
     public MusicalResponseDTO.MusicalHomeListDTO findMusicalsByName(String musicalName);
+
+    public List<String> getWeeklyRanking();
 }
