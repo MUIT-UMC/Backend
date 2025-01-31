@@ -19,4 +19,6 @@ public interface EventService {
     public Page<EventResponseDTO.EventResultListDTO> getEventListOrderByEvFrom (LocalDate today, Integer page);
 
     public EventResponseDTO.EventResultDTO createEvent(Long musicalId, EventRequestDTO.EventCreateDTO eventCreateDTO);
+
+    public EventResponseDTO.EventResultDTO getEventInfo(Long eventId);
 }
