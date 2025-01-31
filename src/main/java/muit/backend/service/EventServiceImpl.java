@@ -71,4 +71,10 @@ public class EventServiceImpl implements EventService {
         eventRepository.save(event);
         return EventConverter.toEventResultDTO(event);
     }
+
+    @Override
+    public EventResponseDTO.EventResultDTO getEventInfo(Long eventId){
+        Event event = eventRepository.findById(eventId).orElse(null);
+        return EventConverter.toEventResultDTO(event);
+    }
 }

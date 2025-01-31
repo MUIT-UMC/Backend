@@ -21,6 +21,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -71,7 +72,9 @@ dependencies {
 
 	//DNS
 	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.100.Final:osx-aarch_64'
-
+	
+	//discordWebHook
+	implementation 'com.github.napstr:logback-discord-appender:1.0.0'
 }
 
 tasks.named('test') {
