@@ -19,7 +19,9 @@ public class AmateurCasting extends BaseEntity {
 
     private String imageUrl;
 
-    private String actorCasting;
+    private String actorName;
+
+    private String castingName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "amateur_show_id")

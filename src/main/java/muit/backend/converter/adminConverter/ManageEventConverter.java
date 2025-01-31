@@ -1,8 +1,6 @@
 package muit.backend.converter.adminConverter;
 
-import muit.backend.domain.entity.musical.Event;
 import muit.backend.domain.entity.musical.Musical;
-import muit.backend.dto.adminDTO.manageEventDTO.ManageEventRequestDTO;
 import muit.backend.dto.adminDTO.manageEventDTO.ManageEventResponseDTO;
 
 import java.util.List;
@@ -34,6 +32,7 @@ public class ManageEventConverter {
 
         List<ManageEventResponseDTO.EventInfo> eventInfoList = musical.getEventList().stream()
                 .map(event -> new ManageEventResponseDTO.EventInfo(
+                        event.getId(),
                         event.getEvFrom(),
                         event.getEvTo(),
                         event.getName()
@@ -45,24 +44,6 @@ public class ManageEventConverter {
                 .musicalName(musical.getName())
                 .place(musical.getPlace())
                 .events(eventInfoList)
-                .build();
-    }
-
-    public static Event toAddEventEntity(Musical musical, ManageEventRequestDTO.ManageEventAddDTO requestDTO) {
-        return Event.builder()
-                .musical(musical) // 어떤 뮤지컬에 속한 이벤트인지 설정
-                .name(requestDTO.getName())
-                .evFrom(requestDTO.getEvFrom())
-                .evTo(requestDTO.getEvTo())
-                .build();
-    }
-
-    public static Event toCreateEventEntity(Musical musical, ManageEventRequestDTO.ManageEventCreateDTO requestDTO) {
-        return Event.builder()
-                .musical(musical)
-                .name(requestDTO.getEventName())
-                .evFrom(requestDTO.getEvFrom())
-                .evTo(requestDTO.getEvTo())
                 .build();
     }
 }

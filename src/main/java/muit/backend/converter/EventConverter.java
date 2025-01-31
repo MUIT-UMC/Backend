@@ -1,14 +1,10 @@
 package muit.backend.converter;
 
-import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Event;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.dto.eventDTO.EventRequestDTO;
 import muit.backend.dto.eventDTO.EventResponseDTO;
-import muit.backend.dto.postDTO.PostResponseDTO;
-import org.springframework.data.domain.Page;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +41,6 @@ public class EventConverter {
                 .name(eventCreateDTO.getEventName())
                 .evFrom(eventCreateDTO.getEvFrom())
                 .evTo(eventCreateDTO.getEvTo())
-                .eventType(eventCreateDTO.getEventType())
                 .build();
     }
 }

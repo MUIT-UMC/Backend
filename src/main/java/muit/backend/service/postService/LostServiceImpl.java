@@ -1,6 +1,8 @@
 package muit.backend.service.postService;
 
 import lombok.RequiredArgsConstructor;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.postConverter.LostConverter;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
@@ -41,7 +43,7 @@ public class LostServiceImpl implements LostService {
     @Override
     public LostResponseDTO.GeneralLostResponseDTO getLostPost(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
         return LostConverter.toGeneralLostResponseDTO(post);
     }
@@ -49,7 +51,7 @@ public class LostServiceImpl implements LostService {
     //게시글 작성
     @Override
     @Transactional
-    public LostResponseDTO.GeneralLostResponseDTO createLostPost(PostType postType, LostRequestDTO requestDTO, List<MultipartFile> imgFile) {
+    public LostResponseDTO.GeneralLostResponseDTO createLostPost(PostType postType, LostRequestDTO requestDTO, List<MultipartFile> imgFile, Member member) {
 
         FilePath filePath = switch (postType){
             case LOST -> FilePath.LOST;
@@ -60,10 +62,6 @@ public class LostServiceImpl implements LostService {
         if(imgFile!=null&&!imgFile.isEmpty()){
             imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, filePath)).collect(Collectors.toList());
         }
-
-        Member member = memberRepository.findById(requestDTO.getMemberId())
-                .orElseThrow(() -> new RuntimeException("Member not found"));
-
 
         // DTO -> Entity 변환
         Post post = LostConverter.toPost(member, postType, requestDTO, imgArr);
@@ -76,10 +74,15 @@ public class LostServiceImpl implements LostService {
 
     @Override
     @Transactional
-    public LostResponseDTO.GeneralLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO, List<MultipartFile> imgFile) {
+    public LostResponseDTO.GeneralLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO, List<MultipartFile> imgFile, Member member) {
         //post 유효성 검사
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
+        //작성자와 동일인인지 검사
+        if(post.getMember()!=member){
+            throw(new GeneralException(ErrorStatus._FORBIDDEN));
+        }
 
         FilePath filePath = switch (post.getPostType()){
             case LOST -> FilePath.LOST;

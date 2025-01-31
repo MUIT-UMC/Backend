@@ -20,6 +20,8 @@ public class AmateurSummary extends BaseEntity {
 
     private String content;
 
+    private String summaryImage;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "amateur_show_id")
     private AmateurShow amateurShow;
