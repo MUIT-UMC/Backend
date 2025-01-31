@@ -4,7 +4,6 @@ import muit.backend.domain.entity.musical.Event;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.entity.musical.Theatre;
 import muit.backend.domain.enums.EventType;
-import muit.backend.domain.enums.OpenStatus;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.dto.kopisDTO.KopisMusicalResponseDTO;
 import muit.backend.dto.musicalDTO.MusicalRequestDTO;

@@ -6,21 +6,40 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.enums.SectionType;
 
+import java.util.List;
+
 public class SectionResponseDTO {
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SectionResultDTO{
-
+        private String allSeatImg;
         private Long theatreId;
         private String theatreName;
         private String address;
         private Long musicalId;
         private String musicalName;
-        private String allSeatImg;
+        private SectionType sectionType;
+        private String floor;
+        private String seatRange;
         private String viewPic;
         private String viewDetail;
-        private SectionType sectionType;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FloorResultDTO{
+        private String allSeatImg;
+        private Long theatreId;
+        private String theatreName;
+        private String address;
+        private Long musicalId;
+        private String musicalName;
+
+        private List<SectionType> sectionTypes;
+    }
+
 }

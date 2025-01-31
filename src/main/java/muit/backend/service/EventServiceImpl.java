@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 
 @Service
@@ -30,24 +32,27 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventResponseDTO.EventResultListDTO getEvent(Long musicalId) {
+        Musical musical = musicalRepository.findById(musicalId).orElse(null);
         List<Event> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId);
-        return EventConverter.toEventResultListDTO(eventList);
+        assert musical != null;
+        return EventConverter.toEventResultListDTO(musical,eventList);
     }
 
     @Override
-    public EventResponseDTO.EventGroupListDTO getEventListOrderByEvFrom(LocalDate today) {
+    public List<EventResponseDTO.EventResultListDTO> getEventListOrderByEvFrom(LocalDate today) {
         //Event 를 EvFrom 기준 오름차순으로 정렬
         List<Event> eventList = eventRepository.findAllByEvFromIsNotNullOrderByEvFromAsc();
 
-        List<List<Event>> eventListGroupedByMusicalId = eventList.stream()
-                .collect(Collectors.groupingBy(event->event.getMusical().getId()))  // musicalId로 그룹화
-                .values().stream()                                                  // 그룹화된 Map의 values를 가져옵니다 (각 그룹은 List<Event> 형태)
+        List<EventResponseDTO.EventResultListDTO> eventResultListDTOs = eventList.stream()
+                .collect(Collectors.groupingBy(event -> event.getMusical().getId()))
+                .values().stream()
                 .filter(group -> group.stream()                                     // List<Event>로 변환된 스트림을 다시 스트림으로 변환
-                        .anyMatch(event -> !event.getEvFrom().isBefore(today)))     //evFrom이 today보다 앞선다면의 부정
-                .collect(Collectors.toList()); // 최종적으로 List<List<Event>>로 변환
+                        .anyMatch(event -> !event.getEvFrom().isBefore(today)))
+                .map(group-> {
+                    return EventConverter.toEventResultListDTO(group.get(0).getMusical(), group);})
+                .collect(Collectors.toList());
 
-
-        return EventConverter.toEventGroupListDTO(eventListGroupedByMusicalId);
+        return eventResultListDTOs;
     }
 
     @Override

@@ -37,13 +37,6 @@ public class EventResponseDTO {
 
     }
 
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class EventGroupListDTO {
-        private List<EventResultListDTO> eventResultListDTOList;
-    }
 
 
 }

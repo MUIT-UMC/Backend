@@ -3,13 +3,14 @@ package muit.backend.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 import muit.backend.dto.theatreDTO.TheatreResponseDTO;
 import muit.backend.service.musicalService.MusicalService;
 import org.springframework.web.bind.annotation.*;
-
+@Tag(name = "뮤지컬")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/musicals")

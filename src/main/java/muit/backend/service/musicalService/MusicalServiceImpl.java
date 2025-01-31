@@ -50,7 +50,7 @@ public class MusicalServiceImpl implements MusicalService {
 
         //이벤트 정보를 List<EventResultDTO>로 구성된 EventResultListDTO 에 담아서 반환
         List<Event> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId);
-        EventResponseDTO.EventResultListDTO eventResultListDTO = EventConverter.toEventResultListDTO(eventList);
+        EventResponseDTO.EventResultListDTO eventResultListDTO = EventConverter.toEventResultListDTO(musical, eventList);
 
         return MusicalConverter.toMusicalResultDTO(musical, eventResultListDTO);
 

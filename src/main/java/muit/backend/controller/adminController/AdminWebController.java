@@ -3,6 +3,7 @@ package muit.backend.controller.adminController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.dto.eventDTO.EventRequestDTO;
@@ -13,7 +14,7 @@ import muit.backend.service.musicalService.MusicalService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "외부 웹 이용")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin")

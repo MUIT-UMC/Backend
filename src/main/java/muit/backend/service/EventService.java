@@ -9,12 +9,13 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public interface EventService {
     public EventResponseDTO.EventResultListDTO getEvent (Long musicalId);
 
-    public EventResponseDTO.EventGroupListDTO getEventListOrderByEvFrom (LocalDate today);
+    public List<EventResponseDTO.EventResultListDTO> getEventListOrderByEvFrom (LocalDate today);
 
     public EventResponseDTO.EventResultDTO createEvent(Long musicalId, EventRequestDTO.EventCreateDTO eventCreateDTO);
 }

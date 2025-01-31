@@ -1,6 +1,7 @@
 package muit.backend.converter;
 
 import muit.backend.domain.entity.musical.Musical;
+import muit.backend.domain.entity.musical.Section;
 import muit.backend.domain.entity.musical.Theatre;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.dto.kopisDTO.KopisTheatreResponseDTO;
@@ -65,6 +66,25 @@ public class TheatreConverter {
                 .musicalName(theatre.getMusical().getName())
                 .theatrePic(theatre.getTheatrePic())
                 .allSeatImg(theatre.getAllSeatImg())
+                .build();
+   }
+
+   public static TheatreResponseDTO.AdminTheatreSectionDTO toAdminTheatreSectionDTO(Section section) {
+        return TheatreResponseDTO.AdminTheatreSectionDTO.builder()
+                .sectionType(section.getSectionType())
+                .floor(section.getFloor())
+                .seatRange(section.getSeatRange())
+                .viewDetail(section.getViewDetail())
+                .isViewPic(section.getViewPic()!=null)
+                .build();
+   }
+
+   public static TheatreResponseDTO.AdminTheatreSectionListDTO toAdminTheatreSectionListDTO(Theatre theater, List<TheatreResponseDTO.AdminTheatreSectionDTO> sections) {
+        return TheatreResponseDTO.AdminTheatreSectionListDTO.builder()
+                .theatreId(theater.getId())
+                .theatreName(theater.getName())
+                .isTheatrePic(theater.getTheatrePic()!=null)
+                .theatreSections(sections)
                 .build();
    }
 

@@ -45,4 +45,30 @@ public class TheatreResponseDTO {
         private String allSeatImg;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AdminTheatreSectionDTO{
+        private SectionType sectionType;
+        private String floor;
+        private String seatRange;
+        private String viewDetail;
+        private Boolean isViewPic;
+
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AdminTheatreSectionListDTO{
+        private Long theatreId;
+        private String theatreName;
+        private Boolean isTheatrePic;
+        private List<AdminTheatreSectionDTO> theatreSections;
+    }
+
+
+
 }
