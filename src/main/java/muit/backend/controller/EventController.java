@@ -9,6 +9,9 @@ import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.service.EventService;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -21,11 +24,11 @@ import java.util.List;
 public class EventController {
     private final EventService eventService;
 
-    @GetMapping("/")
-    @Operation(summary = "현재 진행중인 뮤지컬 이벤트 조회 API", description = "시작 날짜가 오늘 날짜 이후인 이벤트를 하나라도 갖고 있는 모든 뮤지컬의 이벤트 목록을 조회하는 API")
-    public ApiResponse<List<EventResponseDTO.EventResultListDTO>> getEventListSortedByEvFrom(){
+    @GetMapping("")
+    @Operation(summary = "현재 진행중인 뮤지컬 이벤트 조회 API", description = "시작 날짜가 오늘 날짜 이후인 이벤트를 하나라도 갖고 있는 모든 뮤지컬의 이벤트 목록을 조회하는 API, 한 페이지에 뮤지컬 6개씩")
+    public ApiResponse<Page<EventResponseDTO.EventResultListDTO>> getEventListSortedByEvFrom(@RequestParam("page") Integer page){
         LocalDate today = LocalDate.now();
-        return ApiResponse.onSuccess(eventService.getEventListOrderByEvFrom(today));
+        return ApiResponse.onSuccess(eventService.getEventListOrderByEvFrom(today, page));
     }
 
     @GetMapping("/{musicalId}")
