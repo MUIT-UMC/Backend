@@ -78,6 +78,7 @@ public class AmateurConverter {
                 .map(dto -> AmateurTicket.builder()
                         .amateurShow(show)
                         .ticketType(TicketType.valueOf(dto.getTicketType()))
+                        .ticketName(dto.getTicketName())
                         .price(Integer.parseInt(dto.getPrice()))
                         .build())
                 .collect(Collectors.toList());

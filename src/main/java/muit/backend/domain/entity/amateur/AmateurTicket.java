@@ -26,6 +26,8 @@ public class AmateurTicket extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TicketType ticketType;
 
+    private String ticketName;
+
     private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

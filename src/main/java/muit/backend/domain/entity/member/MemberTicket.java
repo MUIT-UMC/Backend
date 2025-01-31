@@ -11,6 +11,7 @@ import muit.backend.domain.entity.amateur.AmateurTicket;
 import muit.backend.domain.enums.ReservationStatus;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class MemberTicket extends BaseEntity {
     private Integer quantity;
 
     private Integer totalPrice;
+
+    private LocalDateTime reservationTime;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus reservationStatus;
