@@ -6,9 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface AmateurShowRepository extends JpaRepository<AmateurShow, Long> {
 
     // 전체 조회용 (member 함께 조회)
@@ -34,4 +36,7 @@ public interface AmateurShowRepository extends JpaRepository<AmateurShow, Long> 
             "a.name LIKE %:keyword% " +
             "OR a.schedule LIKE %:keyword%")
     Page<AmateurShow> findTicketsByKeyword(Pageable pageable, @Param("keyword") String keyword);
+
+    @Query("SELECT a FROM AmateurShow a ORDER BY a.schedule DESC")
+    Page<AmateurShow> findAllShows(Pageable pageable);
 }

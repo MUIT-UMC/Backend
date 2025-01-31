@@ -27,7 +27,7 @@ public class AmateurShow extends BaseEntity {
 
     private String name;
 
-    private String imageUrl;
+    private String posterImgUrl;
 
     private String place;
 
@@ -43,9 +43,9 @@ public class AmateurShow extends BaseEntity {
 
     private Integer soldTicket;
 
-    private String timeInfo;
+    private String timeInfo; // 공연시간 정보, runtime과 다름
 
-    private String staff;
+    //private String staff; // 제거 예정,
 
     private String account;
 
@@ -58,13 +58,9 @@ public class AmateurShow extends BaseEntity {
     private Integer cancelFee;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private AmateurStatus amateurStatus = AmateurStatus.YET;
 
-
-    //매핑 제거
-//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "schedule_id")
-//    private Schedule schedule;
 
     @OneToMany(mappedBy = "amateurShow", cascade = CascadeType.ALL)
     private List<AmateurTicket> amateurTicketList = new ArrayList<>();
@@ -72,8 +68,11 @@ public class AmateurShow extends BaseEntity {
     @OneToMany(mappedBy = "amateurShow", cascade = CascadeType.ALL)
     private List<AmateurCasting> amateurCastingList = new ArrayList<>();
 
+    @OneToOne(mappedBy = "amateurShow", cascade = CascadeType.ALL)
+    private AmateurNotice amateurNotice;
+
     @OneToMany(mappedBy = "amateurShow", cascade = CascadeType.ALL)
-    private List<AmateurNotice> amateurNoticeList = new ArrayList<>();
+    private List<AmateurStaff> amateurStaffList = new ArrayList<>();
 
     @OneToOne(mappedBy = "amateurShow", cascade = CascadeType.ALL)
     private AmateurSummary amateurSummary;
@@ -81,10 +80,6 @@ public class AmateurShow extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    //매핑 제거 -> ticket 엔티티 제거
-//    @OneToMany(mappedBy = "coProduct", cascade = CascadeType.ALL)
-//    private List<Ticket> ticketList = new ArrayList<>();
 
     public void updateAmateurShow(ManageAmateurShowRequestDTO.ManageAmateurShowUpdateDTO requestDTO) {
         if (requestDTO.getSchedule() != null) {

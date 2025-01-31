@@ -40,6 +40,7 @@ public class MemberController {
             return ApiResponse.onFailure("400", e.getMessage(), null);
         } catch (Exception e) {
             return ApiResponse.onFailure("500", e.getMessage(),null);
+            // 이부분 에러 메시지 추가하겠습니다.
         }
     }
 

@@ -4,6 +4,8 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import muit.backend.apiPayLoad.ApiResponse;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.dto.memberDTO.EmailVerifyRequestDTO;
 import muit.backend.repository.MemberRepository;
@@ -30,7 +32,7 @@ public class EmailController {
            //소셜 로그인 고려해야함
             Optional<Member> member = memberRepository.findMemberByEmail(email);
             if (member.isPresent()) {
-                throw new IllegalStateException("Already assigned Member");
+                throw new GeneralException(ErrorStatus.MEMBER_ALREADY_EXIST);
             }
             else emailService.sendEmail(email);
             return ApiResponse.onSuccess("Verification code sent to " + email);
