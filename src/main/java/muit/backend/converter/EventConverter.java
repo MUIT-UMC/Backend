@@ -21,29 +21,17 @@ public class EventConverter {
     }
 
     //특정 뮤지컬의 여러 Event 리스트로 반환
-    public static EventResponseDTO.EventResultListDTO toEventResultListDTO(List<Event> eventList) {
+    public static EventResponseDTO.EventResultListDTO toEventResultListDTO(Musical musical, List<Event> eventList) {
         List<EventResponseDTO.EventResultDTO> eventResultListDTO = eventList.stream()
                 .map(EventConverter::toEventResultDTO).collect(Collectors.toList());
 
         return EventResponseDTO.EventResultListDTO.builder()
-                .musicalId((eventList.get(0).getMusical().getId()))
-                .musicalName(eventList.get(0).getMusical().getName())
-                .theatreName(eventList.get(0).getMusical().getTheatre().getName())
-                .perFrom(eventList.get(0).getMusical().getPerFrom())
-                .perTo(eventList.get(0).getMusical().getPerTo())
+                .musicalId(musical.getId())
+                .musicalName(musical.getName())
+                .theatreName(musical.getTheatre().getName())
+                .perFrom(musical.getPerFrom())
+                .perTo(musical.getPerTo())
                 .eventResultListDTO(eventResultListDTO)
-                .build();
-    }
-
-
-    //특정 뮤지컬의 여러 Event 리스트로 반환
-    public static EventResponseDTO.EventGroupListDTO toEventGroupListDTO(List<List<Event>> eventGroupList) {
-        List<EventResponseDTO.EventResultListDTO> eventResultListDTOList = eventGroupList.stream()
-                .map(EventConverter::toEventResultListDTO)
-                .collect(Collectors.toList());
-
-        return EventResponseDTO.EventGroupListDTO.builder()
-                .eventResultListDTOList(eventResultListDTOList)
                 .build();
     }
 

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import muit.backend.converter.EventConverter;
 import muit.backend.domain.common.BaseEntity;
 import muit.backend.domain.enums.EventType;
-import muit.backend.domain.enums.OpenStatus;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 
 import java.io.Serializable;

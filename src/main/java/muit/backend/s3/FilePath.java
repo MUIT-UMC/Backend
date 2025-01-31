@@ -14,7 +14,9 @@ public enum FilePath {
     SIGHT("sight"),
     AMATEUR_CASTING("amateur_casting"),
     AMATEUR_NOTICE("amateur_notice"),
-    AMATEUR_SUMMARY("amateur_summary");
+    AMATEUR_SUMMARY("amateur_summary"),
+    Theatre("theatre"),
+    Section("section");
 
     private final String path;
 }

@@ -4,7 +4,6 @@ import muit.backend.domain.entity.musical.Event;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.entity.musical.Theatre;
 import muit.backend.domain.enums.EventType;
-import muit.backend.domain.enums.OpenStatus;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.dto.kopisDTO.KopisMusicalResponseDTO;
 import muit.backend.dto.musicalDTO.MusicalRequestDTO;
@@ -97,13 +96,14 @@ public class MusicalConverter {
                 .build();
     }
 
-    public static MusicalResponseDTO.MusicalHomeListDTO toMusicalHomeListDTO(List<Musical> musicals, String message) {
+    public static MusicalResponseDTO.MusicalHomeListDTO toMusicalHomeListDTO(List<Musical> musicals) {
         List<MusicalResponseDTO.MusicalHomeDTO> musicalHomeList = musicals.stream()
                 .map(MusicalConverter::toMusicalHomeDTO).collect(Collectors.toList());
-
+        String msg = "검색 결과";
+        if(musicals.isEmpty()) msg= "검색 결과가 존재하지 않습니다.";
         return MusicalResponseDTO.MusicalHomeListDTO.builder()
+                .message(msg)
                 .musicalHomeList(musicalHomeList)
-                .message(message)
                 .build();
     }
 

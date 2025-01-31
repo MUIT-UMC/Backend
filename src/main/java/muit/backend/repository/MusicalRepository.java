@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface MusicalRepository extends JpaRepository<Musical, Long> {
     List<Musical> findTop5ByOrderByIdAsc();
 
-    List<Musical> findAllByOrderByIdAsc(Pageable pageable);
+    List<Musical> findAllByOrderByIdAsc();
 
     @Query(value = "SELECT * FROM musical m WHERE m.open_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 7 DAY) ORDER BY m.open_date ASC", nativeQuery = true)
     List<Musical> getFiveOpenWithin7Days(Pageable pageable);

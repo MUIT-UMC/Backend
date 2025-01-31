@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,4 +38,8 @@ public class Theatre extends BaseEntity {
     @OneToMany (mappedBy = "theatre", cascade = CascadeType.ALL)
     private List<Section> sectionList = new ArrayList<>();
 
+    public Theatre updateTheatrePic(String imgUrl){
+        this.theatrePic = imgUrl;
+        return this;
+    }
 }
