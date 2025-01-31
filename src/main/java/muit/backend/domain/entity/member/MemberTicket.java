@@ -28,6 +28,8 @@ public class MemberTicket extends BaseEntity {
 
     private Integer totalPrice;
 
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus reservationStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "amateur_ticket_id")
@@ -35,5 +37,5 @@ public class MemberTicket extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id")
-    private Reservation reservation;
+    private Member member;
 }
