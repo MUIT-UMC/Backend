@@ -2,6 +2,7 @@ package muit.backend.service.musicalService;
 
 import muit.backend.dto.musicalDTO.MusicalRequestDTO;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface MusicalService {
 
     public MusicalResponseDTO.MusicalHomeListDTO getFiveMusicals();
 
-    public MusicalResponseDTO.MusicalHomeListDTO getAllHotMusicals(Integer page);
+    public Page<MusicalResponseDTO.MusicalHomeDTO> getAllHotMusicals(Integer page);
 
     public MusicalResponseDTO.MusicalOpenListDTO getFiveOpenMusicals();
 

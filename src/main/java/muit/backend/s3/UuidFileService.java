@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -19,6 +20,10 @@ public class UuidFileService {
 
     public UuidFile getUuidFileById(Long id) {
         return uuidFileRepository.findById(id).orElseThrow(() -> new RuntimeException("해당 파일을 찾을 수 없습니다."));
+    }
+
+    public Optional<UuidFile> getUuidFileByFileUrl(String fileUrl) {
+        return uuidFileRepository.findByFileUrl(fileUrl);
     }
 
     @Transactional
