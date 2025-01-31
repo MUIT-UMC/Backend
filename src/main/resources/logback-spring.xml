@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+    <!-- 공통: 콘솔 로그 설정 -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%5p] %logger{36} - %m%n%ex
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 운영(production) 환경에서만 사용될 Discord Webhook 설정 -->
+    <springProfile name="prod">
+        <springProperty name="DISCORD_WEBHOOK_URI" source="logging.discord.webhook-url"/>
+
+        <appender name="DISCORD" class="com.github.napstr.logback.DiscordAppender">
+            <webhookUri>${DISCORD_WEBHOOK_URI}</webhookUri>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%5p] %logger{36} - %m%n%ex</pattern>
+            </layout>
+            <username>백엔드 에러 로그</username>
+            <avatarUrl>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTba_bbn-3kNP4WU6pp1cOKho1N3qf2Vz8rNQ&amp;s</avatarUrl>
+            <tts>false</tts>
+            테스트로그
+        </appender>
+
+        <appender name="ASYNC_DISCORD" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="DISCORD" />
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <root level="ERROR">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="ASYNC_DISCORD"/>
+        </root>
+    </springProfile>
+
+    <!-- 기본(로컬) 환경에서는 콘솔 로그만 사용 -->
+    <springProfile name="local">
+        <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>
+                    %d{yyyy-MM-dd HH:mm:ss} [%5p] %highlight{%logger{36} - %m%n}
+                </pattern>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="Console"/>
+        </root>
+    </springProfile>
+
+</configuration>
