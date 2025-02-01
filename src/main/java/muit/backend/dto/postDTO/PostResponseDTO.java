@@ -22,6 +22,8 @@ public class PostResponseDTO {
         private String content;
         private List<String> imgUrls;
         private Integer commentCount;
+        private Integer likeCount;
+        private Boolean isLiked;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -45,5 +47,12 @@ public class PostResponseDTO {
     @AllArgsConstructor
     public static class DeleteResultDTO {
         private String message;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class likeResultDTO {
+        private Boolean isLiked;
     }
 }

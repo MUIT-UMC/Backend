@@ -49,20 +49,25 @@ public class PostController {
             @Parameter(name = "search", description = "검색어")
     })
     public ApiResponse<PostResponseDTO.PostResultListDTO> getPostList( @RequestHeader("Authorization") String accessToken,
+                                                                       @RequestParam("postType") BlindType blindType,
                                                                        @RequestParam(defaultValue = "0", name = "page") Integer page,
                                                                        @RequestParam(defaultValue = "20", name = "size")Integer size,
                                                                        @RequestParam(defaultValue = "" ,name = "search") String search)
     {
-        memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(postService.getPostList(PostType.BLIND, page,size, search));
+        Member member = memberService.getMemberByToken(accessToken);
+        if(blindType.equals(BlindType.BLIND)){
+            return ApiResponse.onSuccess(postService.getPostList(PostType.BLIND, page,size, search, member));}
+        else{
+            return ApiResponse.onSuccess(postService.getHotPostList(PostType.BLIND, page,size, search, member));
+        }
     }
 
     @GetMapping("/{postId}")
     @Operation(summary = "익명 게시글 단건 조회 API", description = "익명 게시판의 특정 게시글을 조회하는 API 입니다.")
     public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> getPost(@RequestHeader("Authorization") String accessToken,
                                                                        @PathVariable("postId") Long postId) {
-        memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(postService.getPost(postId));
+        Member member = memberService.getMemberByToken(accessToken);
+        return ApiResponse.onSuccess(postService.getPost(postId, member));
     }
 
 
@@ -74,14 +79,6 @@ public class PostController {
                                                                         @RequestPart(name = "imageFiles", required = false)List<MultipartFile> img) {
         Member member = memberService.getMemberByToken(accessToken);
         return ApiResponse.onSuccess(postService.editPost(postId, postRequestDTO, img, member));
-    }
-
-    @DeleteMapping("/{postId}")
-    @Operation(summary = "게시글 삭제 API", description = "특정 사용자가 작성한 특정 게시글을 삭제하는 API 입니다.")
-    public ApiResponse<PostResponseDTO.DeleteResultDTO> deletePost(@RequestHeader("Authorization") String accessToken,
-                                                                   @PathVariable("postId") Long postId) {
-        Member member = memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(postService.deletePost(postId, member));
     }
 
 }
