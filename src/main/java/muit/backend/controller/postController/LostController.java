@@ -51,7 +51,7 @@ public class LostController {
     }
 
     @GetMapping("")
-    @Operation(summary = "게시판 게시글 리스트 조회 API", description = "특정 게시판의 게시글 목록을 조회하는 API 이며 query string 으로 postType과 page를 받음")
+    @Operation(summary = "게시판 게시글 리스트 조회 API", description = "특정 게시판의 게시글 목록을 조회하는 API")
     @Parameters({
             @Parameter(name = "postType", description = "게시판 종류, LOST, FOUND 중에 선택"),
             @Parameter( name = "page", description = "페이지를 정수로 입력"),

@@ -1,5 +1,6 @@
 package muit.backend.converter;
 
+import muit.backend.domain.entity.musical.Casting;
 import muit.backend.domain.entity.musical.Event;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.entity.musical.Theatre;
@@ -10,6 +11,7 @@ import muit.backend.dto.musicalDTO.MusicalRequestDTO;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,5 +147,43 @@ public class MusicalConverter {
                 .build();
     }
 
+    public static MusicalResponseDTO.AdminMusicalDTO toAdminMusicalDTO(Musical musical) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.M.d", Locale.KOREA);
 
+        String duration = musical.getPerFrom().format(formatter) + " ~ " + musical.getPerTo().format(formatter);
+
+        return MusicalResponseDTO.AdminMusicalDTO.builder()
+                .id(musical.getId())
+                .name(musical.getName())
+                .place(musical.getPlace())
+                .duration(duration)
+                .build();
+    }
+
+    public static MusicalResponseDTO.AdminMusicalDetailDTO adminMusicalDetailDTO(Musical musical, EventResponseDTO.EventResultListDTO eventList) {
+
+
+        return MusicalResponseDTO.AdminMusicalDetailDTO.builder()
+                .id(musical.getId())
+                .kopisMusicalId(musical.getKopisMusicalId())
+                .name(musical.getName())
+                .place(musical.getPlace())
+                .perFrom(musical.getPerFrom())
+                .perTo(musical.getPerTo())
+                .perPattern(musical.getPerPattern())
+                .theatreName(musical.getTheatre().getName())
+                .place(musical.getPlace())
+                .runtime(musical.getRuntime())
+                .ageLimit(musical.getAgeLimit())
+                .actorPreview(musical.getActorPreview())
+                .priceInfo(musical.getPriceInfo())
+                .eventList(eventList)
+                .bgImg(musical.getBgImg())
+                .description(musical.getDescription())
+                .fancyTitle(musical.getFancyTitle())
+                .category(musical.getCategory())
+                .openDate(musical.getOpenDate())
+                .openInfo(musical.getOpenInfo())
+                .build();
+    }
 }

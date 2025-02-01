@@ -52,6 +52,8 @@ public class Post extends BaseEntity {
 
     private String lostItem;
 
+    private Integer likes;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UuidFile> images = new ArrayList<>();
 
@@ -59,7 +61,7 @@ public class Post extends BaseEntity {
     private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<PostLikes> postLikesList = new ArrayList<>();
+    private List<PostLikes> postLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Report> reportList = new ArrayList<>();

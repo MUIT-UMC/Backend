@@ -28,7 +28,6 @@ public class Musical extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String kopisMusicalId;
 
     private String name;

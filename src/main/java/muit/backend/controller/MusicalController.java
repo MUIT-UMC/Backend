@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
+import muit.backend.dto.castingDTO.CastingResponseDTO;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 import muit.backend.dto.theatreDTO.TheatreResponseDTO;
 import muit.backend.service.musicalService.MusicalService;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
+import java.util.List;
 
 @Tag(name = "뮤지컬")
 @RestController
@@ -75,4 +77,11 @@ public class MusicalController {
     public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> searchMusicals(@RequestParam("musicalName") String musicalName) {
         return ApiResponse.onSuccess(musicalService.findMusicalsByName(musicalName));
     }
+
+    @GetMapping("/{musicalId}/casting")
+    @Operation(summary = "특정 뮤지컬의 캐스팅 조회 ", description = "뮤지컬의 캐스팅 정보 조회하는 API")
+    public ApiResponse<List<CastingResponseDTO.CastingResultListDTO>> getCastingInfo(@PathVariable Long musicalId) {
+        return ApiResponse.onSuccess(musicalService.getCastingInfo(musicalId));
+    }
+
 }
