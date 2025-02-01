@@ -12,10 +12,12 @@ import java.util.List;
 @Service
 public interface PostService {
     //특정 게시글 조회
-    public PostResponseDTO.GeneralPostResponseDTO getPost(Long PostId);
+    public PostResponseDTO.GeneralPostResponseDTO getPost(Long PostId, Member member);
 
     //게시판 조회
-    public PostResponseDTO.PostResultListDTO getPostList(PostType postType, Integer page, Integer size, String search);
+    public PostResponseDTO.PostResultListDTO getPostList(PostType postType, Integer page, Integer size, String search, Member member);
+    //핫게시판 조회
+    PostResponseDTO.PostResultListDTO getHotPostList(PostType postType, Integer page, Integer size, String search, Member member);
 
     //게시글 생성
     public PostResponseDTO.GeneralPostResponseDTO createPost(PostType postType, PostRequestDTO postRequestDTO, List<MultipartFile> img, Member member);
@@ -25,4 +27,6 @@ public interface PostService {
 
     //게시글 수정
     public PostResponseDTO.GeneralPostResponseDTO editPost(Long postId, PostRequestDTO postRequestDTO, List<MultipartFile> img, Member member);
+
+    PostResponseDTO.likeResultDTO likePost(Long postId, Member member);
 }
