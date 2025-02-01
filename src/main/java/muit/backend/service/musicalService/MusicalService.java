@@ -1,5 +1,6 @@
 package muit.backend.service.musicalService;
 
+import muit.backend.dto.castingDTO.CastingResponseDTO;
 import muit.backend.dto.musicalDTO.MusicalRequestDTO;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 import org.springframework.data.domain.Page;
@@ -27,4 +28,10 @@ public interface MusicalService {
     public MusicalResponseDTO.MusicalHomeListDTO findMusicalsByName(String musicalName);
 
     public List<String> getWeeklyRanking();
+
+    public Page<MusicalResponseDTO.AdminMusicalDTO> getAllMusicals(Integer page);
+
+    public MusicalResponseDTO.AdminMusicalDetailDTO getMusicalDetail(Long id);
+
+    public List<CastingResponseDTO.CastingResultListDTO> getCastingInfo(Long id);
 }

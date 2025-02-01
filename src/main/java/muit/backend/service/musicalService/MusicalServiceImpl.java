@@ -4,15 +4,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import muit.backend.config.InterparkConfig;
 import muit.backend.config.KopisConfig;
+import muit.backend.converter.CastingConverter;
 import muit.backend.converter.EventConverter;
 import muit.backend.converter.MusicalConverter;
+import muit.backend.domain.entity.musical.Actor;
 import muit.backend.domain.entity.musical.Event;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.entity.musical.Theatre;
+import muit.backend.dto.castingDTO.CastingResponseDTO;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.dto.kopisDTO.KopisMusicalResponseDTO;
 import muit.backend.dto.musicalDTO.MusicalRequestDTO;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
+import muit.backend.repository.ActorRepository;
+import muit.backend.repository.CastingRepository;
 import muit.backend.repository.EventRepository;
 import muit.backend.repository.MusicalRepository;
 import muit.backend.service.theatreService.TheatreService;
@@ -30,10 +35,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-
 
 @Slf4j
 @Service
@@ -45,9 +49,11 @@ public class MusicalServiceImpl implements MusicalService {
     private final KopisConfig kopisConfig;
     private final TheatreService theatreService;
     private final InterparkConfig interparkConfig;
+    private final CastingRepository castingRepository;
+    private final ActorRepository actorRepository;
 
     @Override
-    public MusicalResponseDTO.MusicalResultDTO getMusical(Long musicalId){
+    public MusicalResponseDTO.MusicalResultDTO getMusical(Long musicalId) {
         //뮤지컬 유효성 검사
         Musical musical = musicalRepository.findById(musicalId)
                 .orElseThrow(() -> new RuntimeException("Musical not found"));
@@ -63,7 +69,7 @@ public class MusicalServiceImpl implements MusicalService {
     @Override
     @Transactional
     public void createMusical(String kopisMusicalId) {
-        try{
+        try {
             // Kopis url로 HTTP 요청 보냄
             InputStream inputStream = KopisXmlParser.getOpenApiXmlResponse(kopisConfig.getMusicalInfoUrlFromKopis(kopisMusicalId));
             // Kopis에서 응답으로 받은 XML 데이터를 자바 객체로 변환(파싱) :  inputStream (XML) -> KopisMusicalDTO (DTO)
@@ -93,50 +99,50 @@ public class MusicalServiceImpl implements MusicalService {
     }
 
     @Override
-    public MusicalResponseDTO.MusicalHomeListDTO getFiveMusicals(){
+    public MusicalResponseDTO.MusicalHomeListDTO getFiveMusicals() {
         List<Musical> musicals = musicalRepository.findTop5ByOrderByIdAsc();
 
         return MusicalConverter.toMusicalHomeListDTO(musicals);
     }
 
     @Override
-    public Page<MusicalResponseDTO.MusicalHomeDTO> getAllHotMusicals(Integer page){
+    public Page<MusicalResponseDTO.MusicalHomeDTO> getAllHotMusicals(Integer page) {
         List<Musical> musicals = musicalRepository.findAllByOrderByIdAsc();
 
-        List<MusicalResponseDTO.MusicalHomeDTO> musicalHomes= musicals.stream().map(MusicalConverter::toMusicalHomeDTO)
+        List<MusicalResponseDTO.MusicalHomeDTO> musicalHomes = musicals.stream().map(MusicalConverter::toMusicalHomeDTO)
                 .toList();
 
-        Pageable pageable = PageRequest.of(page,20);
+        Pageable pageable = PageRequest.of(page, 20);
 
         return new PageImpl<>(musicalHomes, pageable, musicalHomes.size());
 
     }
 
     @Override
-    public MusicalResponseDTO.MusicalOpenListDTO getFiveOpenMusicals(){
-        Pageable pageable = PageRequest.of(0,5); //첫 페이지 5개만 보이도록 함
+    public MusicalResponseDTO.MusicalOpenListDTO getFiveOpenMusicals() {
+        Pageable pageable = PageRequest.of(0, 5); //첫 페이지 5개만 보이도록 함
         List<Musical> musicals = musicalRepository.getFiveOpenWithin7Days(pageable);
 
         return MusicalConverter.toMusicalOpenListDTO(musicals);
     }
 
     @Override
-    public MusicalResponseDTO.MusicalOpenListDTO getAllOpenMusicals(Integer page){
-        Pageable pageable = PageRequest.of(page,20);
+    public MusicalResponseDTO.MusicalOpenListDTO getAllOpenMusicals(Integer page) {
+        Pageable pageable = PageRequest.of(page, 20);
         List<Musical> musicals = musicalRepository.getAllOpenAfterToday(pageable);
 
         return MusicalConverter.toMusicalOpenListDTO(musicals);
     }
 
     @Override
-    public MusicalResponseDTO.MusicalHomeListDTO findMusicalsByName(String musicalName){
+    public MusicalResponseDTO.MusicalHomeListDTO findMusicalsByName(String musicalName) {
         List<Musical> musicals = musicalRepository.findByNameContaining(musicalName);
 
         return MusicalConverter.toMusicalHomeListDTO(musicals);
     }
 
     @Override
-    public List<String> getWeeklyRanking(){
+    public List<String> getWeeklyRanking() {
         String rankingUrl = interparkConfig.getRankingUrl();
         try {
             Document doc = Jsoup.connect(rankingUrl).get();
@@ -218,6 +224,46 @@ public class MusicalServiceImpl implements MusicalService {
         } catch (IOException e) {
             throw new RuntimeException("사이트 접속 실패", e);
         }
+    }
+
+    @Override
+    public Page<MusicalResponseDTO.AdminMusicalDTO> getAllMusicals(Integer page) {
+        Pageable pageable = PageRequest.of(page, 20);
+        Page<Musical> musicals = musicalRepository.findAll(pageable);
+
+        List<MusicalResponseDTO.AdminMusicalDTO> musicalDTOS = musicals.stream()
+                .map(MusicalConverter::toAdminMusicalDTO)
+                .collect(toList());
+
+        return new PageImpl<>(musicalDTOS, pageable, musicalDTOS.size());
+    }
+
+    @Override
+    public MusicalResponseDTO.AdminMusicalDetailDTO getMusicalDetail(Long musicalId) {
+        Musical musical = musicalRepository.findById(musicalId).orElse(null);
+
+        List<Event> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId);
+
+        assert musical != null;
+
+        EventResponseDTO.EventResultListDTO eventResultListDTO = EventConverter.toEventResultListDTO(musical, eventList);
+
+        return MusicalConverter.adminMusicalDetailDTO(musical, eventResultListDTO);
+    }
+
+    @Override
+    public List<CastingResponseDTO.CastingResultListDTO> getCastingInfo(Long musicalId) {
+
+        List<Actor> actors = actorRepository.findAll();
+        List<CastingResponseDTO.CastingResultListDTO> castingResultListDTOs = actors.stream()
+                .collect(Collectors.groupingBy(actor -> actor.getCasting().getId())).values().stream()
+                .map(group -> {
+                    return CastingConverter.toCastingResultListDTO(group, group.get(0).getCasting());
+                }).toList()
+                .stream()
+                .filter(castingResultListDTO-> castingResultListDTO.getMusicalId().equals(musicalId)).toList();
+
+        return castingResultListDTOs;
 
     }
 }
