@@ -40,6 +40,8 @@ public class Post extends BaseEntity {
 
     private String location;
 
+    private String musicalName;
+
     private Integer commentCount;
 
     private Integer maxIndex;

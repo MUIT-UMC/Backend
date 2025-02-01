@@ -28,7 +28,11 @@ public class PostController {
     private final MemberService memberService;
 
     private final PostService postService;
-    @PostMapping(value="/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
+    public enum BlindType{
+        BLIND,HOT
+    }
+    @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "게시글 생성 API", description = "특정 게시판에 글을 작성하는 API 입니다.")
     public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> addPost(@RequestHeader("Authorization") String accessToken,
                                                                        @RequestPart("postRequestDTO") PostRequestDTO postRequestDTO,
@@ -37,17 +41,20 @@ public class PostController {
         return ApiResponse.onSuccess(postService.createPost(PostType.BLIND, postRequestDTO, img, member));
     }
 
-    @GetMapping("/")
-    @Operation(summary = "게시판 게시글 리스트 조회 API", description = "특정 게시판의 게시글 목록을 조회하는 API 이며 query string 으로 postType과 page를 받음")
+    @GetMapping("")
+    @Operation(summary = "게시판 게시글 리스트 조회 API", description = "특정 게시판의 게시글 목록을 조회하는 API")
     @Parameters({
             @Parameter( name = "page", description = "페이지를 정수로 입력"),
-            @Parameter(name = "size", description = "한 페이지 당 게시물 수")
+            @Parameter(name = "size", description = "한 페이지 당 게시물 수"),
+            @Parameter(name = "search", description = "검색어")
     })
     public ApiResponse<PostResponseDTO.PostResultListDTO> getPostList( @RequestHeader("Authorization") String accessToken,
                                                                        @RequestParam(defaultValue = "0", name = "page") Integer page,
-                                                                       @RequestParam(defaultValue = "20", name = "size")Integer size) {
+                                                                       @RequestParam(defaultValue = "20", name = "size")Integer size,
+                                                                       @RequestParam(defaultValue = "" ,name = "search") String search)
+    {
         memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(postService.getPostList(PostType.BLIND, page));
+        return ApiResponse.onSuccess(postService.getPostList(PostType.BLIND, page,size, search));
     }
 
     @GetMapping("/{postId}")

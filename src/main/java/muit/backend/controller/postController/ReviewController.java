@@ -34,7 +34,7 @@ public class ReviewController {
         REVIEW,SIGHT
     }
 
-    @PostMapping(value="/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "리뷰 생성 API", description = "리뷰 게시판에 글을 작성하는 API 입니다.")
     @Parameters({
             @Parameter(name = "postType", description = "REVIEW/SIGHT 중에서만 선택해주세요"),
@@ -54,7 +54,7 @@ public class ReviewController {
         return ApiResponse.onSuccess(reviewService.createReview(postType, reviewRequestDTO, img, member));
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "리뷰 게시판 조회 API", description = "리뷰 게시판의 글을 조회하는 API 입니다.")
     @Parameters({
             @Parameter(name = "postType", description = "REVIEW/SIGHT 중에서만 선택해주세요")
@@ -62,7 +62,9 @@ public class ReviewController {
     public ApiResponse<ReviewResponseDTO.ReviewListResponseDTO> getReviewList(@RequestHeader("Authorization") String accessToken,
                                                                               @RequestParam("postType") ReviewType reviewType,
                                                                               @RequestParam(defaultValue = "0") Integer page,
-                                                                              @RequestParam(defaultValue = "20") Integer size) {
+                                                                              @RequestParam(defaultValue = "20") Integer size,
+                                                                              @RequestParam(defaultValue = "", name="musicalName") String musicalName,
+                                                                              @RequestParam(defaultValue = "",name="location") String location) {
 
         memberService.getMemberByToken(accessToken);
 
@@ -71,7 +73,7 @@ public class ReviewController {
             case SIGHT -> PostType.SIGHT;
         };
 
-        return ApiResponse.onSuccess(reviewService.getReviewList(postType, page, size));
+        return ApiResponse.onSuccess(reviewService.getReviewList(postType, page, size, musicalName,location));
     }
 
     @GetMapping("/{postId}")
