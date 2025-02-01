@@ -70,13 +70,13 @@ public class ManageViewController {
     }
 
     @PostMapping(value = "/{theatreId}/edit/addSec", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "섹션 정보 등록하기", description = "시야관리 - 상세 - 수정하기 - 추가하기 - 정보, 사진 등록 - 등록하기 : 섹션 정보 및 사진 등록")
+    @Operation(summary = "섹션 정보 등록하기", description = "시야관리 - 상세 - 수정하기 - 추가하기 - 정보, 사진 입력 - 등록하기 : 섹션 정보 및 사진 등록")
     public ApiResponse<SectionResponseDTO.SectionResultDTO> addSection(@PathVariable("theatreId") Long theatreId, @RequestPart("requestDTO") SectionRequestDTO.SectionCreateDTO requestDTO, @RequestPart(value = "img", required = false) MultipartFile img){
         return ApiResponse.onSuccess(theatreService.createSection(theatreId, requestDTO, img));
     }
 
     @PatchMapping(value = "/{sectionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "기존 섹션 정보 수정하기", description = "시야관리 - 상세 - 수정하기 - 수정, 미등록 버튼 : 섹션 정보 수정")
+    @Operation(summary = "기존 섹션 정보 수정하기", description = "시야관리 - 상세 - 수정하기 - 수정, 미등록 버튼 - 수정내용 입력 - 등록하기 : 섹션 정보 수정 ")
     public ApiResponse<SectionResponseDTO.SectionResultDTO> editSection(@PathVariable("sectionId") Long sectionId, @RequestPart("requestDTO") SectionRequestDTO.SectionCreateDTO requestDTO, @RequestPart(value = "img", required = false) MultipartFile img){
         return ApiResponse.onSuccess(theatreService.editSection(sectionId, requestDTO, img));
     }
