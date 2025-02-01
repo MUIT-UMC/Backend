@@ -15,7 +15,7 @@ public interface PostService {
     public PostResponseDTO.GeneralPostResponseDTO getPost(Long PostId);
 
     //게시판 조회
-    public PostResponseDTO.PostResultListDTO getPostList(PostType postType, Integer page);
+    public PostResponseDTO.PostResultListDTO getPostList(PostType postType, Integer page, Integer size, String search);
 
     //게시글 생성
     public PostResponseDTO.GeneralPostResponseDTO createPost(PostType postType, PostRequestDTO postRequestDTO, List<MultipartFile> img, Member member);

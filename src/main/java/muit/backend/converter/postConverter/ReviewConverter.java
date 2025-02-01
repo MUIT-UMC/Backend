@@ -27,6 +27,7 @@ public class ReviewConverter {
                 .musical(musical)
                 .commentCount(0)
                 .rating(requestDTO.getRating())
+                .location(musical.getTheatre().getName())
                 .build();
 
 

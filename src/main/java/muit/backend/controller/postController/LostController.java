@@ -16,7 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = " 분실물 게시글", description = "삭제 요청 게시글 API에서 공통으로 사용합니다")
 @RestController
@@ -30,7 +33,7 @@ public class LostController {
         LOST,FOUND
     }
 
-    @PostMapping(value="/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "분실물글 생성 API", description = "분실물 게시판에 글을 작성하는 API 입니다.")
     @Parameters({
             @Parameter(name = "postType", description = "게시판 종류, LOST, FOUND")
@@ -47,18 +50,35 @@ public class LostController {
         return ApiResponse.onSuccess(lostService.createLostPost(postType, lostRequestDTO, img, member));
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "게시판 게시글 리스트 조회 API", description = "특정 게시판의 게시글 목록을 조회하는 API 이며 query string 으로 postType과 page를 받음")
     @Parameters({
-            @Parameter(name = "postType", description = "게시판 종류, LOST, FOUND, REVIEW, BLIND, HOT 중에 선택"),
-            @Parameter( name = "page", description = "페이지를 정수로 입력")
+            @Parameter(name = "postType", description = "게시판 종류, LOST, FOUND 중에 선택"),
+            @Parameter( name = "page", description = "페이지를 정수로 입력"),
+            @Parameter(name = "size", description = "한 페이지 당 게시물 수"),
+            @Parameter(name = "lostDate", description = "시간 제외 YYYY-MM-DD 포맷으로 주세요")
     })
     public ApiResponse<LostResponseDTO.LostResultListDTO> getPostList(@RequestHeader("Authorization") String accessToken,
-                                                                      @RequestParam("postType") PostType postType,
-                                                                      @RequestParam(defaultValue = "0", name = "page") Integer page) {
-        memberService.getMemberByToken(accessToken);
+                                                                      @RequestParam(defaultValue = "") String musicalName,
+                                                                      @RequestParam(defaultValue = "") String lostDate,
+                                                                      @RequestParam(defaultValue = "") String location,
+                                                                      @RequestParam(defaultValue = "") String lostItem,
+                                                                      @RequestParam("postType") LostType lostType,
+                                                                      @RequestParam(defaultValue = "0", name = "page") Integer page,
+                                                                      @RequestParam(defaultValue = "20", name = "size") Integer size) {
 
-        return ApiResponse.onSuccess(lostService.getLostPostList(postType, page));
+        PostType postType = switch (lostType){
+            case LOST -> PostType.LOST;
+            case FOUND -> PostType.FOUND;
+        };
+        memberService.getMemberByToken(accessToken);
+        Map<String,String> search = new HashMap<>();
+        search.put("musicalName",musicalName);
+        search.put("lostDate",lostDate);
+        search.put("location",location);
+        search.put("lostItem",lostItem);
+
+        return ApiResponse.onSuccess(lostService.getLostPostList(postType, page, size, search));
     }
 
     @GetMapping("/{postId}")
