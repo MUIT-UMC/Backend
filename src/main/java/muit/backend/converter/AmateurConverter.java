@@ -157,6 +157,7 @@ public class AmateurConverter {
         if (tickets == null) return null;
         return tickets.stream()
                 .map(ticket -> new AmateurShowResponseDTO.AmateurTicketDTO(
+                        ticket.getTicketName(),
                         ticket.getTicketType().toString(),
                         String.valueOf(ticket.getPrice())
                 ))

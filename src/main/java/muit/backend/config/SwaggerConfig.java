@@ -9,6 +9,8 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 public class SwaggerConfig {
 
@@ -19,7 +21,7 @@ public class SwaggerConfig {
                 .description("MUIT API 명세서")
                 .version("1.0.0");
 
-        String jwtSchemeName = "JWT TOKEN";
+        String jwtSchemeName = "bearerAuth";
 
         // API 요청 헤더에 인증 정보 포함 -> admin을 위해
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
@@ -39,7 +41,8 @@ public class SwaggerConfig {
                 .addServersItem(localServer)
                 .info(info)
                 .addSecurityItem(securityRequirement)
-                .components(components);
+                .components(components)
+                .security(List.of(new SecurityRequirement().addList(jwtSchemeName)));
 
     }
 }

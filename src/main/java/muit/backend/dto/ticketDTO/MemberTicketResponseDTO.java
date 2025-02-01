@@ -20,4 +20,7 @@ public class MemberTicketResponseDTO {
     private int totalPrice;
     private LocalDateTime date;
     private ReservationStatus reservationStatus;
+
+
+
 }

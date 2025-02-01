@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class MemberTicketRequestDTO {
-    private Long memberId;
     private Long amateurTicketId;
     private int quantity;
 }

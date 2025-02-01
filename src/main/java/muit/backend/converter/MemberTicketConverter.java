@@ -8,7 +8,7 @@ import muit.backend.dto.ticketDTO.MemberTicketResponseDTO;
 
 public class MemberTicketConverter {
 
-    public MemberTicketResponseDTO toTicketDTO(MemberTicket memberTicket) {
+    public static MemberTicketResponseDTO toTicketDTO(MemberTicket memberTicket) {
         return new MemberTicketResponseDTO(
                 memberTicket.getId(),
                 memberTicket.getMember().getId(),
@@ -20,7 +20,7 @@ public class MemberTicketConverter {
         );
     }
 
-    public MemberTicket toEntity(Member member, AmateurTicket amateurTicket, int quantity) {
+    public static MemberTicket toEntity(Member member, AmateurTicket amateurTicket, int quantity) {
         return MemberTicket.builder()
                 .member(member)
                 .amateurTicket(amateurTicket)
