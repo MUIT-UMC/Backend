@@ -8,6 +8,7 @@ import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.s3.UuidFile;
 import org.springframework.data.domain.Page;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,15 +28,17 @@ public class PostConverter {
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
                 .commentCount(0)
+                .postLikes(new ArrayList<>())
                 .images(imgList)
                 .build();
     }
 
     // Entity -> ResultDTO
     // 게시글 조회 - 단건
-    public static PostResponseDTO.GeneralPostResponseDTO toGeneralPostResponseDTO(Post post) {
+    public static PostResponseDTO.GeneralPostResponseDTO toGeneralPostResponseDTO(Post post,boolean isLiked) {
 
         String name = post.getIsAnonymous() ? "익명" :post.getMember().getName();
+
         return PostResponseDTO.GeneralPostResponseDTO.builder()
                 .id(post.getId())
                 .memberId(post.getMember().getId())
@@ -44,24 +47,10 @@ public class PostConverter {
                 .content(post.getContent())
                 .imgUrls(post.getImages().stream().map(UuidFile::getFileUrl).collect(Collectors.toList()))
                 .commentCount(post.getCommentCount())
+                .likeCount(post.getPostLikes().size())
+                .isLiked(isLiked)
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();
     }
-
-    // List<Entity> -> ResultListDTO
-    //게시판 조회 - 리스트
-    public static PostResponseDTO.PostResultListDTO toPostResultListDTO(Page<Post> postPage) {
-        List<PostResponseDTO.GeneralPostResponseDTO> postResultListDTO = postPage.stream()
-                .map(PostConverter::toGeneralPostResponseDTO).collect(Collectors.toList());
-
-        return PostResponseDTO.PostResultListDTO.builder()
-                .posts(postResultListDTO)
-                .listSize(postResultListDTO.size())
-                .isFirst(postPage.isFirst())
-                .isLast(postPage.isLast())
-                .totalPage(postPage.getTotalPages())
-                .totalElements(postPage.getTotalElements())
-                .build();
-    };
 }
