@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface LostService {
@@ -16,7 +17,7 @@ public interface LostService {
     public LostResponseDTO.GeneralLostResponseDTO getLostPost(Long PostId);
 
     //게시판 조회
-    public LostResponseDTO.LostResultListDTO getLostPostList(PostType postType, Integer page);
+    public LostResponseDTO.LostResultListDTO getLostPostList(PostType postType, Integer page, Integer size, Map<String,String> search);
 
     //게시글 생성
     public LostResponseDTO.GeneralLostResponseDTO createLostPost(PostType postType, LostRequestDTO lostRequestDTO, List<MultipartFile> img, Member member);

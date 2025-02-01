@@ -80,5 +80,6 @@ jobs:
           # 애플리케이션 배포
           ssh -i private_key -o StrictHostKeyChecking=no ${USER}@${HOST} '
             sudo systemctl stop myapp || true
+            sudo bash -c "echo 'SPRING_PROFILES_ACTIVE=prod' > /etc/environment"
             sudo systemctl start myapp
           '

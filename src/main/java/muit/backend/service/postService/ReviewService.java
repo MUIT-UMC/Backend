@@ -14,7 +14,7 @@ public interface ReviewService {
 
     ReviewResponseDTO.GeneralReviewResponseDTO createReview(PostType postType, ReviewRequestDTO reviewRequestDTO, List<MultipartFile> img, Member member);
 
-    ReviewResponseDTO.ReviewListResponseDTO getReviewList(PostType postType,Integer page, Integer size);
+    ReviewResponseDTO.ReviewListResponseDTO getReviewList(PostType postType,Integer page, Integer size, String musicalName, String location);
 
     ReviewResponseDTO.GeneralReviewResponseDTO getReview(Long postId);
 
