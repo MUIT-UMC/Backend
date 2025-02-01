@@ -27,6 +27,7 @@ public class LostConverter {
                 .location(requestDTO.getLocation())
                 .lostItem(requestDTO.getLostItem())
                 .lostDate(requestDTO.getLostDate())
+                .musicalName(requestDTO.getMusicalName())
                 .build();
     }
 
@@ -44,6 +45,7 @@ public class LostConverter {
                 .location(post.getLocation())
                 .lostItem(post.getLostItem())
                 .lostDate(post.getLostDate())
+                .musicalName(post.getMusicalName())
                 .commentCount(post.getCommentCount())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())

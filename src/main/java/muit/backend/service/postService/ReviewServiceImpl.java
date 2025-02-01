@@ -63,8 +63,15 @@ public class ReviewServiceImpl implements ReviewService {
 
     //리뷰 목록 조회
     @Override
-    public ReviewResponseDTO.ReviewListResponseDTO getReviewList(PostType postType, Integer page, Integer size){
-        Page<Post> reviewPage = postRepository.findAllByPostType(postType, PageRequest.of(page, size));
+    public ReviewResponseDTO.ReviewListResponseDTO getReviewList(PostType postType, Integer page, Integer size, String musicalName, String location){
+        Page<Post> reviewPage;
+
+        if(!musicalName.isEmpty()){
+            reviewPage = postRepository.findAllByPostTypeAndMusicalNameAndLocationContaining(postType, PageRequest.of(page, size), musicalName,location);
+        }else{
+            reviewPage = postRepository.findAllByPostTypeAndLocationContaining(postType, PageRequest.of(page, size),location);
+        }
+
         return ReviewConverter.toReviewListDTO(reviewPage);
     }
 

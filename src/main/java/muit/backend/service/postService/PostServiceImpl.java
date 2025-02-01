@@ -55,8 +55,9 @@ public class PostServiceImpl implements PostService {
 
     //게시판 조회
     @Override
-    public PostResponseDTO.PostResultListDTO getPostList(PostType postType, Integer page){
-        Page<Post> postPage = postRepository.findAllByPostType(postType, PageRequest.of(page, 10));
+    public PostResponseDTO.PostResultListDTO getPostList(PostType postType, Integer page, Integer size, String search){
+        Page<Post> postPage = postRepository.findAllByPostTypeAndTitleContaining(postType,search,PageRequest.of(page, size));
+
         return PostConverter.toPostResultListDTO(postPage);
     }
 
