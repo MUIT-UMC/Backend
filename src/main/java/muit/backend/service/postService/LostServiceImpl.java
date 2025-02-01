@@ -6,6 +6,8 @@ import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.postConverter.LostConverter;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
+import muit.backend.domain.entity.musical.Musical;
+import muit.backend.domain.entity.musical.Theatre;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.LostResponseDTO;
@@ -21,8 +23,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,13 +36,54 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class LostServiceImpl implements LostService {
     private final PostRepository postRepository;
-    private final MemberRepository memberRepository;
+    private final MusicalRepository musicRepository;
     private final UuidFileService uuidFileService;
+    private final MusicalRepository musicalRepository;
+
     //게시판 조회
     @Override
-    public LostResponseDTO.LostResultListDTO getLostPostList(PostType postType, Integer page){
-        Page<Post> postPage = postRepository.findAllByPostType(postType, PageRequest.of(page, 10));
-        return LostConverter.toLostResultListDTO(postPage);
+    public LostResponseDTO.LostResultListDTO getLostPostList(PostType postType, Integer page,Integer size, Map<String,String> search) {
+        Page<Post> postPage;
+        if(!search.get("musicalName").isEmpty()) {//뮤지컬 이름 포함 검색
+            if(!search.get("lostDate").isEmpty()){//날짜 포함 검색
+                LocalDateTime startTime = LocalDateTime.of(LocalDate.parse(search.get("lostDate") ),LocalTime.of(0,0,0));
+                LocalDateTime endTime = LocalDateTime.of(LocalDate.parse(search.get("lostDate")),LocalTime.of(23,59,59));
+                postPage = postRepository.findAllByPostTypeAndMusicalNameAndLostItemContainingAndLocationContainingAndLostDateBetween(postType,
+                        PageRequest.of(page, size),
+                        search.get("musicalName"),
+                        search.get("lostItem"),
+                        search.get("location"),
+                        startTime,endTime);
+
+            }else{
+                postPage = postRepository.findAllByPostTypeAndMusicalNameAndLostItemContainingAndLocationContaining(postType,
+                        PageRequest.of(page, size),
+                        search.get("musicalName"),
+                        search.get("lostItem"),
+                        search.get("location"));
+                System.out.println("날짜 없을때");
+            }
+
+        }else {//뮤지컬 이름 미포함 검색
+
+            if(!search.get("lostDate").isEmpty()){//날짜 포함 검색
+                LocalDateTime startTime = LocalDateTime.of(LocalDate.parse(search.get("lostDate")),LocalTime.of(0,0,0));
+                LocalDateTime endTime = LocalDateTime.of(LocalDate.parse(search.get("lostDate")),LocalTime.of(23,59,59));
+                postPage = postRepository.findAllByPostTypeAndLostItemContainingAndLocationContainingAndLostDateBetween(postType,
+                        PageRequest.of(page, size),
+                        search.get("lostItem"),
+                        search.get("location"),
+                        startTime,endTime);
+            }else{
+                postPage = postRepository.findAllByPostTypeAndLostItemContainingAndLocationContaining(postType,
+                        PageRequest.of(page, size),
+                        search.get("lostItem"),
+                        search.get("location"));
+            }
+        }
+
+        
+            return LostConverter.toLostResultListDTO(postPage);
     }
 
     //특정 게시판 특정 게시글 단건 조회
