@@ -76,7 +76,30 @@ public class ManageAmateurShowServiceImpl implements ManageAmateurShowService {
         AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
 
-        amateurShow.decideAmateurShow(amateurStatus, requestDTO);
+
+        if (amateurStatus == AmateurStatus.AGAIN) {
+            if (amateurShow.getRejectReason() != null) {
+                // 기존 반려 사유가 있으면 수정
+                amateurShow.updateRejectReason(requestDTO.getRejectReason());
+            } else {
+                // 반려 사유가 없으면 생성
+                amateurShow.createRejectReason(requestDTO.getRejectReason());
+            }
+        } else if (amateurStatus == AmateurStatus.YET || amateurStatus == AmateurStatus.APPROVED) {
+            amateurShow.createRejectReason(null); // 다른 상태일 때는 반려 사유 null로 설정
+        }
+
+        amateurShow.updateAmateurStatus(amateurStatus);
+
+        return ManageAmateurShowConverter.toManageAmateurShowDecideDTO(amateurShow);
+    }
+
+    // 소극장 공연 등록/반려 조회
+    @Override
+    public ManageAmateurShowResponseDTO.ManageAmateurShowDecideDTO getDecideAmateurShow(Long amateurShowId) {
+        AmateurShow amateurShow = amateurShowRepository.findById(amateurShowId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.AMATEURSHOW_NOT_FOUND));
+
         return ManageAmateurShowConverter.toManageAmateurShowDecideDTO(amateurShow);
     }
 }

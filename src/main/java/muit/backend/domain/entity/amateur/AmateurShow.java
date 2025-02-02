@@ -99,20 +99,6 @@ public class AmateurShow extends BaseEntity {
         }
     }
 
-    public void decideAmateurShow(AmateurStatus amateurStatus, ManageAmateurShowRequestDTO.ManageAmateurShowDecideDTO requestDTO) {
-
-        // 상태 업데이트 (등록/반려)
-        this.amateurStatus = amateurStatus;
-
-        // AGAIN일 때만 반려 사유 설정 (필수는 아님)
-        if (amateurStatus == AmateurStatus.AGAIN) {
-            this.rejectReason = requestDTO.getRejectReason();
-        } else if (amateurStatus == AmateurStatus.YET || amateurStatus == AmateurStatus.APPROVED) {
-            this.rejectReason = null;  // APPROVED일 때는 명시적으로 null 설정
-        }
-
-    }
-
     public void updateAmateurTicket(AmateurTicketRequestDTO.AmateurTicketUpdateDTO requestDTO) {
         if (requestDTO.getName() != null) {
             this.name = requestDTO.getName();
@@ -128,4 +114,15 @@ public class AmateurShow extends BaseEntity {
         }
     }
 
+    public void updateRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
+    }
+
+    public void createRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
+    }
+
+    public void updateAmateurStatus(AmateurStatus amateurStatus) {
+        this.amateurStatus = amateurStatus;
+    }
 }

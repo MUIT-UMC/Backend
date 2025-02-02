@@ -48,10 +48,16 @@ public class ManageAmateurShowController {
     }
 
     @Operation(summary = "소극장 공연 최종 등록/반려")
-    @PatchMapping("/{amateurShowId}/decision")
+    @PutMapping("/{amateurShowId}/decision")
     public ApiResponse<ManageAmateurShowResponseDTO.ManageAmateurShowDecideDTO> decideAmateurShow(@PathVariable("amateurShowId") Long amateurShowId, @RequestParam AmateurStatus amateurStatus, @RequestBody ManageAmateurShowRequestDTO.ManageAmateurShowDecideDTO requestDTO) {
         ManageAmateurShowResponseDTO.ManageAmateurShowDecideDTO amateurShow = manageAmateurShowService.decideAmateurShow(amateurShowId, amateurStatus, requestDTO);
         return ApiResponse.onSuccess(amateurShow);
+    }
+
+    @Operation(summary = "소극장 공연 등록/반려 조회", description = "특정 소극장 공연 등록/반려 페이지 조회")
+    @GetMapping("/{amateurShowId}/decision")
+    public ApiResponse<ManageAmateurShowResponseDTO.ManageAmateurShowDecideDTO> getDecideAmateurShow(@PathVariable("amateurShowId") Long amateurShowId) {
+        return ApiResponse.onSuccess(manageAmateurShowService.getDecideAmateurShow(amateurShowId));
     }
 
 }
