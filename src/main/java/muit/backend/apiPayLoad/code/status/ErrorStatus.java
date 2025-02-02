@@ -36,16 +36,15 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //COMMENT ERROR
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT4000", "존재하지 않는 댓글입니다."),
-    
+
     // AMATEURSHOW ERROR
     AMATEURSHOW_NOT_FOUND(HttpStatus.NOT_FOUND, "AMATEURSHOW4000", "존재하지 않는 소극장 공연입니다."),
 
     // MUSICAL ERROR
     MUSICAL_NOT_FOUND(HttpStatus.NOT_FOUND, "MUSICAL4000", "존재하지 않는 뮤지컬입니다."),
 
-    // MUSICAL ERROR
-    EVENT_NOT_FOUND(HttpStatus.NOT_FOUND, "EVENT4000", "이벤트가 존재하지 않는 뮤지컬이므로 추가할 수 없습니다."),
-    EVENT_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "EVENT4001", "이벤트가 이미 존재하는 뮤지컬입니다.");
+    // INQUIRY ERROR
+    INQUIRY_NOT_FOUND(HttpStatus.NOT_FOUND, "INQUIRY4000", "존재하지 않는 문의글입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
