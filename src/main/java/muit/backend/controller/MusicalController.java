@@ -39,7 +39,7 @@ public class MusicalController {
     @GetMapping("/hot/all")
     @Operation(summary = "뮤지컬 조회 - 리스트 HOT NOW 전체보기", description = "현재 HOT한 뮤지컬 전체 조회하는 API, 페이지당 20개")
     @Parameter( name = "page", description = "페이지를 정수로 입력")
-    public ApiResponse<Page<MusicalResponseDTO.MusicalHomeDTO>> getAllHotMusicals(@RequestParam Integer page) {
+    public ApiResponse<Page<MusicalResponseDTO.MusicalHomeDTO>> getAllHotMusicals(@RequestParam(defaultValue = "0", name = "page") Integer page) {
 
         return ApiResponse.onSuccess(musicalService.getAllHotMusicals(page));
     }
