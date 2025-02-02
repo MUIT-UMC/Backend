@@ -24,7 +24,7 @@ public class ManageMusicalController {
 
     @GetMapping("")
     @Operation(summary = "관리자 기능 중 뮤지컬 관리 초기화면", description = "DB의 전체 뮤지컬 항목을 조회하는 API")
-    public ApiResponse<Page<MusicalResponseDTO.AdminMusicalDTO>> getAllMusicals(@RequestParam(name = "page") Integer page) {
+    public ApiResponse<Page<MusicalResponseDTO.AdminMusicalDTO>> getAllMusicals(@RequestParam(defaultValue = "0", name = "page") Integer page) {
         return ApiResponse.onSuccess(musicalService.getAllMusicals(page));
     }
 

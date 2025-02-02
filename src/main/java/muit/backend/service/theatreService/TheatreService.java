@@ -22,7 +22,9 @@ public interface TheatreService {
 
     public Theatre createTheatre(String kopisTheatreId, Musical musical);
 
-    public ManageViewResponseDTO.AdminTheatreResultListDTO getTheatres(Pageable pageable);
+    public Page<ManageViewResponseDTO.AdminTheatreResultDTO> getTheatres(Pageable pageable);
+
+    public Page<ManageViewResponseDTO.AdminTheatreResultDTO> searchTheatres(String keyword, Pageable pageable);
 
     public TheatreResponseDTO.AdminTheatreDetailDTO getTheatreDetail(Long theatreId);
 

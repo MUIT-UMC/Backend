@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @Tag(name = "뮤지컬")
@@ -38,9 +37,9 @@ public class MusicalController {
     }
 
     @GetMapping("/hot/all")
-    @Operation(summary = "뮤지컬 조회 - 리스트 HOT NOW 전체보기", description = "현재 HOT한 뮤지컬 전체 조회하는 API")
+    @Operation(summary = "뮤지컬 조회 - 리스트 HOT NOW 전체보기", description = "현재 HOT한 뮤지컬 전체 조회하는 API, 페이지당 20개")
     @Parameter( name = "page", description = "페이지를 정수로 입력")
-    public ApiResponse<Page<MusicalResponseDTO.MusicalHomeDTO>> getAllHotMusicals(@RequestParam Integer page) {
+    public ApiResponse<Page<MusicalResponseDTO.MusicalHomeDTO>> getAllHotMusicals(@RequestParam(defaultValue = "0", name = "page") Integer page) {
 
         return ApiResponse.onSuccess(musicalService.getAllHotMusicals(page));
     }
@@ -52,7 +51,7 @@ public class MusicalController {
     }
 
     @GetMapping("/rank/all")
-    @Operation(summary = "뮤지컬 조회 - 리스트 RANKING 전체보기", description = "RANKING 뮤지컬 전체 조회하는 API")
+    @Operation(summary = "뮤지컬 조회 - 리스트 RANKING 전체보기", description = "RANKING 뮤지컬 전체 조회하는 API, 페이지당 20개")
     public ApiResponse<Page<MusicalResponseDTO.MusicalHomeDTO>> getAllRankMusicals(@RequestParam(defaultValue = "0", name = "page") Integer page) {
         return ApiResponse.onSuccess(musicalService.getAllHotMusicals(page));
     }
@@ -64,7 +63,7 @@ public class MusicalController {
     }
 
     @GetMapping("/open/all")
-    @Operation(summary = "뮤지컬 조회 - 리스트 TICKET OPEN 전체보기", description = "오늘 이후 티켓 오픈하는 뮤지컬 전체 조회하는 API")
+    @Operation(summary = "뮤지컬 조회 - 리스트 TICKET OPEN 전체보기", description = "오늘 이후 티켓 오픈하는 뮤지컬 전체 조회하는 API, 페이지당 20개")
     public ApiResponse<MusicalResponseDTO.MusicalOpenListDTO> getAllOpenMusicals(@RequestParam(defaultValue = "0", name = "page") Integer page) {
         return ApiResponse.onSuccess(musicalService.getAllOpenMusicals(page));
     }
