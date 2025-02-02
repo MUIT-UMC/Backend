@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.MemberTicket;
-import muit.backend.domain.enums.ReservationStatus;
 import muit.backend.domain.enums.TicketType;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -26,6 +25,8 @@ public class AmateurTicket extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private TicketType ticketType;
+
+    private String ticketName;
 
     private Integer price;
 

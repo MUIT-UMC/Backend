@@ -11,6 +11,7 @@ import muit.backend.domain.entity.amateur.AmateurTicket;
 import muit.backend.domain.enums.ReservationStatus;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,10 @@ public class MemberTicket extends BaseEntity {
 
     private Integer totalPrice;
 
+    private LocalDateTime reservationTime;
+
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus reservationStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "amateur_ticket_id")
@@ -35,5 +40,5 @@ public class MemberTicket extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id")
-    private Reservation reservation;
+    private Member member;
 }

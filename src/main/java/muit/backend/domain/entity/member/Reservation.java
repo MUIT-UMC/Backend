@@ -1,3 +1,4 @@
+/*
 package muit.backend.domain.entity.member;
 
 import jakarta.persistence.*;
@@ -35,3 +36,4 @@ public class Reservation {
 
 
 }
+*/

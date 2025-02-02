@@ -1,6 +1,10 @@
 package muit.backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.dto.memberDTO.*;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @Validated
@@ -17,6 +22,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/register")
+    @Operation(summary = "회원 가입 api", description = "이메일로 회원 가입 하는 기능.")
     public ApiResponse<EmailRegisterResponseDTO> emailRegister(@RequestBody EmailRegisterRequestDTO dto) {
         try{
             EmailRegisterResponseDTO response = memberService.emailSignUp(dto);
@@ -30,7 +36,8 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/email/login")  // JWT 토큰을 생성하여 반환
+    @PostMapping("/email/login")
+    // JWT 토큰을 생성하여 반환
     public ApiResponse<EmailLoginAccessTokenResponse> login(@RequestBody LoginRequestDTO dto) {
         try {
             //TokenDto tokenDto = memberService.login(dto);
@@ -45,6 +52,10 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}")
+    @Parameters({
+            @Parameter(name = "Authorization", description = "JWT 토큰으로, 사용자의 아이디, request header 입니다!")
+    })
+    @Operation(summary = "마이 페이지 조회 api", description = "마이 페이지 조회 합니다")
     public ApiResponse<MyPageResponseDTO> myPage(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("memberId") Long memberId) {
         Member member = memberService.getMemberByToken(authorizationHeader);
         MyPageResponseDTO myPageResponseDTO = memberService.getMyPage(member.getId(), memberId);
