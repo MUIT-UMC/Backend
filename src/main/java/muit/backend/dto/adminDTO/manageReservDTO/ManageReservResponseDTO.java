@@ -1,3 +1,4 @@
+/*
 package muit.backend.dto.adminDTO.manageReservDTO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -24,3 +25,4 @@ public class ManageReservResponseDTO {
         private ReservationStatus reservationStatus; // 예약 상태 (예약 중, 예약 완료, 사용 완료, 취소 중, 취소 완료)
     }
 }
+*/

@@ -2,6 +2,7 @@ package muit.backend.service;
 
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import muit.backend.apiPayLoad.code.status.ErrorStatus;
 import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.config.jwt.TokenDTO;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -86,13 +88,17 @@ public class MemberServiceImpl implements MemberService {
     // == 회원 검증 로직 == //
     @Override
     public Member getMemberByToken(String token) {
+        String tmptoken = token.substring("Bearer ".length()).trim();
+
         // 토큰이 유효한지 검증
-        if (!tokenProvider.validateToken(token)) {
+        if (!tokenProvider.validateToken(tmptoken)) {
             throw new GeneralException(ErrorStatus.MEMBER_INVALID_CODE);
         }
+        log.info("일단 토큰 받기는함. 유효하기도함");
 
         // 토큰에서 인증 정보를 추출
-        Authentication authentication = tokenProvider.getAuthentication(token);
+        Authentication authentication = tokenProvider.getAuthentication(tmptoken);
+        log.info(" 생성된 Authentication 객체: {}", authentication);
 
         // 인증 정보에서 사용자 이메일을 가져와 회원 조회
         String email = authentication.getName();

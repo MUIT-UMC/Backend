@@ -1,3 +1,4 @@
+/*
 package muit.backend.service.adminService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,3 +43,4 @@ public class ManageReservServiceImpl implements ManageReservService {
         );
     }
 }
+*/

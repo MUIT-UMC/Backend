@@ -27,7 +27,7 @@ public class SecurityConfig {
                     config.setAllowCredentials(true);
                     config.addAllowedOrigin("http://localhost:8080"); // '*' 대신 명시적 출처 사용
                     config.addAllowedOrigin("http://localhost:5173"); // '*' 대신 명시적 출처 사용
-
+                    config.addAllowedOrigin("http://13.209.69.125:8080"); //배포된 프론트엔드 서버 추가
                     //config.addAllowedOrigin("*");
                     config.addAllowedHeader("*");
                     config.addAllowedMethod("*");
@@ -39,9 +39,10 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.disable()) // HTTP Basic 비활성화
                 .formLogin(formLogin -> formLogin.disable()) // 폼 로그인 비활성화
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/**").permitAll()  // 이 경로들은 인증 없이 접근 허용
-                        .anyRequest().authenticated()  // 그 외의 모든 요청은 인증 필요
+                        .requestMatchers("/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .apply(new JwtSecurityConfig(tokenProvider));
         http

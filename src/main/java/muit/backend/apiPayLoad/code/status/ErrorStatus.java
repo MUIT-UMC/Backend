@@ -31,21 +31,29 @@ public enum ErrorStatus implements BaseErrorCode {
     PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "MEMBER4003", "비밀번호가 일치하지 않습니다."),
     MEMBER_INVALID_CODE(HttpStatus.BAD_REQUEST, "MEMBER4010", "토큰이 유효하지 않습니다."),
 
+
+    // MEMBER TICKET ERROR
+    MEMBER_TICKET_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBERTICKET4000", "존재하지 않는 예약 티켓입니다."),
+    MEMBER_TICKET_QUANTITY(HttpStatus.BAD_REQUEST, "MEMBERTICKET4001", "주문 수량이 적절하지 않습니다"),
     //POST ERROR
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4000", "존재하지 않는 게시글입니다."),
 
     //COMMENT ERROR
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT4000", "존재하지 않는 댓글입니다."),
-    
+
     // AMATEURSHOW ERROR
     AMATEURSHOW_NOT_FOUND(HttpStatus.NOT_FOUND, "AMATEURSHOW4000", "존재하지 않는 소극장 공연입니다."),
+
+    // AMATEUR TICKET ERROR
+    AMATEUR_TICKET_NOT_FOUND(HttpStatus.NOT_FOUND, "AMATEURTICKET4000", "존재하지 않는 소극장 공연 티켓입니다."),
+    AMATEUR_TICKET_STOCK(HttpStatus.BAD_REQUEST, "AMATEURTICKET4001","주문 수량은 최소 1개 이상이어야 합니다." ),
+
 
     // MUSICAL ERROR
     MUSICAL_NOT_FOUND(HttpStatus.NOT_FOUND, "MUSICAL4000", "존재하지 않는 뮤지컬입니다."),
 
-    // MUSICAL ERROR
-    EVENT_NOT_FOUND(HttpStatus.NOT_FOUND, "EVENT4000", "이벤트가 존재하지 않는 뮤지컬이므로 추가할 수 없습니다."),
-    EVENT_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "EVENT4001", "이벤트가 이미 존재하는 뮤지컬입니다.");
+    // INQUIRY ERROR
+    INQUIRY_NOT_FOUND(HttpStatus.NOT_FOUND, "INQUIRY4000", "존재하지 않는 문의글입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

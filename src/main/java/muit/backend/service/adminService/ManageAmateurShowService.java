@@ -20,4 +20,6 @@ public interface ManageAmateurShowService {
     public ManageAmateurShowResponseDTO.ManageAmateurShowResultDTO updateAmateurShow(Long amateurShowId, ManageAmateurShowRequestDTO.ManageAmateurShowUpdateDTO requestDTO);
 
     public ManageAmateurShowResponseDTO.ManageAmateurShowDecideDTO decideAmateurShow(Long amateurShowId, @NotNull AmateurStatus amateurStatus, ManageAmateurShowRequestDTO.ManageAmateurShowDecideDTO requestDTO);
+
+    public ManageAmateurShowResponseDTO.ManageAmateurShowDecideDTO getDecideAmateurShow(Long amateurShowId);
 }

@@ -80,7 +80,7 @@ public class Member extends BaseEntity {
     private List<Inquiry> inquiryList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Reservation> reservationList = new ArrayList<>();
+    private List<MemberTicket> memberTicketList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<AmateurShow> amateurShowList = new ArrayList<>();

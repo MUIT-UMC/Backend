@@ -1,3 +1,4 @@
+/*
 package muit.backend.controller.adminController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,4 +34,4 @@ public class ManageReservController {
         return ApiResponse.onSuccess(reservations);
     }
 
-}
+}*/
