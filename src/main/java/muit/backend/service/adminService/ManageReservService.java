@@ -1,3 +1,4 @@
+/*
 package muit.backend.service.adminService;
 
 import muit.backend.dto.adminDTO.manageReservDTO.ManageReservResponseDTO;
@@ -12,3 +13,4 @@ public interface ManageReservService {
 
     public Page<ManageReservResponseDTO.ManageReservResultListDTO> getAllReservations(Pageable pageable, String keyword, Set<String> selectedFields);
 }
+*/

@@ -8,13 +8,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -42,6 +45,9 @@ public class TokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
+       /* if (authorities.isEmpty()) {
+            authorities = "ROLE_USER"; // 기본 권한 부여 //지피티가 추가함
+        }*/
         long now = (new Date()).getTime();
 
         // Access Token 생성
@@ -68,8 +74,24 @@ public class TokenProvider {
     }
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
+        log.info("🔍 클레임까지 옴 Claims: {}", claims);  // 여기서 claims 값을 확인
 
-        // 권한 정보 없이 UserDetails 생성
+        // 🔍 auth 값이 존재하는 경우, GrantedAuthority로 변환
+//        String authorities = claims.get("auth", String.class);
+//        List<SimpleGrantedAuthority> grantedAuthorities = Collections.emptyList();
+//
+//        if (authorities != null && !authorities.isEmpty()) {
+//            grantedAuthorities = Arrays.stream(authorities.split(","))
+//                    .map(SimpleGrantedAuthority::new)
+//                    .collect(Collectors.toList());
+//        }
+//
+//        // 권한 정보를 포함한 UserDetails 생성
+//        UserDetails principal = new User(claims.getSubject(), "", grantedAuthorities);
+//
+//        return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
+//
+         //권한 정보 없이 UserDetails 생성
         UserDetails principal = new User(claims.getSubject(), "", new ArrayList<>());
 
         return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
@@ -103,4 +125,3 @@ public class TokenProvider {
         }
     }
 }
-

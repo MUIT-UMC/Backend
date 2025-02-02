@@ -57,6 +57,7 @@ public class AmateurShowResponseDTO {
     @NoArgsConstructor
     @Getter
     public static class AmateurTicketDTO {
+        private String ticketName;
         private String ticketType;
         private String price;
     }
