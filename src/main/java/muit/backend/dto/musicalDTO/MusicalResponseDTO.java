@@ -58,8 +58,7 @@ public class MusicalResponseDTO {
         private String posterUrl;
         private String name;
         private String place;
-        private LocalDate perFrom;
-        private LocalDate perTo;
+        private String duration;
     }
 
     @Builder

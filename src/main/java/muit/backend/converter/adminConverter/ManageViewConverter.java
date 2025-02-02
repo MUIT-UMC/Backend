@@ -14,6 +14,7 @@ public class ManageViewConverter {
         return ManageViewResponseDTO.AdminTheatreResultDTO.builder()
                 .id(theatre.getId())
                 .name(theatre.getName())
+                .musicalName(theatre.getMusical().getName())
                 .build();
     }
 

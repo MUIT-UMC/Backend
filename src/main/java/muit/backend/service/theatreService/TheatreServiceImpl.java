@@ -6,8 +6,10 @@ import muit.backend.config.KopisConfig;
 import muit.backend.converter.MusicalConverter;
 import muit.backend.converter.SectionConverter;
 import muit.backend.converter.TheatreConverter;
+import muit.backend.converter.adminConverter.ManageMemberConverter;
 import muit.backend.converter.adminConverter.ManageViewConverter;
 import muit.backend.converter.postConverter.PostConverter;
+import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.entity.musical.Section;
@@ -42,6 +44,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static muit.backend.converter.TheatreConverter.toAdminTheatreSectionListDTO;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -54,9 +58,7 @@ public class TheatreServiceImpl implements TheatreService {
     @Override
     public TheatreResponseDTO.TheatreResultListDTO findTheatreByName(String theatreName){
         List<Theatre> theatres = theatreRepository.findByNameContaining(theatreName);
-        String message = "검색 결과";
-        if(theatres.isEmpty()) message = "검색결과가 존재하지 않습니다.";
-        return TheatreConverter.toTheatreResultListDTO(theatres, message);
+        return TheatreConverter.toTheatreResultListDTO(theatres);
     }
 
     @Override
@@ -65,7 +67,6 @@ public class TheatreServiceImpl implements TheatreService {
                 .orElseThrow(() -> new RuntimeException("Theatre not found"));
 
         Section section = sectionRepository.findByTheatreIdAndSectionType(theatreId,sectionType);
-
 
         return SectionConverter.toSectionResultDTO(section);
     }
@@ -97,10 +98,29 @@ public class TheatreServiceImpl implements TheatreService {
     }
 
     @Override
-    public ManageViewResponseDTO.AdminTheatreResultListDTO getTheatres(Pageable pageable){
+    public Page<ManageViewResponseDTO.AdminTheatreResultDTO> getTheatres(Pageable pageable){
 
         Page<Theatre> theatres = theatreRepository.findAll(pageable);
-        return ManageViewConverter.toAdminTheatreResultListDTO(theatres);
+        return theatres.map(ManageViewConverter::toAdminTheatreResultDTO);
+    }
+
+    @Override
+    public Page<ManageViewResponseDTO.AdminTheatreResultDTO> searchTheatres(String keyword, Pageable pageable){
+        // 검색어가 있는지 확인
+        boolean isKeywordSearch = keyword != null && !keyword.trim().isEmpty();
+
+        Page<Theatre> theatres;
+        // 검색어가 있으면 해당 키워드로 검색
+        if (isKeywordSearch) {
+            theatres = theatreRepository.findByKeyword(keyword, pageable);
+            if (theatres.isEmpty()) { // 검색 결과 없으면 빈 페이지
+                return Page.empty(pageable);
+            }
+        } else {
+            theatres = theatreRepository.findAll(pageable);
+        }
+
+        return theatres.map(ManageViewConverter::toAdminTheatreResultDTO);
     }
 
     @Override
@@ -169,9 +189,12 @@ public class TheatreServiceImpl implements TheatreService {
     public TheatreResponseDTO.AdminTheatreSectionListDTO getTheatreSections(Long theatreId){
         Theatre theatre = theatreRepository.findById(theatreId).orElse(null);
         List<Section> sections = sectionRepository.findAllByTheatreIdOrderBySectionTypeAsc(theatreId);
-        List<TheatreResponseDTO.AdminTheatreSectionDTO> sectionDTOs =
-                sections.stream().map(TheatreConverter::toAdminTheatreSectionDTO).collect(Collectors.toList());
-        return TheatreConverter.toAdminTheatreSectionListDTO(theatre, sectionDTOs);
+
+        List<TheatreResponseDTO.AdminTheatreSectionDTO> sectionDTOs;
+        sectionDTOs = sections.stream().map(TheatreConverter::toAdminTheatreSectionDTO).collect(Collectors.toList());
+
+        return toAdminTheatreSectionListDTO(theatre, sectionDTOs);
+
     }
 
     @Override
