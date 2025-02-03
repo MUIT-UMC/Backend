@@ -59,7 +59,7 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
     //일반적인 예외 처리
     @org.springframework.web.bind.annotation.ExceptionHandler
     public ResponseEntity<Object> exception(Exception e, WebRequest request) {
-        e.printStackTrace();
+        ExceptionAdvice.log.error("에러 발생",e);
 
         return handleExceptionInternalFalse(e, ErrorStatus._INTERNAL_SERVER_ERROR, HttpHeaders.EMPTY, ErrorStatus._INTERNAL_SERVER_ERROR.getHttpStatus(),request, e.getMessage());
     }
