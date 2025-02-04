@@ -83,7 +83,10 @@ public class Post extends BaseEntity {
     }
 
     public void changeImg(List<UuidFile> imgList){
-        this.images = imgList;
+        if(!this.images.isEmpty()){
+            this.images.clear();
+        }
+        this.images.addAll(imgList);
     }
 
     public void increaseMaxIndex(){

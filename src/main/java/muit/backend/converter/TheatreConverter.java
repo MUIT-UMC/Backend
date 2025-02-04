@@ -12,6 +12,7 @@ import muit.backend.dto.theatreDTO.TheatreResponseDTO;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,13 +38,15 @@ public class TheatreConverter {
                .build();
    }
 
-   public static TheatreResponseDTO.TheatreResultListDTO toTheatreResultListDTO(List<Theatre> theatres, String message) {
+   public static TheatreResponseDTO.TheatreResultListDTO toTheatreResultListDTO(List<Theatre> theatres) {
 
        List<TheatreResponseDTO.TheatreResultDTO> theatreResultsDTO = theatres.stream()
                .map(TheatreConverter::toTheatreResultDTO).toList();
 
-        return TheatreResponseDTO.TheatreResultListDTO.builder()
-                .message(message)
+       String msg = "검색 결과 " + theatres.size() + "건";
+       if(theatres.isEmpty()) {msg = "검색 결과가 존재하지 않습니다";}
+       return TheatreResponseDTO.TheatreResultListDTO.builder()
+                .message(msg)
                 .theatreResults(theatreResultsDTO)
                 .build();
    }
@@ -79,11 +82,14 @@ public class TheatreConverter {
                 .build();
    }
 
-   public static TheatreResponseDTO.AdminTheatreSectionListDTO toAdminTheatreSectionListDTO(Theatre theater, List<TheatreResponseDTO.AdminTheatreSectionDTO> sections) {
+   public static TheatreResponseDTO.AdminTheatreSectionListDTO toAdminTheatreSectionListDTO(Theatre theatre, List<TheatreResponseDTO.AdminTheatreSectionDTO> sections) {
+        if(sections==null) {
+            sections = new ArrayList<>();
+       }
         return TheatreResponseDTO.AdminTheatreSectionListDTO.builder()
-                .theatreId(theater.getId())
-                .theatreName(theater.getName())
-                .isTheatrePic(theater.getTheatrePic()!=null)
+                .theatreId(theatre.getId())
+                .theatreName(theatre.getName())
+                .isTheatrePic(theatre.getTheatrePic()!=null)
                 .theatreSections(sections)
                 .build();
    }

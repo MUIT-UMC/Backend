@@ -32,10 +32,21 @@ public class ManageViewController {
 
     @GetMapping("")
     @Operation(summary = "관리자 기능 중 시야 관리 초기 화면", description = "DB의 전체 공연장 항목을 조회하는 API")
-    public ApiResponse<ManageViewResponseDTO.AdminTheatreResultListDTO> getTheatres(@RequestParam(value = "page", defaultValue = "0") int page){
+    public ApiResponse<Page<ManageViewResponseDTO.AdminTheatreResultDTO>> getTheatres(@RequestParam(value = "page", defaultValue = "0") int page){
         Pageable pageable = PageRequest.of(page, 20, Sort.by("id").ascending());
         return ApiResponse.onSuccess(theatreService.getTheatres(pageable));
     }
+    @GetMapping("/search")
+    @Operation(summary = "시야 관리에서 공연장 검색", description = "검색결과 공연장 항목을 조회하는 API")
+    @Parameters({
+            @Parameter(name = "keyword", description = "공연장 이름이나 현재 공연중인 뮤지컬 이름 입력")
+    })
+    public ApiResponse<Page<ManageViewResponseDTO.AdminTheatreResultDTO>> searchTheatres(@RequestParam(name = "keyword", required = false) String keyword,
+                                                                                         @RequestParam(value = "page", defaultValue = "0") int page){
+        Pageable pageable = PageRequest.of(page, 20, Sort.by("id").ascending());
+        return ApiResponse.onSuccess(theatreService.searchTheatres(keyword, pageable));
+    }
+
 
     @GetMapping("/{theatreId}")
     @Operation(summary = "시야 관리에서 특정 공연장 상세 화면", description = "시야 관리 - 상세 버튼 클릭 - 해당 공연장의 정보를 조회하는 API")

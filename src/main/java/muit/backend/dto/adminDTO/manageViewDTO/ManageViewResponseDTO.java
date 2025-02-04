@@ -16,6 +16,7 @@ public class ManageViewResponseDTO {
     public static class AdminTheatreResultDTO {
         private Long id;
         private String name;
+        private String musicalName;
     }
 
     @Builder

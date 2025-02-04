@@ -21,6 +21,12 @@ public class SectionConverter {
     }
 
     public static SectionResponseDTO.SectionResultDTO toSectionResultDTO(Section section) {
+        if(section==null) {
+            return SectionResponseDTO.SectionResultDTO.builder()
+
+                    .build();
+        }
+
         return SectionResponseDTO.SectionResultDTO.builder()
                 .allSeatImg(section.getTheatre().getAllSeatImg())
                 .theatreId(section.getTheatre().getId())

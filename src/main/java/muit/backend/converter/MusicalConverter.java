@@ -88,20 +88,23 @@ public class MusicalConverter {
     }
 
     public static MusicalResponseDTO.MusicalHomeDTO toMusicalHomeDTO(Musical musical) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.M.d", Locale.KOREA);
+
+        String duration = musical.getPerFrom().format(formatter) + " ~ " + musical.getPerTo().format(formatter);
+
         return MusicalResponseDTO.MusicalHomeDTO.builder()
                 .id(musical.getId())
                 .name(musical.getName())
                 .place(musical.getPlace())
                 .posterUrl(musical.getPosterUrl())
-                .perFrom(musical.getPerFrom())
-                .perTo(musical.getPerTo())
+                .duration(duration)
                 .build();
     }
 
     public static MusicalResponseDTO.MusicalHomeListDTO toMusicalHomeListDTO(List<Musical> musicals) {
         List<MusicalResponseDTO.MusicalHomeDTO> musicalHomeList = musicals.stream()
                 .map(MusicalConverter::toMusicalHomeDTO).collect(Collectors.toList());
-        String msg = "검색 결과";
+        String msg = "검색 결과 " + musicals.size() + "건";
         if(musicals.isEmpty()) msg= "검색 결과가 존재하지 않습니다.";
         return MusicalResponseDTO.MusicalHomeListDTO.builder()
                 .message(msg)
