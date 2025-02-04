@@ -21,9 +21,9 @@ public interface MusicalService {
 
     public Page<MusicalResponseDTO.MusicalHomeDTO> getAllHotMusicals(Integer page);
 
-    public MusicalResponseDTO.MusicalOpenListDTO getFiveOpenMusicals();
+    public List<MusicalResponseDTO.MusicalOpenDTO> getFiveOpenMusicals();
 
-    public MusicalResponseDTO.MusicalOpenListDTO getAllOpenMusicals(Integer page);
+    public Page<MusicalResponseDTO.MusicalOpenDTO> getAllOpenMusicals(Integer page);
 
     public MusicalResponseDTO.MusicalHomeListDTO findMusicalsByName(String musicalName);
 

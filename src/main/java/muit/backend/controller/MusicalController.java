@@ -58,13 +58,13 @@ public class MusicalController {
 
     @GetMapping("/open")
     @Operation(summary = "뮤지컬 조회 - 리스트 TICKET OPEN", description = "Home에서 1주일 안에 오픈하는 최대 5개 뮤지컬을 조회하는 API")
-    public ApiResponse<MusicalResponseDTO.MusicalOpenListDTO> getFiveOpenMusicals() {
+    public ApiResponse<List<MusicalResponseDTO.MusicalOpenDTO>> getFiveOpenMusicals() {
         return ApiResponse.onSuccess(musicalService.getFiveOpenMusicals());
     }
 
     @GetMapping("/open/all")
     @Operation(summary = "뮤지컬 조회 - 리스트 TICKET OPEN 전체보기", description = "오늘 이후 티켓 오픈하는 뮤지컬 전체 조회하는 API, 페이지당 20개")
-    public ApiResponse<MusicalResponseDTO.MusicalOpenListDTO> getAllOpenMusicals(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+    public ApiResponse<Page<MusicalResponseDTO.MusicalOpenDTO>> getAllOpenMusicals(@RequestParam(defaultValue = "0", name = "page") Integer page) {
         return ApiResponse.onSuccess(musicalService.getAllOpenMusicals(page));
     }
 

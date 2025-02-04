@@ -119,19 +119,21 @@ public class MusicalServiceImpl implements MusicalService {
     }
 
     @Override
-    public MusicalResponseDTO.MusicalOpenListDTO getFiveOpenMusicals() {
+    public List<MusicalResponseDTO.MusicalOpenDTO> getFiveOpenMusicals() {
         Pageable pageable = PageRequest.of(0, 5); //첫 페이지 5개만 보이도록 함
         List<Musical> musicals = musicalRepository.getFiveOpenWithin7Days(pageable);
 
-        return MusicalConverter.toMusicalOpenListDTO(musicals);
+        return musicals.stream().map(MusicalConverter::toMusicalOpenDTO).collect(toList());
     }
 
     @Override
-    public MusicalResponseDTO.MusicalOpenListDTO getAllOpenMusicals(Integer page) {
+    public Page<MusicalResponseDTO.MusicalOpenDTO> getAllOpenMusicals(Integer page) {
         Pageable pageable = PageRequest.of(page, 20);
         List<Musical> musicals = musicalRepository.getAllOpenAfterToday(pageable);
 
-        return MusicalConverter.toMusicalOpenListDTO(musicals);
+        List<MusicalResponseDTO.MusicalOpenDTO> musicalDTOs = musicals.stream().map(MusicalConverter::toMusicalOpenDTO).toList();
+
+        return new PageImpl<>(musicalDTOs, pageable, musicalDTOs.size());
     }
 
     @Override
