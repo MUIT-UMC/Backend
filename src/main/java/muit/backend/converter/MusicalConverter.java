@@ -152,15 +152,6 @@ public class MusicalConverter {
                 .build();
     }
 
-    public static MusicalResponseDTO.MusicalOpenListDTO toMusicalOpenListDTO(List<Musical> musicals) {
-        List<MusicalResponseDTO.MusicalOpenDTO> musicalOpenList = musicals.stream()
-                .map(MusicalConverter::toMusicalOpenDTO).collect(Collectors.toList());
-
-        return MusicalResponseDTO.MusicalOpenListDTO.builder()
-                .musicalOpenList(musicalOpenList)
-                .build();
-    }
-
     public static MusicalResponseDTO.AdminMusicalDTO toAdminMusicalDTO(Musical musical) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.M.d", Locale.KOREA);
 

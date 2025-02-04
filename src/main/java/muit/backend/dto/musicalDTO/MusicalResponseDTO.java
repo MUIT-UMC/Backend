@@ -84,13 +84,6 @@ public class MusicalResponseDTO {
         private String dDay;
     }
 
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class MusicalOpenListDTO{
-        private List<MusicalOpenDTO> musicalOpenList;
-    }
 
     @Builder
     @Getter
