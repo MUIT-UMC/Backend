@@ -12,6 +12,7 @@ import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +117,7 @@ public class MusicalConverter {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M.dd (E) HH:mm", Locale.KOREA);
         String openDate = musical.getOpenDate().format(formatter);
         EventType s = musical.getOpenInfo();
+        if(s==null) s = EventType.NONE;
         String openInfo;
         switch(s){
             case FIRST:
@@ -131,6 +133,14 @@ public class MusicalConverter {
                 openInfo = "일반 예매";
         }
 
+        Period period = Period.between(musical.getOpenDate().toLocalDate(), LocalDateTime.now().toLocalDate());
+        String day;
+
+        if(period.isZero()){
+            day = "D-day";}
+        else {
+            day = "D" + period.getDays();
+        }
         return MusicalResponseDTO.MusicalOpenDTO.builder()
                 .id(musical.getId())
                 .name(musical.getName())
@@ -138,6 +148,7 @@ public class MusicalConverter {
                 .posterUrl(musical.getPosterUrl())
                 .openDate(openDate)
                 .openInfo(openInfo)
+                .dDay(day)
                 .build();
     }
 
