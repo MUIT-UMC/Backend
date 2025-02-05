@@ -15,7 +15,7 @@ public interface MemberTicketService {
 
     public TicketResponseDTO.AmateurShowForTicketDTO getTicketInfo(Long amateurShowId, Member member);
 
-    public List<TicketResponseDTO.SelectionTicketInfoDTO> getSelectionInfo(Long selectionTicketId);
+    //public List<TicketResponseDTO.SelectionTicketInfoDTO> getSelectionInfo(Long selectionTicketId);
 
     public TicketResponseDTO.CancelRequestTicketDTO cancelTicketReservation (Member member, Long memberTicketId);
 
