@@ -2,6 +2,8 @@ package muit.backend.service.memberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.config.RedisUtil;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -62,28 +64,27 @@ public class EmailService {
     }
 
     // 인증 번호 검증 메서드
-    public boolean verifyCode(String email, String code) {
+    public void verifyCode(String email, String code) {
 
         String redisKey = "EmailVerificationCode:" + email;
         String storedCode = redisUtil.getData(redisKey);
 
-        // 저장된 코드가 없으면
+        // 저장된 코드가 없으면 (만료)
         if (storedCode == null) {
             System.out.println("No verification code found for email: " + email);
-            return false;
+            throw new GeneralException(ErrorStatus.EMAIL_CODE_EXPIRED);
         }
 
         // 코드 일치 여부
         boolean verified = storedCode.equals(code);
 
-        // 검증 성공하면 Redis에서 코드 삭제
-        if (verified) {
-            redisUtil.deleteData(redisKey);
-            System.out.println("Email verification code successful & deleted from Redis for email: " + email);
-        } else {
-            System.out.println("Email verification code failed for email: " + email);
+        // 코드 불일치
+        if (!verified) {
+            throw new GeneralException(ErrorStatus.EMAIL_INVALID_CODE);
         }
 
-        return verified;
+        // 검증 성공하면 Redis에서 코드 삭제
+        redisUtil.deleteData(redisKey);
+        System.out.println("Email verification code successful & deleted from Redis for email: " + email);
     }
 }
