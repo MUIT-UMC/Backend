@@ -45,7 +45,8 @@ public class TicketController {
     }*/
 
 
-    @PostMapping(value = "/purchase/{amateurTicketId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    // 이 메서드는 현재 오류가 있습니다!
+    /*@PostMapping(value = "/purchase/{amateurTicketId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "소극장 공연 티켓 예매", description = "소극장 공연 티켓을 예매하는 기능입니다.")
     public ApiResponse<TicketResponseDTO.MemberTicketResponseDTO> purchaseTicket(@RequestHeader("Authorization") String authorizationHeader,
                                                                                  @PathVariable("amateurTicketId") Long amateurTicketId,
@@ -70,7 +71,7 @@ public class TicketController {
         Member member = memberService.getMemberByToken(authorizationHeader);
         TicketResponseDTO.CancelRequestTicketDTO cancelRequestTicketDTO = memberTicketService.cancelTicketReservation(member, memberTicketId);
         return ApiResponse.onSuccess(cancelRequestTicketDTO);
-    }
+    }*/
 
     @GetMapping("/myTickets/{memberTicketId}")
     @Operation(summary = "마이페이지에서 티켓 단건 조회")
