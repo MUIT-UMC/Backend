@@ -39,6 +39,10 @@ public class MemberTicket extends BaseEntity {
     private AmateurTicket amateurTicket;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id")
+    @JoinColumn(name = "member_id")
     private Member member;
+
+    public void cancelTicket(ReservationStatus reservationStatus) {
+        this.reservationStatus = reservationStatus;
+    }
 }
