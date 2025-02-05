@@ -110,7 +110,7 @@ public class MemberTicketServiceImpl implements MemberTicketService {
         }
 
         // 필린 티켓이랑 현재 구매하려는게 전체보다 많음녀 에러 터트리고
-        if(soldTickets + requestDTO.getQuantity() <= totalAvailableTickets) {
+        if(soldTickets + requestDTO.getQuantity() > totalAvailableTickets) {
             throw new GeneralException(ErrorStatus.MEMBER_TICKET_STOCK);
         }
 

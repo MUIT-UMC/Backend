@@ -1,7 +1,10 @@
 package muit.backend.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
+
+import org.springframework.web.bind.annotation.*;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +16,6 @@ import muit.backend.dto.ticketDTO.TicketResponseDTO;
 import muit.backend.service.MemberService;
 import muit.backend.service.ticketService.MemberTicketService;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,18 +37,17 @@ public class TicketController {
         return ApiResponse.onSuccess(responseDTO);
     }
 
-    // 위에거로 합쳐서 일단 주석 처리 했습니다.
-   /* @GetMapping("/{amateurShowId}/selectTicket")
-    @Operation(summary = "소극장 티켓 구매 두번째 화면")
-    public ApiResponse<List<TicketResponseDTO.SelectionTicketInfoDTO>> getTicketSelection(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("amateurShowId") Long amateurShowId){
-        Member member = memberService.getMemberByToken(authorizationHeader);
-        List<TicketResponseDTO.SelectionTicketInfoDTO> tickets = memberTicketService.getSelectionInfo(amateurShowId);
-        return ApiResponse.onSuccess(tickets);
-    }*/
+//    // 위에거로 합쳐서 일단 주석 처리 했습니다.
+//    @GetMapping("/{amateurShowId}/selectTicket")
+//    @Operation(summary = "소극장 티켓 구매 두번째 화면")
+//    public ApiResponse<List<TicketResponseDTO.SelectionTicketInfoDTO>> getTicketSelection(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("amateurShowId") Long amateurShowId){
+//        Member member = memberService.getMemberByToken(authorizationHeader);
+//        List<TicketResponseDTO.SelectionTicketInfoDTO> tickets = memberTicketService.getSelectionInfo(amateurShowId);
+//        return ApiResponse.onSuccess(tickets);
+//    }
 
 
-    // 이 메서드는 현재 오류가 있습니다!
-    /*@PostMapping(value = "/purchase/{amateurTicketId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/purchase/{amateurTicketId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "소극장 공연 티켓 예매", description = "소극장 공연 티켓을 예매하는 기능입니다.")
     public ApiResponse<TicketResponseDTO.MemberTicketResponseDTO> purchaseTicket(@RequestHeader("Authorization") String authorizationHeader,
                                                                                  @PathVariable("amateurTicketId") Long amateurTicketId,
@@ -71,7 +72,7 @@ public class TicketController {
         Member member = memberService.getMemberByToken(authorizationHeader);
         TicketResponseDTO.CancelRequestTicketDTO cancelRequestTicketDTO = memberTicketService.cancelTicketReservation(member, memberTicketId);
         return ApiResponse.onSuccess(cancelRequestTicketDTO);
-    }*/
+    }
 
     @GetMapping("/myTickets/{memberTicketId}")
     @Operation(summary = "마이페이지에서 티켓 단건 조회")
