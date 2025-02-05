@@ -1,10 +1,8 @@
 package muit.backend.config;
 
-import muit.backend.service.memberService.EmailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -43,10 +41,6 @@ public class EmailConfig {
     private int writeTimeout;
 
     @Bean
-    public EmailService emailService() {
-        return new EmailService(javaMailSender());
-    }
-    @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(host);
@@ -58,8 +52,6 @@ public class EmailConfig {
 
         return mailSender;
     }
-
-
 
     private Properties getMailProperties() {
         Properties properties = new Properties();

@@ -21,6 +21,7 @@ public enum ErrorStatus implements BaseErrorCode {
     //EMAIL ERROR
     EMAIL_FORMAT_ERROR(HttpStatus.NOT_FOUND, "EMAIL4000", "잘못된 이메일 형식입니다."),
     EMAIL_ALREADY_EXIST(HttpStatus.NOT_FOUND, "EMAIL4001", "이미 존재하는 이메일입니다."),
+    EMAIL_CODE_EXPIRED(HttpStatus.NOT_FOUND, "EMAIL4002", "인증코드가 만료되었습니다."),
     EMAIL_INVALID_CODE(HttpStatus.NOT_FOUND, "EMAIL4010", "인증코드가 일치하지 않습니다."),
 
 
@@ -48,7 +49,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // AMATEUR TICKET ERROR
     AMATEUR_TICKET_NOT_FOUND(HttpStatus.NOT_FOUND, "AMATEURTICKET4000", "존재하지 않는 소극장 공연 티켓입니다."),
-    AMATEUR_TICKET_STOCK(HttpStatus.BAD_REQUEST, "AMATEURTICKET4001","주문 수량은 최소 1개 이상이어야 합니다." ),
+    AMATEUR_TICKET_STOCK(HttpStatus.BAD_REQUEST, "AMATEURTICKET4001", "주문 수량은 최소 1개 이상이어야 합니다."),
 
 
     // MUSICAL ERROR
