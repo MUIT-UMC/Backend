@@ -52,14 +52,7 @@ public class TicketController {
     public ApiResponse<TicketResponseDTO.MemberTicketResponseDTO> purchaseTicket(@RequestHeader("Authorization") String authorizationHeader,
                                                                                  @PathVariable("amateurTicketId") Long amateurTicketId,
                                                                                  @RequestBody TicketRequestDTO requestDTO) {
-        log.info("Received amateurTicketId: {}", amateurTicketId);
-        log.info("Received DTO: {}", requestDTO);
-        log.info("Received Quantity: {}", requestDTO.getQuantity());
 
-
-        if (requestDTO.getQuantity() == null) {
-            throw new IllegalStateException("quantity 값이 null입니다.");
-        }
         Member member = memberService.getMemberByToken(authorizationHeader);
         TicketResponseDTO.MemberTicketResponseDTO memberTicketResponseDTO = memberTicketService.createMemberTicket(member,amateurTicketId, requestDTO);
         return ApiResponse.onSuccess(memberTicketResponseDTO);
