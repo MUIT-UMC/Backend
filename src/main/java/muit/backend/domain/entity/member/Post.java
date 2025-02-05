@@ -14,6 +14,7 @@ import muit.backend.dto.postDTO.ReviewRequestDTO;
 import muit.backend.s3.UuidFile;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class Post extends BaseEntity {
 
     private Integer rating;
 
-    private LocalDateTime lostDate;
+    private LocalDate lostDate;
 
     private String lostItem;
 

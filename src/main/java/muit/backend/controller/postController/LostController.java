@@ -16,7 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +62,7 @@ public class LostController {
     })
     public ApiResponse<LostResponseDTO.LostResultListDTO> getPostList(@RequestHeader("Authorization") String accessToken,
                                                                       @RequestParam(defaultValue = "") String musicalName,
-                                                                      @RequestParam(defaultValue = "") String lostDate,
+                                                                      @RequestParam(defaultValue = "") LocalDate lostDate,
                                                                       @RequestParam(defaultValue = "") String location,
                                                                       @RequestParam(defaultValue = "") String lostItem,
                                                                       @RequestParam("postType") LostType lostType,
@@ -74,7 +76,7 @@ public class LostController {
         memberService.getMemberByToken(accessToken);
         Map<String,String> search = new HashMap<>();
         search.put("musicalName",musicalName);
-        search.put("lostDate",lostDate);
+        search.put("lostDate",lostDate.toString());
         search.put("location",location);
         search.put("lostItem",lostItem);
 
