@@ -125,4 +125,8 @@ public class AmateurShow extends BaseEntity {
     public void updateAmateurStatus(AmateurStatus amateurStatus) {
         this.amateurStatus = amateurStatus;
     }
+
+    public void updateSoldTicket(Integer soldTicket) {
+        this.soldTicket = soldTicket;
+    }
 }

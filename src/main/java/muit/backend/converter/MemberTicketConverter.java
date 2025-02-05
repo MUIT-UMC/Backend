@@ -3,13 +3,12 @@ package muit.backend.converter;
 import muit.backend.domain.entity.amateur.AmateurTicket;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.MemberTicket;
-import muit.backend.dto.ticketDTO.MemberTicketRequestDTO;
-import muit.backend.dto.ticketDTO.MemberTicketResponseDTO;
+import muit.backend.dto.ticketDTO.TicketResponseDTO;
 
 public class MemberTicketConverter {
 
-    public static MemberTicketResponseDTO toTicketDTO(MemberTicket memberTicket) {
-        return new MemberTicketResponseDTO(
+    public static TicketResponseDTO.MemberTicketResponseDTO toTicketDTO(MemberTicket memberTicket) {
+        return new TicketResponseDTO.MemberTicketResponseDTO(
                 memberTicket.getId(),
                 memberTicket.getMember().getId(),
                 memberTicket.getAmateurTicket().getId(),
