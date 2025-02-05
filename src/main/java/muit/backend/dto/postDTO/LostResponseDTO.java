@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class LostResponseDTO {
         private String title;
         private String musicalName;
         private String location;
-        private LocalDateTime lostDate;
+        private LocalDate lostDate;
         private String lostItem;
         private String content;
         private List<String> imgUrls;
