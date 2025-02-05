@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static muit.backend.domain.enums.ReservationStatus.CANCEL_AWAIT;
@@ -36,7 +37,7 @@ public class MemberTicketServiceImpl implements MemberTicketService {
     private final AmateurTicketRepository  amateurTicketRepository;
     private final AmateurShowRepository amateurShowRepository;
 
-    // == 티켓 구매 전 조회 패이지 == //
+    // == 티켓 구매 전 조회 페이지 == //
 
     @Override
     public TicketResponseDTO.AmateurShowForTicketDTO getTicketInfo(Long amateurShowId, Member member) {
@@ -71,7 +72,7 @@ public class MemberTicketServiceImpl implements MemberTicketService {
                 .build();
     }
 
-
+    // 두번째 화면이었는데, 필요 없을듯
     @Override
     public List<TicketResponseDTO.SelectionTicketInfoDTO> getSelectionInfo(Long selectionTicketId){
         List<AmateurTicket> tickets = amateurTicketRepository.findByAmateurShowId(selectionTicketId);
@@ -131,11 +132,16 @@ public class MemberTicketServiceImpl implements MemberTicketService {
         return MemberTicketConverter.toTicketDTO(memberTicket);
     }
 
+    // == 티켓 취소 요청 == //
 
     @Transactional
     @Override
     public TicketResponseDTO.CancelRequestTicketDTO cancelTicketReservation (Member member, Long memberTicketId){
         MemberTicket memberTicket = memberTicketRepository.findById(memberTicketId).orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_TICKET_NOT_FOUND));
+        if (Set.of(CANCEL_AWAIT, ReservationStatus.CANCELED, ReservationStatus.EXPIRED)
+                .contains(memberTicket.getReservationStatus())) {
+            throw new GeneralException(ErrorStatus.MEMBER_TICKET_ALREADY_CANCELED);
+        }
 
         memberTicket.cancelTicket(CANCEL_AWAIT);
         return TicketResponseDTO.CancelRequestTicketDTO.builder()
@@ -143,6 +149,7 @@ public class MemberTicketServiceImpl implements MemberTicketService {
                 .reservationStatus(memberTicket.getReservationStatus()).build();
     }
 
+    // == 티켓 단건 조회 == //
     @Override
     public TicketResponseDTO.MyPageTicketDTO getMyTicket(Member member,Long memberTicketId){
         MemberTicket memberTicket = memberTicketRepository.findById(memberTicketId)
@@ -163,12 +170,33 @@ public class MemberTicketServiceImpl implements MemberTicketService {
                .build();
     }
 
-/*    @Override
-    public TicketResponseDTO.MyPageTicketDTO getMyTicketList(Member member,Long memberTicketId, ReservationStatus reservationStatus){
-        MemberTicket memberTicket = memberTicketRepository.findById(memberTicketId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_TICKET_NOT_FOUND));
+    // == 티켓 리스트 조회, 필터 있음 == //
+    @Override
+    public TicketResponseDTO.MyPageTicketListDTO getMyTicketList(Member member, ReservationStatus reservationStatus){
+        List<MemberTicket> memberTickets;
+        if(reservationStatus == null){
+           memberTickets = memberTicketRepository.findByMember(member);
+        }else{
+            memberTickets = memberTicketRepository.findByMemberAndReservationStatus(member, reservationStatus);
+        }
 
-    }*/
+        List<TicketResponseDTO.MyPageTicketDTO> ticketDTOList = memberTickets.stream()
+                .map(ticket -> TicketResponseDTO.MyPageTicketDTO.builder()
+                        .memberTicketId(ticket.getId())
+                        .amateurShowName(ticket.getAmateurTicket().getAmateurShow().getName())
+                        .posterImgUrl(ticket.getAmateurTicket().getAmateurShow().getPosterImgUrl())
+                        .reservationDate(ticket.getReservationTime())
+                        .schedule(ticket.getAmateurTicket().getAmateurShow().getSchedule())
+                        .place(ticket.getAmateurTicket().getAmateurShow().getPlace())
+                        .quantity(ticket.getQuantity())
+                        .reservationStatus(ticket.getReservationStatus())
+                        .build())
+                .collect(Collectors.toList());
+
+        return TicketResponseDTO.MyPageTicketListDTO.builder()
+                .tickets(ticketDTOList)
+                .build();
+    }
 
 
 

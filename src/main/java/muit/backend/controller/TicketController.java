@@ -28,20 +28,21 @@ public class TicketController {
     private final MemberTicketService memberTicketService;
 
     @GetMapping("/{amateurShowId}/ticketInfo")
-    @Operation(summary = "소극장 공연 티켓 구매 첫번째, 두번째 화면")
+    @Operation(summary = "소극장 공연 티켓 구매 첫번째, 두번째, 세번째 단계")
     public ApiResponse<TicketResponseDTO.AmateurShowForTicketDTO> getTicketInfo(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("amateurShowId") Long amateurShowId) {
         Member member = memberService.getMemberByToken(authorizationHeader);
         TicketResponseDTO.AmateurShowForTicketDTO responseDTO = memberTicketService.getTicketInfo(amateurShowId, member);
         return ApiResponse.onSuccess(responseDTO);
     }
 
-    @GetMapping("/{amateurShowId}/selectTicket")
+    // 위에거로 합쳐서 일단 주석 처리 했습니다.
+   /* @GetMapping("/{amateurShowId}/selectTicket")
     @Operation(summary = "소극장 티켓 구매 두번째 화면")
     public ApiResponse<List<TicketResponseDTO.SelectionTicketInfoDTO>> getTicketSelection(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("amateurShowId") Long amateurShowId){
         Member member = memberService.getMemberByToken(authorizationHeader);
         List<TicketResponseDTO.SelectionTicketInfoDTO> tickets = memberTicketService.getSelectionInfo(amateurShowId);
         return ApiResponse.onSuccess(tickets);
-    }
+    }*/
 
 
     @PostMapping(value = "/purchase/{amateurTicketId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,6 +54,7 @@ public class TicketController {
         log.info("Received DTO: {}", requestDTO);
         log.info("Received Quantity: {}", requestDTO.getQuantity());
 
+
         if (requestDTO.getQuantity() == null) {
             throw new IllegalStateException("quantity 값이 null입니다.");
         }
@@ -62,8 +64,9 @@ public class TicketController {
     }
 
     @PatchMapping("/myTickets/{memberTicketId}/cancel")
-    @Operation(summary = "소극장 공연 티켓 수정 - 예약 취소")
-    public ApiResponse<TicketResponseDTO.CancelRequestTicketDTO> cancelTicket(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("memberTicketId") Long memberTicketId) {
+    @Operation(summary = "소극장 공연 티켓 수정 - 예약 취소 요청")
+    public ApiResponse<TicketResponseDTO.CancelRequestTicketDTO> cancelTicket(@RequestHeader("Authorization") String authorizationHeader,
+                                                                              @PathVariable("memberTicketId") Long memberTicketId) {
         Member member = memberService.getMemberByToken(authorizationHeader);
         TicketResponseDTO.CancelRequestTicketDTO cancelRequestTicketDTO = memberTicketService.cancelTicketReservation(member, memberTicketId);
         return ApiResponse.onSuccess(cancelRequestTicketDTO);
@@ -71,13 +74,20 @@ public class TicketController {
 
     @GetMapping("/myTickets/{memberTicketId}")
     @Operation(summary = "마이페이지에서 티켓 단건 조회")
-    public ApiResponse<TicketResponseDTO.MyPageTicketDTO> getMyTicket(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("memberTicketId") Long memberTicketId){
+    public ApiResponse<TicketResponseDTO.MyPageTicketDTO> getMyTicket(@RequestHeader("Authorization") String authorizationHeader,
+                                                                      @PathVariable("memberTicketId") Long memberTicketId){
         Member member = memberService.getMemberByToken(authorizationHeader);
         TicketResponseDTO.MyPageTicketDTO myPageTicketDTO = memberTicketService.getMyTicket(member,memberTicketId);
-        return ApiResponse.onSuccess( myPageTicketDTO);
+        return ApiResponse.onSuccess(myPageTicketDTO);
     }
 
- //   @GetMapping("/myTickets")
-   // public ApiResponse<> getMyTicketList(@RequestHeader("Authorization") String authorizationHeader, @RequestParam(name = "reservationStatus", required = false) ReservationStatus reservationStatus)
+    @GetMapping("/myTickets")
+    @Operation(summary = "마이페이지에서 티켓 리스트 조회 - 필터기능")
+    public ApiResponse<TicketResponseDTO.MyPageTicketListDTO> getMyTicketList(@RequestHeader("Authorization") String authorizationHeader,
+                                                                              @RequestParam(name = "reservationStatus", required = false) ReservationStatus reservationStatus){
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        TicketResponseDTO.MyPageTicketListDTO myPageTicketListDTO = memberTicketService.getMyTicketList(member, reservationStatus);
+        return ApiResponse.onSuccess(myPageTicketListDTO);
+    }
 
 }

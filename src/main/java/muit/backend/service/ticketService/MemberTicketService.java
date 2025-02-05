@@ -21,6 +21,6 @@ public interface MemberTicketService {
 
     public TicketResponseDTO.MyPageTicketDTO getMyTicket(Member member,Long memberTicketId);
 
-   // public TicketResponseDTO.MyPageTicketDTO getMyTicketList(Member member,Long memberTicketId, ReservationStatus reservationStatus);
+    public TicketResponseDTO.MyPageTicketListDTO getMyTicketList(Member member, ReservationStatus reservationStatus);
 
     }

@@ -84,6 +84,14 @@ public class TicketResponseDTO {
 
     @Builder
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MyPageTicketListDTO {
+        private List<MyPageTicketDTO> tickets;
+    }
+
+    @Builder
+    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CancelRequestTicketDTO {
