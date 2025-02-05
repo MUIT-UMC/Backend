@@ -72,7 +72,7 @@ public class MemberTicketServiceImpl implements MemberTicketService {
                 .build();
     }
 
-    // 두번째 화면이었는데, 필요 없을듯
+   /* // 두번째 화면이었는데, 필요 없을듯
     @Override
     public List<TicketResponseDTO.SelectionTicketInfoDTO> getSelectionInfo(Long selectionTicketId){
         List<AmateurTicket> tickets = amateurTicketRepository.findByAmateurShowId(selectionTicketId);
@@ -84,7 +84,7 @@ public class MemberTicketServiceImpl implements MemberTicketService {
                         .price(ticket.getPrice())
                         .build())
                 .collect(Collectors.toList());
-    }
+    }*/
 
      // == 실제 티켓 구매 == //
 
