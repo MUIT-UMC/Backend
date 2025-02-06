@@ -61,6 +61,9 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
+//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+//    private List<Comment> replyList = new ArrayList<>();
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostLikes> postLikes = new ArrayList<>();
 
@@ -74,10 +77,6 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "musical_id")
     private Musical musical;
-
-    //    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    //    private List<Image> imageList = new ArrayList<>();
-
 
     public void changeMusical(Musical musical){
         this.musical = musical;
@@ -101,6 +100,7 @@ public class Post extends BaseEntity {
             this.commentCount--;
         }
     }
+
 
     public Post changePost(PostRequestDTO postRequestDTO) {
         if(postRequestDTO.getTitle()!=null){this.title = postRequestDTO.getTitle();}
