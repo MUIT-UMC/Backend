@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import muit.backend.domain.enums.InquiryStatus;
 import muit.backend.dto.postDTO.LostResponseDTO;
 
 import java.time.LocalDateTime;
@@ -15,13 +16,13 @@ public class InquiryResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GeneralInquiryResultDTO {
-        private int id;
+        private Long id;
         private String title;
         private String content;
         private Long MemberId;
         private LocalDateTime createdAt;
-        private String status;
-        private List<GeneralInquiryResponseResultDTO> responses;
+        private InquiryStatus status;
+        private GeneralInquiryResponseResultDTO inquiryResponse;
 
     }
 
@@ -47,5 +48,13 @@ public class InquiryResponseDTO {
         private Long totalElements;
         private Boolean isFirst;
         private Boolean isLast;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class InquiryDeleteResultDTO{
+        private String message;
     }
 }
