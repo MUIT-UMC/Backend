@@ -27,25 +27,24 @@ public class EmailController {
     // 인증코드 메일 발송
     @PostMapping("/sendCode")
     public ApiResponse<String> mailSend(@RequestBody EmailVerifyRequestDTO dto) throws MessagingException {
-        try{
+        try {
             String email = dto.getEmail();
-           //소셜 로그인 고려해야함
+            //소셜 로그인 고려해야함
             Optional<Member> member = memberRepository.findMemberByEmail(email);
             if (member.isPresent()) {
-                throw new GeneralException(ErrorStatus.MEMBER_ALREADY_EXIST);
-            }
-            else emailService.sendEmail(email);
+                throw new GeneralException(ErrorStatus.EMAIL_ALREADY_EXIST);
+            } else emailService.sendEmail(email);
             return ApiResponse.onSuccess("Verification code sent to " + email);
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             return ApiResponse.onFailure("400", e.getMessage(), "다른 이메일로 가입해주세요");
         }
     }
 
     // 인증코드 인증
     @PostMapping("/verify")
-    public String verify(@RequestParam String email, @RequestParam String code){
+    public ApiResponse<String> verify(@RequestParam String email, @RequestParam String code) {
         log.info("EmailController.verify()");
-        boolean isVerify = emailService.verifyCode(email, code);
-        return isVerify ? "인증이 완료되었습니다." : "인증 실패하셨습니다.";
+        emailService.verifyCode(email, code);
+        return ApiResponse.onSuccess("인증이 완료되었습니다.");
     }
 }
