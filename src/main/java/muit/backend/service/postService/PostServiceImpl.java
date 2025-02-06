@@ -10,13 +10,11 @@ import muit.backend.domain.entity.member.PostLikes;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
-import muit.backend.repository.MemberRepository;
-import muit.backend.repository.MusicalRepository;
-import muit.backend.repository.PostLikesRepository;
-import muit.backend.repository.PostRepository;
+import muit.backend.repository.*;
 import muit.backend.s3.FilePath;
 import muit.backend.s3.UuidFile;
 import muit.backend.s3.UuidFileService;
+import muit.backend.service.CommentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -34,6 +32,8 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final PostLikesRepository postLikesRepository;
     private final UuidFileService uuidFileService;
+    private final ReplyRepository replyRepository;
+    private final CommentService commentService;
 
     //게시글 작성
     @Override

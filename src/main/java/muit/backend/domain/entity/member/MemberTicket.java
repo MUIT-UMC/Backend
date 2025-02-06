@@ -6,14 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
-import muit.backend.domain.entity.amateur.AmateurShow;
 import muit.backend.domain.entity.amateur.AmateurTicket;
 import muit.backend.domain.enums.ReservationStatus;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -22,7 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 public class MemberTicket extends BaseEntity {
 
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Integer quantity;
@@ -39,6 +36,14 @@ public class MemberTicket extends BaseEntity {
     private AmateurTicket amateurTicket;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id")
+    @JoinColumn(name = "member_id")
     private Member member;
+
+    public void cancelTicket(ReservationStatus reservationStatus) {
+        this.reservationStatus = reservationStatus;
+    }
+
+    public void updateMemberTicket(ReservationStatus reservationStatus) {
+        this.reservationStatus = reservationStatus;
+    }
 }

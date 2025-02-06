@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -18,7 +19,7 @@ public class LostRequestDTO {
         private String content;
         private String location;
         private String lostItem;
-        private LocalDateTime lostDate;
+        private LocalDate lostDate;
 
 
 }

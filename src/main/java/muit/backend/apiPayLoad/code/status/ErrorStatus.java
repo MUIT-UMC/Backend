@@ -21,20 +21,24 @@ public enum ErrorStatus implements BaseErrorCode {
     //EMAIL ERROR
     EMAIL_FORMAT_ERROR(HttpStatus.NOT_FOUND, "EMAIL4000", "잘못된 이메일 형식입니다."),
     EMAIL_ALREADY_EXIST(HttpStatus.NOT_FOUND, "EMAIL4001", "이미 존재하는 이메일입니다."),
+    EMAIL_CODE_EXPIRED(HttpStatus.NOT_FOUND, "EMAIL4002", "인증코드가 만료되었습니다."),
     EMAIL_INVALID_CODE(HttpStatus.NOT_FOUND, "EMAIL4010", "인증코드가 일치하지 않습니다."),
 
 
     // MEMBER ERROR
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4000", "존재하지 않는 사용자입니다."),
     MEMBER_NOT_AUTHORIZED(HttpStatus.FORBIDDEN, "MEMBER4001", "접근 권한이 없는 사용자 입니다."),
-    MEMBER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "이미 존재하는 사용자(이이디) 입니다."),
+    MEMBER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "이미 존재하는 사용자(이메일) 입니다."),
     PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "MEMBER4003", "비밀번호가 일치하지 않습니다."),
     MEMBER_INVALID_CODE(HttpStatus.BAD_REQUEST, "MEMBER4010", "토큰이 유효하지 않습니다."),
+    MEMBER_NOT_ADMIN(HttpStatus.FORBIDDEN, "MEMBER4011", "해당 사용자게에게 관리자 권한이 없습니다."),
 
 
     // MEMBER TICKET ERROR
     MEMBER_TICKET_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBERTICKET4000", "존재하지 않는 예약 티켓입니다."),
     MEMBER_TICKET_QUANTITY(HttpStatus.BAD_REQUEST, "MEMBERTICKET4001", "주문 수량이 적절하지 않습니다"),
+    MEMBER_TICKET_STOCK(HttpStatus.BAD_REQUEST, "MEMBERTICKET4002", "주문 수량이 재고를 초과했습니다"),
+    MEMBER_TICKET_ALREADY_CANCELED(HttpStatus.BAD_REQUEST, "MEMBERTICKET4003", "이미 취소하신 티켓입니다."),
     //POST ERROR
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4000", "존재하지 않는 게시글입니다."),
 
@@ -46,7 +50,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // AMATEUR TICKET ERROR
     AMATEUR_TICKET_NOT_FOUND(HttpStatus.NOT_FOUND, "AMATEURTICKET4000", "존재하지 않는 소극장 공연 티켓입니다."),
-    AMATEUR_TICKET_STOCK(HttpStatus.BAD_REQUEST, "AMATEURTICKET4001","주문 수량은 최소 1개 이상이어야 합니다." ),
+    AMATEUR_TICKET_STOCK(HttpStatus.BAD_REQUEST, "AMATEURTICKET4001", "주문 수량은 최소 1개 이상이어야 합니다."),
 
 
     // MUSICAL ERROR

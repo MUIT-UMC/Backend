@@ -14,6 +14,7 @@ import muit.backend.dto.postDTO.ReviewRequestDTO;
 import muit.backend.s3.UuidFile;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class Post extends BaseEntity {
 
     private Integer rating;
 
-    private LocalDateTime lostDate;
+    private LocalDate lostDate;
 
     private String lostItem;
 
@@ -59,6 +60,9 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+//    private List<Comment> replyList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostLikes> postLikes = new ArrayList<>();
@@ -73,10 +77,6 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "musical_id")
     private Musical musical;
-
-    //    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    //    private List<Image> imageList = new ArrayList<>();
-
 
     public void changeMusical(Musical musical){
         this.musical = musical;
@@ -100,6 +100,7 @@ public class Post extends BaseEntity {
             this.commentCount--;
         }
     }
+
 
     public Post changePost(PostRequestDTO postRequestDTO) {
         if(postRequestDTO.getTitle()!=null){this.title = postRequestDTO.getTitle();}

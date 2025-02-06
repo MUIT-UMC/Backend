@@ -1,20 +1,16 @@
 package muit.backend.service.memberService;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import muit.backend.repository.MemberRepository;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
+import muit.backend.config.RedisUtil;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 @Slf4j
@@ -23,8 +19,9 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class EmailService {
     private final JavaMailSender javaMailSender;
+    private final RedisUtil redisUtil;
 
-    private final Map<String, String> verificationCodes = new HashMap<>();
+    private static final Long EMAIL_VERIFICATION_CODE_VALID_TIME = 1000L * 60 * 5; // 5분
 
     //랜덤 인증번호 생성 메서드
     private String createCode() {
@@ -49,6 +46,7 @@ public class EmailService {
     public void sendEmail(String email) {
         // 인증번호 생성
         String code = createCode();
+        System.out.println("Generated verification code for email: " + email);
 
         // 이메일 메시지 생성
         SimpleMailMessage message = new SimpleMailMessage();
@@ -59,22 +57,34 @@ public class EmailService {
         // 이메일 전송
         javaMailSender.send(message);
 
-        // redis 설정은 나중에 하겠습니다..
-        verificationCodes.put(email, code);
+        // redis에 인증번호 저장
+        String redisKey = "EmailVerificationCode:" + email;
+        redisUtil.setDataExpire(redisKey, code, EMAIL_VERIFICATION_CODE_VALID_TIME);
+        System.out.println("Verification code saved in Redis for email: " + email);
     }
 
     // 인증 번호 검증 메서드
-    public boolean verifyCode(String email, String code) {
-        String storedCode = verificationCodes.get(email);
-        System.out.println("stored code is " + storedCode);
-        System.out.println("input code is " + code);
-        System.out.println("비교 결과 " + storedCode.equals(code));
-        return (storedCode != null && storedCode.equals(code));
+    public void verifyCode(String email, String code) {
+
+        String redisKey = "EmailVerificationCode:" + email;
+        String storedCode = redisUtil.getData(redisKey);
+
+        // 저장된 코드가 없으면 (만료)
+        if (storedCode == null) {
+            System.out.println("No verification code found for email: " + email);
+            throw new GeneralException(ErrorStatus.EMAIL_CODE_EXPIRED);
+        }
+
+        // 코드 일치 여부
+        boolean verified = storedCode.equals(code);
+
+        // 코드 불일치
+        if (!verified) {
+            throw new GeneralException(ErrorStatus.EMAIL_INVALID_CODE);
+        }
+
+        // 검증 성공하면 Redis에서 코드 삭제
+        redisUtil.deleteData(redisKey);
+        System.out.println("Email verification code successful & deleted from Redis for email: " + email);
     }
-
-
-
-
-
-
 }
