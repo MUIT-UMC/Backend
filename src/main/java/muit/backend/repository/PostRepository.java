@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    Page<Post> findAllByPostType(PostType postType, PageRequest pageRequest);
 
     //익명 + 핫게용
     Page<Post> findAllByPostTypeAndTitleContaining(PostType postType, String title, PageRequest pageRequest);
