@@ -8,6 +8,7 @@ public interface MemberService {
     public Member findById(Long id);
     public EmailLoginAccessTokenResponse EmailLogin(LoginRequestDTO dto);
     public Member getMemberByToken(String token);
+    public Member getAdminByToken(String receivedBearerToken);
     public MyPageResponseDTO getMyPage(Long tokenId, Long memberId);
 
 }

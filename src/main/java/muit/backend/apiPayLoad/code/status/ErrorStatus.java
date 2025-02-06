@@ -28,9 +28,10 @@ public enum ErrorStatus implements BaseErrorCode {
     // MEMBER ERROR
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4000", "존재하지 않는 사용자입니다."),
     MEMBER_NOT_AUTHORIZED(HttpStatus.FORBIDDEN, "MEMBER4001", "접근 권한이 없는 사용자 입니다."),
-    MEMBER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "이미 존재하는 사용자(이이디) 입니다."),
+    MEMBER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "이미 존재하는 사용자(이메일) 입니다."),
     PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "MEMBER4003", "비밀번호가 일치하지 않습니다."),
     MEMBER_INVALID_CODE(HttpStatus.BAD_REQUEST, "MEMBER4010", "토큰이 유효하지 않습니다."),
+    MEMBER_NOT_ADMIN(HttpStatus.FORBIDDEN, "MEMBER4011", "해당 사용자게에게 관리자 권한이 없습니다."),
 
 
     // MEMBER TICKET ERROR
