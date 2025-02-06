@@ -25,15 +25,19 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/admin/events")
 public class ManageEventController {
+
     private final ManageEventService manageEventService;
     private final EventService eventService;
     private final MemberService memberService;
 
     @GetMapping("")
     @Operation(summary = "관리자 기능 중 이벤트 관리 초기 화면", description = "DB의 전체 뮤지컬 항목을 조회하는 API (이벤트 존재하는 뮤지컬 우선 정렬)")
-    public ApiResponse<Page<ManageEventResponseDTO.ManageEventResultListDTO>> getAllMusicals(@ParameterObject Pageable pageable,
+    public ApiResponse<Page<ManageEventResponseDTO.ManageEventResultListDTO>> getAllMusicals(@RequestHeader("Authorization") String authorizationHeader,
+                                                                                             @ParameterObject Pageable pageable,
                                                                                              @RequestParam(required = false) String keyword,
                                                                                              @RequestParam(required = false) Set<String> selectedFields) {
+        Member admin = memberService.getAdminByToken(authorizationHeader);
+
         Page<ManageEventResponseDTO.ManageEventResultListDTO> events = manageEventService.getAllMusicals(pageable, keyword, selectedFields);
         return ApiResponse.onSuccess(events);
     }
@@ -43,7 +47,8 @@ public class ManageEventController {
     @Parameters({
             @Parameter(name = "musicalId", description = "이벤트 정보를 알고 싶은 뮤지컬id 입력")
     })
-    public ApiResponse<ManageEventResponseDTO.ManageEventResultDTO> getEvent(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("musicalId") Long musicalId) {
+    public ApiResponse<ManageEventResponseDTO.ManageEventResultDTO> getEvent(@RequestHeader("Authorization") String authorizationHeader,
+                                                                             @PathVariable("musicalId") Long musicalId) {
         Member admin = memberService.getAdminByToken(authorizationHeader);
         return ApiResponse.onSuccess(manageEventService.getEvent(musicalId));
     }
@@ -53,7 +58,10 @@ public class ManageEventController {
     @Parameters({
             @Parameter(name = "musicalId", description = "이벤트를 생성하고 싶은 뮤지컬id 입력")
     })
-    public ApiResponse<EventResponseDTO.EventResultDTO> createEvent(@PathVariable("musicalId") Long musicalId, @RequestBody EventRequestDTO.EventCreateDTO eventCreateDTO) {
+    public ApiResponse<EventResponseDTO.EventResultDTO> createEvent(@RequestHeader("Authorization") String authorizationHeader,
+                                                                    @PathVariable("musicalId") Long musicalId, @RequestBody EventRequestDTO.EventCreateDTO eventCreateDTO) {
+        Member admin = memberService.getAdminByToken(authorizationHeader);
+
         return ApiResponse.onSuccess(eventService.createEvent(musicalId, eventCreateDTO));
     }
 
