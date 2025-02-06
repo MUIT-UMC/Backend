@@ -9,6 +9,7 @@ import muit.backend.config.jwt.TokenDTO;
 import muit.backend.config.jwt.TokenProvider;
 import muit.backend.converter.MemberConverter;
 import muit.backend.domain.entity.member.Member;
+import muit.backend.domain.enums.Role;
 import muit.backend.dto.memberDTO.*;
 import muit.backend.repository.MemberRepository;
 
@@ -87,17 +88,17 @@ public class MemberServiceImpl implements MemberService {
 
     // == 회원 검증 로직 == //
     @Override
-    public Member getMemberByToken(String token) {
-        String tmptoken = token.substring("Bearer ".length()).trim();
+    public Member getMemberByToken(String receivedBearerToken) {
+        String token = receivedBearerToken.substring("Bearer ".length()).trim();
 
         // 토큰이 유효한지 검증
-        if (!tokenProvider.validateToken(tmptoken)) {
+        if (!tokenProvider.validateToken(token)) {
             throw new GeneralException(ErrorStatus.MEMBER_INVALID_CODE);
         }
         log.info("일단 토큰 받기는함. 유효하기도함");
 
         // 토큰에서 인증 정보를 추출
-        Authentication authentication = tokenProvider.getAuthentication(tmptoken);
+        Authentication authentication = tokenProvider.getAuthentication(token);
         log.info(" 생성된 Authentication 객체: {}", authentication);
 
         // 인증 정보에서 사용자 이메일을 가져와 회원 조회
@@ -106,6 +107,26 @@ public class MemberServiceImpl implements MemberService {
 
         return memberRepository.findMemberByEmail(email)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+    }
+
+    @Override
+    public Member getAdminByToken(String receivedBearerToken) {
+        String token = receivedBearerToken.substring("Bearer ".length()).trim();
+        if (!tokenProvider.validateToken(token)) {
+            throw new GeneralException(ErrorStatus.MEMBER_INVALID_CODE);
+        }
+        Authentication authentication = tokenProvider.getAuthentication(token);
+        String email = authentication.getName();
+        System.out.println("회원조회 체크 "+email);
+        Member member = memberRepository.findMemberByEmail(email)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
+        if (member.getRole() != Role.ADMIN) {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_ADMIN);
+        }
+
+        log.info("관리자 권한 확인 완료 - 이메일: {}", email);
+        return member;
     }
 
 

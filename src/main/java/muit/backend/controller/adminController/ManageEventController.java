@@ -6,10 +6,12 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
+import muit.backend.domain.entity.member.Member;
 import muit.backend.dto.adminDTO.manageEventDTO.ManageEventResponseDTO;
 import muit.backend.dto.eventDTO.EventRequestDTO;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.service.EventService;
+import muit.backend.service.MemberService;
 import muit.backend.service.adminService.ManageEventService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ import java.util.Set;
 public class ManageEventController {
     private final ManageEventService manageEventService;
     private final EventService eventService;
+    private final MemberService memberService;
 
     @GetMapping("")
     @Operation(summary = "관리자 기능 중 이벤트 관리 초기 화면", description = "DB의 전체 뮤지컬 항목을 조회하는 API (이벤트 존재하는 뮤지컬 우선 정렬)")
@@ -40,7 +43,8 @@ public class ManageEventController {
     @Parameters({
             @Parameter(name = "musicalId", description = "이벤트 정보를 알고 싶은 뮤지컬id 입력")
     })
-    public ApiResponse<ManageEventResponseDTO.ManageEventResultDTO> getEvent(@PathVariable("musicalId") Long musicalId) {
+    public ApiResponse<ManageEventResponseDTO.ManageEventResultDTO> getEvent(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("musicalId") Long musicalId) {
+        Member admin = memberService.getAdminByToken(authorizationHeader);
         return ApiResponse.onSuccess(manageEventService.getEvent(musicalId));
     }
 

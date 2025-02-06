@@ -15,6 +15,7 @@ public class MemberConverter {
                 .password(encodedPassword)
                 .email(dto.getEmail())
                 .phone(dto.getPhone())
+                .gender(dto.getGender())
                 .oauthProvider("MUIT")
                 .address(dto.getAddress()).build();
     }

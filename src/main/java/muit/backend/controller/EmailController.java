@@ -32,7 +32,7 @@ public class EmailController {
             //소셜 로그인 고려해야함
             Optional<Member> member = memberRepository.findMemberByEmail(email);
             if (member.isPresent()) {
-                throw new GeneralException(ErrorStatus.MEMBER_ALREADY_EXIST);
+                throw new GeneralException(ErrorStatus.EMAIL_ALREADY_EXIST);
             } else emailService.sendEmail(email);
             return ApiResponse.onSuccess("Verification code sent to " + email);
         } catch (IllegalStateException e) {

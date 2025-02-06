@@ -7,6 +7,7 @@ import muit.backend.domain.entity.amateur.AmateurShow;
 import muit.backend.domain.enums.ActiveStatus;
 import muit.backend.domain.enums.Gender;
 import muit.backend.domain.enums.LoginType;
+import muit.backend.domain.enums.Role;
 import muit.backend.dto.adminDTO.manageMemberDTO.ManageMemberRequestDTO;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -24,8 +25,8 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private String username;
 
