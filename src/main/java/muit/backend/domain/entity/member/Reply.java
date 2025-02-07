@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -32,4 +35,7 @@ public class Reply extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
     private Comment comment;
+
+    @OneToMany(mappedBy = "reply", cascade = CascadeType.ALL)
+    private List<Report> reportList = new ArrayList<>();
 }

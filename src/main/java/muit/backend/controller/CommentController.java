@@ -12,6 +12,8 @@ import muit.backend.dto.commentDTO.CommentReplyRequestDTO;
 import muit.backend.dto.commentDTO.CommentReplyResponseDTO;
 import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.LostResponseDTO;
+import muit.backend.dto.reportDTO.ReportRequestDTO;
+import muit.backend.dto.reportDTO.ReportResponseDTO;
 import muit.backend.service.CommentService;
 import muit.backend.service.MemberService;
 import org.springframework.web.bind.annotation.*;
@@ -62,5 +64,20 @@ public class CommentController {
 
         Member member = memberService.getMemberByToken(accessToken);
         return ApiResponse.onSuccess(commentService.deleteComment(commentType,commentId,member));
+    }
+
+    @PostMapping("/report/{commentId}")
+    @Operation(summary = "댓글/대댓글 신고 API")
+    @Parameters({
+            @Parameter(name = "commentType", description = "COMMENT/REPLY 중 하나로 보내주세요"),
+            @Parameter(name = "commentId", description = "신고하려는 댓글/대댓글의 아이디를 주세요")
+    })
+    public ApiResponse<ReportResponseDTO.ReportResultDTO> reportComment(@RequestHeader("Authorization") String accessToken,
+                                                                        @RequestParam(value = "commentType", required = true) String commentType,
+                                                                        @PathVariable("commentId") Long commentId,
+                                                                        @RequestBody ReportRequestDTO requestDTO) {
+
+        Member member = memberService.getMemberByToken(accessToken);
+        return ApiResponse.onSuccess(commentService.reportComment(commentType,commentId,member,requestDTO));
     }
 }
