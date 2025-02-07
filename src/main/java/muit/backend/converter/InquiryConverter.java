@@ -23,8 +23,12 @@ public class InquiryConverter {
     }
 
     public static InquiryResponseDTO.GeneralInquiryResultDTO toInquiryGeneralDTO (Inquiry inquiry) {
+        InquiryResponseDTO.GeneralInquiryResponseResultDTO responseDTO = null;
 
-        InquiryResponseDTO.GeneralInquiryResponseResultDTO responseDTO = InquiryConverter.toInquiryResponseGeneralDTO(inquiry.getInquiryResponse());
+        if(inquiry.getInquiryResponse()!=null){
+            responseDTO = InquiryConverter.toInquiryResponseGeneralDTO(inquiry.getInquiryResponse());
+
+        }
         return InquiryResponseDTO.GeneralInquiryResultDTO.builder()
                 .content(inquiry.getContent())
                 .title(inquiry.getTitle())
