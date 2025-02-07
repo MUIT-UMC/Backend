@@ -61,6 +61,7 @@ public class CommentServiceImpl implements CommentService {
         Reply reply = CommentConverter.toReply(requestDTO, comment, member);
 
         replyRepository.save(reply);
+        comment.getPost().changeCommentCount(true);
 
         return CommentConverter.toReplyResponseDTO(reply);
     }
