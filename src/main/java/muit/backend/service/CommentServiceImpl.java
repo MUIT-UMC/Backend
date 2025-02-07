@@ -106,10 +106,10 @@ public class CommentServiceImpl implements CommentService {
         Report report;
         if(commentType.equals("COMMENT")){
             Comment comment = commentRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
-            report = Report.builder().comment(comment).content(requestDTO.getContent()).build();
+            report = Report.builder().comment(comment).content(requestDTO.getContent()).member(member).build();
         }else if(commentType.equals("REPLY")){
             Reply reply = replyRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
-            report = Report.builder().reply(reply).content(requestDTO.getContent()).build();
+            report = Report.builder().reply(reply).content(requestDTO.getContent()).member(member).build();
         }else{
             throw new GeneralException(ErrorStatus.UNSUPPORTED_COMMENT_TYPE);
         }

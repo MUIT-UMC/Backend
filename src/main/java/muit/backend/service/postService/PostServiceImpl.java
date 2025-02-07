@@ -194,6 +194,6 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId).orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
         Report report = Report.builder().content(requestDTO.getContent()).member(member).post(post).build();
         Report saved = reportRepository.save(report);
-        return ReportResponseDTO.ReportResultDTO.builder().id(saved.getId()).message("신고가 정상적으로 접수되었습니다.").build();
+        return ReportResponseDTO.ReportResultDTO.builder().id(saved.getId()).message("정상적으로 신고 처리 되었습니다.").build();
     }
 }
