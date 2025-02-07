@@ -93,7 +93,7 @@ public class MusicalResponseDTO {
         private Long id;
         private String name;
         private String duration;
-        private String place;
+        private List<String> priceInfo;
     }
 
     @Builder

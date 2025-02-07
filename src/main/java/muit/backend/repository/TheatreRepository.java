@@ -21,4 +21,7 @@ public interface TheatreRepository extends JpaRepository<Theatre, Long> {
             "OR t.name LIKE %:keyword% ")
     Page<Theatre> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
+    @Query("SELECT t FROM Theatre t JOIN t.musical m WHERE m.name LIKE %:keyword% " +
+            "OR t.name LIKE %:keyword% ")
+    List<Theatre> findAllByKeyword(@Param("keyword") String keyword);
 }
