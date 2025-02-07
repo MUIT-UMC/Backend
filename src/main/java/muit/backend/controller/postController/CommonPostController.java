@@ -10,6 +10,8 @@ import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.PostResponseDTO;
+import muit.backend.dto.reportDTO.ReportRequestDTO;
+import muit.backend.dto.reportDTO.ReportResponseDTO;
 import muit.backend.service.MemberService;
 import muit.backend.service.postService.PostService;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +39,17 @@ public class CommonPostController {
                                                                    @PathVariable("postId") Long postId) {
         Member member = memberService.getMemberByToken(accessToken);
         return ApiResponse.onSuccess(postService.deletePost(postId, member));
+    }
+
+    @PostMapping("/report/{postId}")
+    @Operation(summary = "게시글 신고 API", description = "게시글을 신고할 수 있는 API입니다.")
+    public ApiResponse<ReportResponseDTO.ReportResultDTO> reportPost(@RequestHeader("Authorization") String accessToken,
+                                                     @RequestBody ReportRequestDTO requestDTO,
+                                                     @PathVariable Long postId) {
+
+        Member member = memberService.getMemberByToken(accessToken);
+        return ApiResponse.onSuccess(postService.reportPost(postId, member,requestDTO));
+
     }
 
 }
