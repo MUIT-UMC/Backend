@@ -14,6 +14,8 @@ import muit.backend.dto.theatreDTO.TheatreResponseDTO;
 import muit.backend.service.theatreService.TheatreService;
 import org.springframework.web.bind.annotation.*;
 
+import static muit.backend.domain.enums.Floor._1층;
+
 @Tag(name = "공연장")
 @RestController
 @RequiredArgsConstructor
@@ -24,15 +26,15 @@ public class TheatreController {
     @GetMapping ("")
     @Operation(summary = "공연장 검색", description = "시야확인에서 공연장을 검색하는 API 입니다.")
     @Parameters({
-            @Parameter(name = "theatreName", description = "공연장 이름을 검색어로 입력")
+            @Parameter(name = "theatreName", description = "공연장 이름이나 현재 공연 중인 뮤지컬 제목을 검색어로 입력")
     })
-    public ApiResponse<TheatreResponseDTO.TheatreResultListDTO> getTheatre(@RequestParam("theatreName") String theatreName) {
+    public ApiResponse<TheatreResponseDTO.TheatreResultListDTO> getTheatre(@RequestParam(name = "theatreName", required = false) String theatreName) {
         return ApiResponse.onSuccess(theatreService.findTheatreByName(theatreName));
     }
 
     @GetMapping("/{theatreId}/floor")
     @Operation(summary = "층 별 섹션 조회", description = "특정 공연장의 층에 따른 섹션을 조회하는 API 입니다.")
-    public ApiResponse<SectionResponseDTO.FloorResultDTO> getFloorSection(@PathVariable("theatreId") Long theatreId, @RequestParam("floor")Floor floor){
+    public ApiResponse<SectionResponseDTO.FloorResultDTO> getFloorSection(@PathVariable("theatreId") Long theatreId, @RequestParam(name = "floor", defaultValue = "_1층")Floor floor){
         return ApiResponse.onSuccess(theatreService.getFloor(theatreId, floor));
     }
 
@@ -42,7 +44,7 @@ public class TheatreController {
             @Parameter(name = "theatreId", description = "좌석 조회할 공연장 id"),
             @Parameter(name = "sectionType", description = "A,B,C,D... 조회할 자리가 속한 섹션 선택")
     })
-    public ApiResponse<SectionResponseDTO.SectionResultDTO> getSeatInfo(@PathVariable("theatreId") Long theatreId, @RequestParam("sectionType") SectionType sectionType) {
+    public ApiResponse<SectionResponseDTO.SectionResultDTO> getSeatInfo(@PathVariable("theatreId") Long theatreId, @RequestParam(name = "sectionType", defaultValue = "A") SectionType sectionType) {
         return ApiResponse.onSuccess(theatreService.getSection(theatreId, sectionType));
     }
 

@@ -68,12 +68,12 @@ public class MusicalController {
         return ApiResponse.onSuccess(musicalService.getAllOpenMusicals(page));
     }
 
-    @GetMapping("")
-    @Operation(summary = "뮤지컬 검색", description = "상단바에서 뮤지컬을 검색하는 API 입니다.")
+    @GetMapping("/search")
+    @Operation(summary = "뮤지컬 검색", description = "상단바, 이벤트 확인에서 뮤지컬을 검색하는 API 입니다.")
     @Parameters({
             @Parameter(name = "musicalName", description = "뮤지컬 이름을 검색어로 입력")
     })
-    public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> searchMusicals(@RequestParam("musicalName") String musicalName) {
+    public ApiResponse<MusicalResponseDTO.MusicalHomeListDTO> searchMusicals(@RequestParam(name = "musicalName", required = false) String musicalName) {
         return ApiResponse.onSuccess(musicalService.findMusicalsByName(musicalName));
     }
 
