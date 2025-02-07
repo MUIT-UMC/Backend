@@ -45,6 +45,8 @@ public class Post extends BaseEntity {
 
     private Integer commentCount;
 
+    private Integer reportCount;
+
     private Integer maxIndex;
 
     private Integer rating;
@@ -61,14 +63,8 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-//    private List<Comment> replyList = new ArrayList<>();
-
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostLikes> postLikes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Report> reportList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -98,6 +94,14 @@ public class Post extends BaseEntity {
             this.commentCount++;
         }else{
             this.commentCount--;
+        }
+    }
+
+    public void changeReportCount(Boolean isAdd){
+        if(isAdd){
+            this.reportCount++;
+        }else{
+            this.reportCount--;
         }
     }
 

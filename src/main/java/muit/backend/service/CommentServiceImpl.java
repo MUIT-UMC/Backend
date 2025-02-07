@@ -7,6 +7,7 @@ import muit.backend.apiPayLoad.code.status.ErrorStatus;
 import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.CommentConverter;
 import muit.backend.domain.entity.member.*;
+import muit.backend.domain.enums.ReportObjectType;
 import muit.backend.dto.commentDTO.CommentReplyRequestDTO;
 import muit.backend.dto.commentDTO.CommentReplyResponseDTO;
 import muit.backend.dto.reportDTO.ReportRequestDTO;
@@ -101,22 +102,30 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public ReportResponseDTO.ReportResultDTO reportComment(String commentType, Long commentId, Member member, ReportRequestDTO requestDTO) {
 
         Report report;
         if(commentType.equals("COMMENT")){
+            //comment 검증과 DTO->Entity
             Comment comment = commentRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
-            report = Report.builder().comment(comment).content(requestDTO.getContent()).build();
+            report = Report.builder().reportedObjectId(comment.getId()).reportObjectType(ReportObjectType.COMMENT).content(requestDTO.getContent()).member(member).build();
+
+            report = reportRepository.save(report);
+            comment.changeReportCount(true);
         }else if(commentType.equals("REPLY")){
+            //Reply 검증과 DTO->Entity
             Reply reply = replyRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
-            report = Report.builder().reply(reply).content(requestDTO.getContent()).build();
+            report = Report.builder().reportedObjectId(reply.getId()).reportObjectType(ReportObjectType.REPLY).content(requestDTO.getContent()).member(member).build();
+
+            report = reportRepository.save(report);
+            reply.changeReportCount(true);
         }else{
             throw new GeneralException(ErrorStatus.UNSUPPORTED_COMMENT_TYPE);
         }
 
-        Report saved = reportRepository.save(report);
 
-        return ReportResponseDTO.ReportResultDTO.builder().id(saved.getId()).message("정상적으로 신고 처리 되었습니다.").build();
+        return ReportResponseDTO.ReportResultDTO.builder().id(report.getId()).message("정상적으로 신고 처리 되었습니다.").build();
     }
 
 }

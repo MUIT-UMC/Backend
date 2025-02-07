@@ -36,6 +36,13 @@ public class Reply extends BaseEntity {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    @OneToMany(mappedBy = "reply", cascade = CascadeType.ALL)
-    private List<Report> reportList = new ArrayList<>();
+    private Integer reportCount;
+
+    public void changeReportCount(Boolean isAdd){
+        if(isAdd){
+            this.reportCount++;
+        }else{
+            this.reportCount--;
+        }
+    }
 }
