@@ -54,4 +54,30 @@ public class PostConverter {
                 .updatedAt(post.getUpdatedAt())
                 .build();
     }
+
+    public static PostResponseDTO.GeneralMyPostResponseDTO toGeneralMyPostResponseDTO(Post post,boolean isLiked) {
+
+        String name = post.getIsAnonymous() ? "익명" :post.getMember().getName();
+
+        return PostResponseDTO.GeneralMyPostResponseDTO.builder()
+                .id(post.getId())
+                .postType(post.getPostType().toString())
+                .memberId(post.getMember().getId())
+                .nickname(name)
+                .title(post.getTitle())
+                .content(post.getContent())
+                .imgUrls(post.getImages().stream().map(UuidFile::getFileUrl).collect(Collectors.toList()))
+                .commentCount(post.getCommentCount())
+                .likeCount(post.getPostLikes().size())
+                .isLiked(isLiked)
+                .location(post.getLocation())
+                .lostDate(post.getLostDate())
+                .lostItem(post.getLostItem())
+                .musicalId(post.getMusical().getId())
+                .musicalName(post.getMusicalName())
+                .rating(post.getRating())
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
+                .build();
+    }
 }
