@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EmailLoginAccessTokenResponse {
+public class LoginAccessTokenResponse {
     private String accessToken;
     private String refreshToken;
     private Long id;

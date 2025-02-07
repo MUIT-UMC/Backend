@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
+import muit.backend.domain.enums.ReportObjectType;
 
 @Entity
 @Getter
@@ -24,7 +25,10 @@ public class Report extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
+    private Long reportedObjectId;
+
+    @Enumerated(EnumType.STRING)
+    private ReportObjectType reportObjectType;
+
+
 }

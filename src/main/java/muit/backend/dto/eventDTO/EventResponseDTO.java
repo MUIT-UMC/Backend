@@ -18,6 +18,7 @@ public class EventResponseDTO {
         private Long id;
         private Long musicalId;
         private String name;
+        private String duration;
         private LocalDate evFrom;
         private LocalDate evTo;
     }
@@ -28,8 +29,10 @@ public class EventResponseDTO {
     @AllArgsConstructor
     public static class EventResultListDTO {
         private Long musicalId;
+        private String posterUrl;
         private String musicalName;
-        private String theatreName;
+        private String place;
+        private String duration;
         private LocalDate perFrom;
         private LocalDate perTo;
 

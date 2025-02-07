@@ -75,10 +75,10 @@ public class LostController {
         };
         memberService.getMemberByToken(accessToken);
         Map<String,String> search = new HashMap<>();
-        search.put("musicalName",musicalName);
-        search.put("lostDate",lostDate.toString());
-        search.put("location",location);
-        search.put("lostItem",lostItem);
+        search.put("musicalName",musicalName.trim());
+        search.put("lostDate",lostDate!=null ? lostDate.toString().trim():"");
+        search.put("location",location.trim());
+        search.put("lostItem",lostItem.trim());
 
         return ApiResponse.onSuccess(lostService.getLostPostList(postType, page, size, search));
     }

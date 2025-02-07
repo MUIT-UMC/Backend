@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -32,4 +35,14 @@ public class Reply extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
     private Comment comment;
+
+    private Integer reportCount;
+
+    public void changeReportCount(Boolean isAdd){
+        if(isAdd){
+            this.reportCount++;
+        }else{
+            this.reportCount--;
+        }
+    }
 }

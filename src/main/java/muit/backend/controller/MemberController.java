@@ -9,7 +9,6 @@ import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.dto.memberDTO.*;
 import muit.backend.service.MemberService;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,10 +37,10 @@ public class MemberController {
 
     @PostMapping("/email/login")
     // JWT 토큰을 생성하여 반환
-    public ApiResponse<EmailLoginAccessTokenResponse> login(@RequestBody LoginRequestDTO dto) {
+    public ApiResponse<LoginAccessTokenResponse> login(@RequestBody LoginRequestDTO dto) {
         try {
             //TokenDto tokenDto = memberService.login(dto);
-            EmailLoginAccessTokenResponse result = memberService.EmailLogin(dto);
+            LoginAccessTokenResponse result = memberService.EmailLogin(dto);
             return ApiResponse.onSuccess(result);
         } catch (IllegalArgumentException e) {
             return ApiResponse.onFailure("400", e.getMessage(), null);
@@ -50,6 +49,8 @@ public class MemberController {
             // 이부분 에러 메시지 추가하겠습니다.
         }
     }
+
+    @PostMapping("")
 
     @GetMapping("/{memberId}")
     @Parameters({

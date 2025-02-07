@@ -41,9 +41,13 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_TICKET_ALREADY_CANCELED(HttpStatus.BAD_REQUEST, "MEMBERTICKET4003", "이미 취소하신 티켓입니다."),
     //POST ERROR
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4000", "존재하지 않는 게시글입니다."),
+    
+    //REPORT ERROR
+    UNSUPPORTED_OBJECT_TYPE(HttpStatus.BAD_REQUEST, "REPORT4000", "지원하지 않는 신고 타입입니다."),
 
     //COMMENT ERROR
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT4000", "존재하지 않는 댓글입니다."),
+    UNSUPPORTED_COMMENT_TYPE(HttpStatus.BAD_REQUEST, "COMMENT4001", "지원하지 않는 댓글 유형입니다."),
 
     // AMATEURSHOW ERROR
     AMATEURSHOW_NOT_FOUND(HttpStatus.NOT_FOUND, "AMATEURSHOW4000", "존재하지 않는 소극장 공연입니다."),

@@ -6,16 +6,13 @@ import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.apiPayLoad.code.status.ErrorStatus;
 import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.CommentConverter;
-import muit.backend.domain.entity.member.Comment;
-import muit.backend.domain.entity.member.Member;
-import muit.backend.domain.entity.member.Post;
-import muit.backend.domain.entity.member.Reply;
+import muit.backend.domain.entity.member.*;
+import muit.backend.domain.enums.ReportObjectType;
 import muit.backend.dto.commentDTO.CommentReplyRequestDTO;
 import muit.backend.dto.commentDTO.CommentReplyResponseDTO;
-import muit.backend.repository.CommentRepository;
-import muit.backend.repository.MemberRepository;
-import muit.backend.repository.PostRepository;
-import muit.backend.repository.ReplyRepository;
+import muit.backend.dto.reportDTO.ReportRequestDTO;
+import muit.backend.dto.reportDTO.ReportResponseDTO;
+import muit.backend.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -30,6 +27,7 @@ public class CommentServiceImpl implements CommentService {
     private final ReplyRepository replyRepository;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+    private final ReportRepository reportRepository;
 
 
     //특정 게시물의 모든 댓글 조회
@@ -64,6 +62,7 @@ public class CommentServiceImpl implements CommentService {
         Reply reply = CommentConverter.toReply(requestDTO, comment, member);
 
         replyRepository.save(reply);
+        comment.getPost().changeCommentCount(true);
 
         return CommentConverter.toReplyResponseDTO(reply);
     }
@@ -101,6 +100,33 @@ public class CommentServiceImpl implements CommentService {
 
         return CommentReplyResponseDTO.DeleteResultDTO.builder()
                 .message("댓글이 성공적으로 삭제되었습니다.").build();
+    }
+
+    @Override
+    @Transactional
+    public ReportResponseDTO.ReportResultDTO reportComment(String commentType, Long commentId, Member member, ReportRequestDTO requestDTO) {
+
+        Report report;
+        if(commentType.equals("COMMENT")){
+            //comment 검증과 DTO->Entity
+            Comment comment = commentRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
+            report = Report.builder().reportedObjectId(comment.getId()).reportObjectType(ReportObjectType.COMMENT).content(requestDTO.getContent()).member(member).build();
+
+            report = reportRepository.save(report);
+            comment.changeReportCount(true);
+        }else if(commentType.equals("REPLY")){
+            //Reply 검증과 DTO->Entity
+            Reply reply = replyRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
+            report = Report.builder().reportedObjectId(reply.getId()).reportObjectType(ReportObjectType.REPLY).content(requestDTO.getContent()).member(member).build();
+
+            report = reportRepository.save(report);
+            reply.changeReportCount(true);
+        }else{
+            throw new GeneralException(ErrorStatus.UNSUPPORTED_COMMENT_TYPE);
+        }
+
+
+        return ReportResponseDTO.ReportResultDTO.builder().id(report.getId()).message("정상적으로 신고 처리 되었습니다.").build();
     }
 
 }

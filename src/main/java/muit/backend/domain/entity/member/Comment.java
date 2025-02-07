@@ -40,7 +40,19 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    private Integer reportCount;
+
+
+
     public void deleteContent(String newContent) {
         this.content = newContent;
+    }
+
+    public void changeReportCount(Boolean isAdd){
+        if(isAdd){
+            this.reportCount++;
+        }else{
+            this.reportCount--;
+        }
     }
 }

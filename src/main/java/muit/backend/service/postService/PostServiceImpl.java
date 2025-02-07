@@ -7,9 +7,13 @@ import muit.backend.converter.postConverter.PostConverter;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.member.PostLikes;
+import muit.backend.domain.entity.member.Report;
 import muit.backend.domain.enums.PostType;
+import muit.backend.domain.enums.ReportObjectType;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
+import muit.backend.dto.reportDTO.ReportRequestDTO;
+import muit.backend.dto.reportDTO.ReportResponseDTO;
 import muit.backend.repository.*;
 import muit.backend.s3.FilePath;
 import muit.backend.s3.UuidFile;
@@ -32,8 +36,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final PostLikesRepository postLikesRepository;
     private final UuidFileService uuidFileService;
-    private final ReplyRepository replyRepository;
-    private final CommentService commentService;
+    private final ReportRepository reportRepository;
 
     //게시글 작성
     @Override
@@ -185,5 +188,19 @@ public class PostServiceImpl implements PostService {
             isLiked = false;
         }
         return PostResponseDTO.likeResultDTO.builder().isLiked(isLiked).build();
+    }
+
+    @Override
+    @Transactional
+    public ReportResponseDTO.ReportResultDTO reportPost(Long postId, Member member, ReportRequestDTO requestDTO) {
+        //post 유효성 검사
+        Post post = postRepository.findById(postId).orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
+
+        //DTO->Entity
+        Report report = Report.builder().content(requestDTO.getContent()).member(member).reportedObjectId(post.getId()).reportObjectType(ReportObjectType.POST).build();
+
+        Report saved = reportRepository.save(report);
+        post.changeReportCount(true);
+        return ReportResponseDTO.ReportResultDTO.builder().id(saved.getId()).message("정상적으로 신고 처리 되었습니다.").build();
     }
 }
