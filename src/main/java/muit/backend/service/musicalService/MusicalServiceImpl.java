@@ -138,8 +138,21 @@ public class MusicalServiceImpl implements MusicalService {
 
     @Override
     public MusicalResponseDTO.MusicalHomeListDTO findMusicalsByName(String musicalName) {
-        List<Musical> musicals = musicalRepository.findByNameContaining(musicalName);
 
+        // 검색어가 있는지 확인
+        boolean isKeywordSearch = musicalName != null && !musicalName.trim().isEmpty(); // 빈 검색어도 없다고 침
+
+        List<Musical> musicals;
+
+        // 검색어가 있으면 해당 키워드로 검색
+        if (isKeywordSearch) {
+            musicals = musicalRepository.findByNameContaining(musicalName);
+            if (musicals.isEmpty()) {
+
+            }
+        } else {// 검색어가 없으면 모든 이벤트 가진 뮤지컬 정보 조회
+            musicals = musicalRepository.findAll();
+        }
         return MusicalConverter.toMusicalHomeListDTO(musicals);
     }
 
@@ -229,9 +242,23 @@ public class MusicalServiceImpl implements MusicalService {
     }
 
     @Override
-    public Page<MusicalResponseDTO.AdminMusicalDTO> getAllMusicals(Integer page) {
+    public Page<MusicalResponseDTO.AdminMusicalDTO> getAllMusicals(Integer page, String keyword) {
         Pageable pageable = PageRequest.of(page, 20);
-        Page<Musical> musicals = musicalRepository.findAll(pageable);
+
+        // 검색어가 있는지 확인
+        boolean isKeywordSearch = keyword != null && !keyword.trim().isEmpty(); // 빈 검색어도 없다고 침
+
+        Page<Musical> musicals;
+
+        // 검색어가 있으면 해당 키워드로 검색
+        if (isKeywordSearch) {
+            musicals = musicalRepository.findByKeyword(pageable, keyword);
+            if (musicals.isEmpty()) {
+                return Page.empty(pageable);
+            }
+        } else {// 검색어가 없으면 모든 이벤트 가진 뮤지컬 정보 조회
+            musicals = musicalRepository.findAll(pageable);
+        }
 
         List<MusicalResponseDTO.AdminMusicalDTO> musicalDTOS = musicals.stream()
                 .map(MusicalConverter::toAdminMusicalDTO)

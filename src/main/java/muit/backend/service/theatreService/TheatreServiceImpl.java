@@ -56,8 +56,19 @@ public class TheatreServiceImpl implements TheatreService {
     private final UuidFileService uuidFileService;
 
     @Override
-    public TheatreResponseDTO.TheatreResultListDTO findTheatreByName(String theatreName){
-        List<Theatre> theatres = theatreRepository.findByNameContaining(theatreName);
+    public TheatreResponseDTO.TheatreResultListDTO findTheatreByName(String keyword){
+        boolean isKeywordSearch = keyword != null && !keyword.trim().isEmpty();
+
+        List<Theatre> theatres;
+        // 검색어가 있으면 해당 키워드로 검색
+        if (isKeywordSearch) {
+            theatres = theatreRepository.findAllByKeyword(keyword);
+            if (theatres.isEmpty()) { // 검색 결과 없으면 빈 페이지
+                 theatres = new ArrayList<>();
+            }
+        } else {
+            theatres = theatreRepository.findAll();
+        }
         return TheatreConverter.toTheatreResultListDTO(theatres);
     }
 
@@ -210,7 +221,6 @@ public class TheatreServiceImpl implements TheatreService {
         List<Section> sections = sectionRepository.findAllByTheatreIdAndFloorOrderBySectionTypeAsc(theatreId,floorString);
         List<SectionType> types = sections.stream().map(Section::getSectionType).collect(Collectors.toList());
 
-        assert theatre != null;
         return SectionConverter.toFloorResultDTO(theatre, types);
     }
 

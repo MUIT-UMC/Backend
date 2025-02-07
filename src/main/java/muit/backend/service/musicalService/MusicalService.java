@@ -29,7 +29,7 @@ public interface MusicalService {
 
     public List<String> getWeeklyRanking();
 
-    public Page<MusicalResponseDTO.AdminMusicalDTO> getAllMusicals(Integer page);
+    public Page<MusicalResponseDTO.AdminMusicalDTO> getAllMusicals(Integer page, String keyword);
 
     public MusicalResponseDTO.AdminMusicalDetailDTO getMusicalDetail(Long id);
 

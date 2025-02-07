@@ -8,6 +8,7 @@ import muit.backend.domain.entity.member.Member;
 import muit.backend.dto.adminDTO.manageEventDTO.ManageEventResponseDTO;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 import muit.backend.service.MemberService;
+import muit.backend.service.adminService.ManageEventService;
 import muit.backend.service.musicalService.MusicalService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -28,10 +29,11 @@ public class ManageMusicalController {
     @GetMapping("")
     @Operation(summary = "관리자 기능 중 뮤지컬 관리 초기화면", description = "DB의 전체 뮤지컬 항목을 조회하는 API")
     public ApiResponse<Page<MusicalResponseDTO.AdminMusicalDTO>> getAllMusicals(@RequestHeader("Authorization") String authorizationHeader,
+                                                                                @RequestParam(name = "keyword", required = false) String keyword,
                                                                                 @RequestParam(defaultValue = "0", name = "page") Integer page) {
         Member admin = memberService.getAdminByToken(authorizationHeader);
 
-        return ApiResponse.onSuccess(musicalService.getAllMusicals(page));
+        return ApiResponse.onSuccess(musicalService.getAllMusicals(page, keyword));
     }
 
     @GetMapping("/{musicalId}")
