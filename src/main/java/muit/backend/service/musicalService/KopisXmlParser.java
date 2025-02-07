@@ -26,7 +26,6 @@ public class KopisXmlParser {
             throw new Exception("HTTP request failed with response code: " + responseCode);
         }
 
-
         // 응답으로 받은 InputStream 반환
         return connection.getInputStream();
     }
