@@ -293,6 +293,5 @@ public class MusicalServiceImpl implements MusicalService {
                 .filter(castingResultListDTO-> castingResultListDTO.getMusicalId().equals(musicalId)).toList();
 
         return castingResultListDTOs;
-
     }
 }
