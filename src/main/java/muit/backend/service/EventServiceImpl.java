@@ -1,6 +1,8 @@
 package muit.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.EventConverter;
 import muit.backend.domain.entity.musical.Event;
 import muit.backend.domain.entity.musical.Musical;
@@ -33,7 +35,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventResponseDTO.EventResultListDTO getEvent(Long musicalId) {
-        Musical musical = musicalRepository.findById(musicalId).orElse(null);
+        Musical musical = musicalRepository.findById(musicalId).orElseThrow(() ->new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
         List<Event> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId);
         assert musical != null;
         return EventConverter.toEventResultListDTO(musical,eventList);
@@ -43,6 +45,7 @@ public class EventServiceImpl implements EventService {
     public Page<EventResponseDTO.EventResultListDTO> getEventListOrderByEvFrom(LocalDate today, Integer page) {
         //Event 를 EvFrom 기준 오름차순으로 정렬
         List<Event> eventList = eventRepository.findAllByEvFromIsNotNullOrderByEvFromAsc();
+
         List<EventResponseDTO.EventResultListDTO> eventResultListDTOs = eventList.stream()
                 .collect(Collectors.groupingBy(event -> event.getMusical().getId()))
                 .values().stream()
@@ -58,7 +61,7 @@ public class EventServiceImpl implements EventService {
         int end = Math.min((start + pageable.getPageSize()), eventResultListDTOs.size());
         List<EventResponseDTO.EventResultListDTO> pagedEventResultListDTOs = eventResultListDTOs.subList(start, end);
 
-        // 3. 페이지 객체 반환
+        //페이지 객체 반환
         return new PageImpl<>(pagedEventResultListDTOs, pageable, eventResultListDTOs.size());
     }
 

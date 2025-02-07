@@ -160,7 +160,7 @@ public class MusicalConverter {
         return MusicalResponseDTO.AdminMusicalDTO.builder()
                 .id(musical.getId())
                 .name(musical.getName())
-                .place(musical.getPlace())
+                .priceInfo(musical.getPriceInfo())
                 .duration(duration)
                 .build();
     }

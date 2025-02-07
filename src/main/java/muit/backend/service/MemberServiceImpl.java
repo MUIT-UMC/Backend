@@ -48,6 +48,8 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
+   
+
     @Override
     public Member findById(Long id) {
         return memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("unexpected member"));
@@ -56,7 +58,7 @@ public class MemberServiceImpl implements MemberService {
 
     //== 이메일 로그인 == //
     @Override
-    public EmailLoginAccessTokenResponse EmailLogin(LoginRequestDTO dto){
+    public LoginAccessTokenResponse EmailLogin(LoginRequestDTO dto){
 
         String email = dto.getEmail();
         TokenDTO token = login(dto);
