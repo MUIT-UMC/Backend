@@ -18,7 +18,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     //익명 + 핫게용
     Page<Post> findAllByPostTypeAndTitleContaining(PostType postType, String title, PageRequest pageRequest);
 
-    @Query("SELECT p.post FROM PostLikes p GROUP BY p.post.id HAVING COUNT(p)>=2")
+    @Query("SELECT p.post FROM PostLikes p WHERE p.post.title LIKE CONCAT('%', :title, '%') GROUP BY p.post.id HAVING COUNT(p)>=2")
     Page<Post> findAllHot(@Param("title") String title, Pageable pageable);
 
 
