@@ -132,8 +132,8 @@ public class CommonPostController {
     @GetMapping("/myPost")
     @Operation(summary = "내가 쓴 글 확인 API", description = "마이페이지 내가 쓴 글 목록 API")
     public ApiResponse<PostResponseDTO.MyPostResultListDTO> myPost(@RequestHeader("Authorization") String accessToken,
-                                                             @RequestParam Integer page,
-                                                             @RequestParam Integer size)
+                                                             @RequestParam(defaultValue = "0") Integer page,
+                                                             @RequestParam(defaultValue = "20") Integer size)
     {
         Member member = memberService.getMemberByToken(accessToken);
         Page<Post> myPosts = postRepository.findAllByMember(member,PageRequest.of(page,size));

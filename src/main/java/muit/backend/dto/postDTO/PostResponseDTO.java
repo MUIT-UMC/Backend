@@ -71,13 +71,11 @@ public class PostResponseDTO {
         private List<String> imgUrls;
         private Integer commentCount;
         private Integer likeCount;
-        private Boolean isLiked;
         private LocalDate lostDate;
         private String location;
         private String lostItem;
         private String musicalName;
         private Integer rating;
-        private Long musicalId;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
