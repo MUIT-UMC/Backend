@@ -87,6 +87,7 @@ public class CommentConverter {
                     .isAnonymous(requestDTO.getIsAnonymous())
                     .anonymousIndex(index)
                     .content(requestDTO.getContent())
+                    .reportCount(0)
                     .member(member)
                     .build();
     }

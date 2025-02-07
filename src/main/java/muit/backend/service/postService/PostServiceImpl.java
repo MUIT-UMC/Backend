@@ -9,6 +9,7 @@ import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.member.PostLikes;
 import muit.backend.domain.entity.member.Report;
 import muit.backend.domain.enums.PostType;
+import muit.backend.domain.enums.ReportObjectType;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.dto.reportDTO.ReportRequestDTO;
@@ -190,10 +191,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public ReportResponseDTO.ReportResultDTO reportPost(Long postId, Member member, ReportRequestDTO requestDTO) {
+        //post 유효성 검사
         Post post = postRepository.findById(postId).orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
-        Report report = Report.builder().content(requestDTO.getContent()).member(member).post(post).build();
+
+        //DTO->Entity
+        Report report = Report.builder().content(requestDTO.getContent()).member(member).reportedObjectId(post.getId()).reportObjectType(ReportObjectType.POST).build();
+
         Report saved = reportRepository.save(report);
+        post.changeReportCount(true);
         return ReportResponseDTO.ReportResultDTO.builder().id(saved.getId()).message("정상적으로 신고 처리 되었습니다.").build();
     }
 }

@@ -40,12 +40,19 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    private List<Report> reportList = new ArrayList<>();
+    private Integer reportCount;
 
 
 
     public void deleteContent(String newContent) {
         this.content = newContent;
+    }
+
+    public void changeReportCount(Boolean isAdd){
+        if(isAdd){
+            this.reportCount++;
+        }else{
+            this.reportCount--;
+        }
     }
 }
