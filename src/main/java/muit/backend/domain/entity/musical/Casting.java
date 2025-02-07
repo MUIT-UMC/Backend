@@ -21,8 +21,6 @@ public class Casting extends BaseEntity {
 
     private String roleName;
 
-    private String description;
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "musical_id")
     private Musical musical;
