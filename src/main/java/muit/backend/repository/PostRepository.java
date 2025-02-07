@@ -1,5 +1,6 @@
 package muit.backend.repository;
 
+import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.enums.PostType;
 import org.springframework.data.domain.Page;
@@ -36,4 +37,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByPostTypeAndMusicalNameAndLocationContaining(PostType postType, PageRequest of, String musicalName, String location);
 
     Page<Post> findAllByPostTypeAndLocationContaining(PostType postType, PageRequest of, String location);
+
+    Page<Post> findAllByMember(Member member,PageRequest of);
 }

@@ -25,6 +25,7 @@ public class ReviewConverter {
                 .images(imgList)
                 .postType(postType)
                 .musical(musical)
+                .musicalName(musical.getName())
                 .commentCount(0)
                 .rating(requestDTO.getRating())
                 .location(musical.getTheatre().getName())

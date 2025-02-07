@@ -8,8 +8,10 @@ import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.apiPayLoad.code.status.ErrorStatus;
 import muit.backend.apiPayLoad.exception.GeneralException;
+import muit.backend.converter.postConverter.PostConverter;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
+import muit.backend.domain.entity.member.PostLikes;
 import muit.backend.domain.entity.member.Report;
 import muit.backend.domain.enums.PostType;
 import muit.backend.domain.enums.ReportObjectType;
@@ -17,7 +19,10 @@ import muit.backend.domain.enums.Role;
 import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.dto.reportDTO.ReportRequestDTO;
 import muit.backend.dto.reportDTO.ReportResponseDTO;
+import muit.backend.repository.PostLikesRepository;
+import muit.backend.repository.PostRepository;
 import muit.backend.repository.ReportRepository;
+import muit.backend.s3.UuidFileService;
 import muit.backend.service.MemberService;
 import muit.backend.service.ReportService;
 import muit.backend.service.postService.PostService;
@@ -37,6 +42,9 @@ public class CommonPostController {
     private final PostService postService;
     private final MemberService memberService;
     private final ReportRepository reportRepository;
+    private final PostRepository postRepository;
+    private final UuidFileService uuidFileService;
+    private final PostLikesRepository postLikesRepository;
 
     @GetMapping("/likes/{postId}")
     @Operation(summary = "게시판 좋아요 API", description = "익명 게시판의 게시글 좋아요/좋아요 취소 API")
@@ -119,6 +127,32 @@ public class CommonPostController {
                 .isLast(reports.isLast())
                 .totalPage(reports.getTotalPages())
                 .build());
+    }
+
+    @GetMapping("/myPost")
+    @Operation(summary = "내가 쓴 글 확인 API", description = "마이페이지 내가 쓴 글 목록 API")
+    public ApiResponse<PostResponseDTO.MyPostResultListDTO> myPost(@RequestHeader("Authorization") String accessToken,
+                                                             @RequestParam(defaultValue = "0") Integer page,
+                                                             @RequestParam(defaultValue = "20") Integer size)
+    {
+        Member member = memberService.getMemberByToken(accessToken);
+        Page<Post> myPosts = postRepository.findAllByMember(member,PageRequest.of(page,size));
+        List<PostResponseDTO.GeneralMyPostResponseDTO> myPostDTOList= myPosts.stream().map((post)->{
+                PostLikes postLike= postLikesRepository.findByMemberAndPost(member,post);
+                boolean isLiked = postLike!=null;
+                return PostConverter.toGeneralMyPostResponseDTO(post,isLiked);
+        }).toList();
+
+        PostResponseDTO.MyPostResultListDTO list = PostResponseDTO.MyPostResultListDTO.builder()
+                .posts(myPostDTOList)
+                .listSize(myPostDTOList.size())
+                .totalPage(myPosts.getTotalPages())
+                .isFirst(myPosts.isFirst())
+                .isLast(myPosts.isLast())
+                .totalElements(myPosts.getTotalElements())
+                .build();
+        
+        return ApiResponse.onSuccess(list);
     }
 
 }
