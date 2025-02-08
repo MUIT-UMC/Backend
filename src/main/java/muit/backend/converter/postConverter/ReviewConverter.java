@@ -44,6 +44,7 @@ public class ReviewConverter {
                 .nickname(name)
                 .memberId(review.getMember().getId())
                 .musicalId(review.getMusical().getId())
+                .musicalName(review.getMusical().getName())
                 .location(review.getLocation())
                 .rating(review.getRating())
                 .title(review.getTitle())
