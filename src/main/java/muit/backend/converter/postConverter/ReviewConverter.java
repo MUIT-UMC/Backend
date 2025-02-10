@@ -51,6 +51,8 @@ public class ReviewConverter {
                 .content(review.getContent())
                 .commentCount(review.getCommentCount())
                 .imgUrls(review.getImages().stream().map(UuidFile::getFileUrl).collect(Collectors.toList()))
+                .createdAt(review.getCreatedAt())
+                .updatedAt(review.getUpdatedAt())
                 .build();
 
     }
