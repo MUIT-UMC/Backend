@@ -44,13 +44,15 @@ public class ReviewConverter {
                 .nickname(name)
                 .memberId(review.getMember().getId())
                 .musicalId(review.getMusical().getId())
-                .musicalName(review.getMusical().getName())
+                .musicalName(review.getMusicalName())
                 .location(review.getLocation())
                 .rating(review.getRating())
                 .title(review.getTitle())
                 .content(review.getContent())
                 .commentCount(review.getCommentCount())
                 .imgUrls(review.getImages().stream().map(UuidFile::getFileUrl).collect(Collectors.toList()))
+                .createdAt(review.getCreatedAt())
+                .updatedAt(review.getUpdatedAt())
                 .build();
 
     }
