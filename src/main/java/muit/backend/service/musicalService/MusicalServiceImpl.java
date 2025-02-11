@@ -7,19 +7,18 @@ import muit.backend.config.KopisConfig;
 import muit.backend.converter.CastingConverter;
 import muit.backend.converter.EventConverter;
 import muit.backend.converter.MusicalConverter;
+import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Actor;
 import muit.backend.domain.entity.musical.Event;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.entity.musical.Theatre;
+import muit.backend.domain.enums.PostType;
 import muit.backend.dto.castingDTO.CastingResponseDTO;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 import muit.backend.dto.kopisDTO.KopisMusicalResponseDTO;
 import muit.backend.dto.musicalDTO.MusicalRequestDTO;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
-import muit.backend.repository.ActorRepository;
-import muit.backend.repository.CastingRepository;
-import muit.backend.repository.EventRepository;
-import muit.backend.repository.MusicalRepository;
+import muit.backend.repository.*;
 import muit.backend.service.theatreService.TheatreService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -51,6 +50,7 @@ public class MusicalServiceImpl implements MusicalService {
     private final InterparkConfig interparkConfig;
     private final CastingRepository castingRepository;
     private final ActorRepository actorRepository;
+    private final PostRepository postRepository;
 
     @Override
     public MusicalResponseDTO.MusicalResultDTO getMusical(Long musicalId) {
@@ -62,7 +62,16 @@ public class MusicalServiceImpl implements MusicalService {
         List<Event> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId);
         EventResponseDTO.EventResultListDTO eventResultListDTO = EventConverter.toEventResultListDTO(musical, eventList);
 
-        return MusicalConverter.toMusicalResultDTO(musical, eventResultListDTO);
+        //뮤지컬 평점
+        List<Post> posts = postRepository.findAllByPostTypeAndMusicalId(PostType.REVIEW,musicalId);
+        double rating=0;
+        for(Post post: posts){
+            rating+=post.getRating();
+        }
+        rating = Math.round(10*rating/posts.size())/10.0;
+
+
+        return MusicalConverter.toMusicalResultDTO(musical, eventResultListDTO, rating);
 
     }
 
