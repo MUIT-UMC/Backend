@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.converter.EventConverter;
 import muit.backend.domain.common.BaseEntity;
+import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.enums.EventType;
 import muit.backend.dto.eventDTO.EventResponseDTO;
 
