@@ -204,13 +204,13 @@ public class MusicalConverter {
         String openInfo;
         switch(s){
             case FIRST:
-                openInfo = "1차 오픈";
+                openInfo = "1차 티켓 오픈";
                 break;
             case SECOND:
-                openInfo = "2차 오픈";
+                openInfo = "2차 티켓 오픈";
                 break;
             case THIRD:
-                openInfo = "3차 오픈";
+                openInfo = "3차 티켓 오픈";
                 break;
             default:
                 openInfo = "일반 예매";
