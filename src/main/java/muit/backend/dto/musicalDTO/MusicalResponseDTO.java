@@ -85,6 +85,18 @@ public class MusicalResponseDTO {
         private String dDay;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MusicalTodayOpenDTO{
+        private Long id;
+        private String posterUrl;
+        private String name;
+        private String openTime;
+        private String openInfo;
+    }
+
 
     @Builder
     @Getter

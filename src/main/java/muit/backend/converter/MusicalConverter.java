@@ -12,6 +12,7 @@ import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -191,6 +192,36 @@ public class MusicalConverter {
                 .category(musical.getCategory())
                 .openDate(musical.getOpenDate())
                 .openInfo(musical.getOpenInfo())
+                .build();
+    }
+
+    public static MusicalResponseDTO.MusicalTodayOpenDTO toMusicalTodayOpenDTO(Musical musical){
+        LocalTime openLocalTime = musical.getOpenDate().toLocalTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String openTime = "오늘 " + openLocalTime.format(formatter);
+        EventType s = musical.getOpenInfo();
+        if(s==null) s = EventType.NONE;
+        String openInfo;
+        switch(s){
+            case FIRST:
+                openInfo = "1차 오픈";
+                break;
+            case SECOND:
+                openInfo = "2차 오픈";
+                break;
+            case THIRD:
+                openInfo = "3차 오픈";
+                break;
+            default:
+                openInfo = "일반 예매";
+        }
+
+        return MusicalResponseDTO.MusicalTodayOpenDTO.builder()
+                .id(musical.getId())
+                .name(musical.getName())
+                .posterUrl(musical.getPosterUrl())
+                .openTime(openTime)
+                .openInfo(openInfo)
                 .build();
     }
 }
