@@ -23,6 +23,9 @@ public interface MusicalRepository extends JpaRepository<Musical, Long> {
     @Query("SELECT m FROM Musical m WHERE m.openDate > CURRENT_TIMESTAMP ORDER BY m.openDate ASC")
     List<Musical> getAllOpenAfterToday(Pageable pageable);
 
+    @Query(value = "SELECT * FROM musical m WHERE DATE(m.open_date) = CURDATE()", nativeQuery = true)
+    List<Musical> getTodayOpenMusicals();
+
     List<Musical> findByNameContaining(String name);
 
     // 검색어가 있을 때

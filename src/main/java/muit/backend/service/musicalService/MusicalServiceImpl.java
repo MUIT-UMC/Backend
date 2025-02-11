@@ -303,4 +303,11 @@ public class MusicalServiceImpl implements MusicalService {
 
         return castingResultListDTOs;
     }
+
+    @Override
+    public List<MusicalResponseDTO.MusicalTodayOpenDTO> getTodayOpenMusicals() {
+        List<Musical> musicals = musicalRepository.getTodayOpenMusicals();
+        return musicals.stream().map(MusicalConverter::toMusicalTodayOpenDTO).toList();
+    }
+
 }
