@@ -68,6 +68,12 @@ public class MusicalController {
         return ApiResponse.onSuccess(musicalService.getAllOpenMusicals(page));
     }
 
+    @GetMapping("/open/today")
+    @Operation(summary = "뮤지컬 조회 - TICKET OPEN 전체보기에서 오늘 티켓 오픈하는 뮤지컬", description = "오늘 티켓 오픈하는 뮤지컬을 조회하는 API")
+    public ApiResponse<List<MusicalResponseDTO.MusicalTodayOpenDTO>> getTodayOpenMusicals() {
+        return ApiResponse.onSuccess(musicalService.getTodayOpenMusicals());
+    }
+
     @GetMapping("/search")
     @Operation(summary = "뮤지컬 검색", description = "상단바, 이벤트 확인에서 뮤지컬을 검색하는 API 입니다.")
     @Parameters({

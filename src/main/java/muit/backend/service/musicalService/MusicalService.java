@@ -34,4 +34,6 @@ public interface MusicalService {
     public MusicalResponseDTO.AdminMusicalDetailDTO getMusicalDetail(Long id);
 
     public List<CastingResponseDTO.CastingResultListDTO> getCastingInfo(Long id);
+
+    public List<MusicalResponseDTO.MusicalTodayOpenDTO> getTodayOpenMusicals();
 }
