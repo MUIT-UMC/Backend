@@ -100,6 +100,7 @@ public class CommentConverter {
                 .map(CommentConverter::toReplyResponseDTO).collect(Collectors.toList());
 
         String nickname = switch (comment.getAnonymousIndex()) {
+            case -2 -> "삭제된 댓글";
             case -1 -> comment.getMember().getName();
             case 0 -> "글쓴이";
             default -> "익명" + comment.getAnonymousIndex();
@@ -134,7 +135,6 @@ public class CommentConverter {
     public static CommentReplyResponseDTO.ReplyResponseDTO toReplyResponseDTO(Reply reply) {
 
         String nickname = switch (reply.getAnonymousIndex()) {
-            case -2 -> "삭제된 댓글";
             case -1 -> reply.getMember().getName();
             case 0 -> "글쓴이";
             default -> "익명" + reply.getAnonymousIndex();

@@ -10,6 +10,7 @@ import muit.backend.domain.entity.member.PostLikes;
 import muit.backend.domain.entity.member.Report;
 import muit.backend.domain.enums.PostType;
 import muit.backend.domain.enums.ReportObjectType;
+import muit.backend.domain.enums.Role;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.dto.reportDTO.ReportRequestDTO;
@@ -127,12 +128,12 @@ public class PostServiceImpl implements PostService {
                 orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
         //작성자와 동일인인지 검사
-        if(post.getMember()!=member){
+        if(post.getMember()==member||member.getRole()== Role.ADMIN){
+            // 엔티티 삭제
+            postRepository.delete(post);
+        }else{
             throw(new GeneralException(ErrorStatus._FORBIDDEN));
         }
-
-        // 엔티티 삭제
-        postRepository.delete(post);
 
         return PostResponseDTO.DeleteResultDTO.builder()
                 .message("삭제 완료")
