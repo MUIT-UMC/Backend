@@ -42,7 +42,7 @@ public class LostServiceImpl implements LostService {
 
     //게시판 조회
     @Override
-    public LostResponseDTO.LostResultListDTO getLostPostList(PostType postType, Integer page,Integer size, Map<String,String> search) {
+    public LostResponseDTO.LostResultListDTO getLostPostList(PostType postType, Member member , Integer page,Integer size, Map<String,String> search) {
         Page<Post> postPage;
         if(!search.get("musicalName").isEmpty()) {//뮤지컬 이름 포함 검색
             if(!search.get("lostDate").isEmpty()){//날짜 포함 검색
@@ -83,16 +83,16 @@ public class LostServiceImpl implements LostService {
         }
 
         
-            return LostConverter.toLostResultListDTO(postPage);
+            return LostConverter.toLostResultListDTO(postPage,member);
     }
 
     //특정 게시판 특정 게시글 단건 조회
     @Override
-    public LostResponseDTO.GeneralLostResponseDTO getLostPost(Long id) {
+    public LostResponseDTO.GeneralLostResponseDTO getLostPost(Long id,Member member) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
-        return LostConverter.toGeneralLostResponseDTO(post);
+        return LostConverter.toGeneralLostResponseDTO(post,member);
     }
 
     //게시글 작성
@@ -116,7 +116,7 @@ public class LostServiceImpl implements LostService {
         // 엔티티 저장
         postRepository.save(post);
 
-        return LostConverter.toGeneralLostResponseDTO(post);
+        return LostConverter.toGeneralLostResponseDTO(post,member);
     }
 
     @Override
@@ -152,6 +152,6 @@ public class LostServiceImpl implements LostService {
         //나머지 필드 수정
         Post changedPost = post.changeLost(lostRequestDTO);
         
-        return LostConverter.toGeneralLostResponseDTO(changedPost);
+        return LostConverter.toGeneralLostResponseDTO(changedPost,member);
     }
 }

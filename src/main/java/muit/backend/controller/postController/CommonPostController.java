@@ -99,9 +99,9 @@ public class CommonPostController {
         Page<Report> reports;
         if(type==null){
             reports= reportRepository.findAll(PageRequest.of(page, size));
-        }else if(type==Type.POST){
+        }else if(type==Type.POST){//게시물 신고만 조회
             reports=reportRepository.findAllByReportObjectType(ReportObjectType.POST,PageRequest.of(page,size));
-        }else if(type==Type.COMMENT){
+        }else if(type==Type.COMMENT){//댓글 신고만 조회
             ReportObjectType[] types = {ReportObjectType.COMMENT,ReportObjectType.REPLY};
             reports=reportRepository.findAllByReportObjectTypeIn(types,PageRequest.of(page,size));
         }else{

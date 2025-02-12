@@ -66,14 +66,14 @@ public class ReviewController {
                                                                               @RequestParam(defaultValue = "", name="musicalName") String musicalName,
                                                                               @RequestParam(defaultValue = "",name="location") String location) {
 
-        memberService.getMemberByToken(accessToken);
+        Member member = memberService.getMemberByToken(accessToken);
 
         PostType postType = switch (reviewType){
             case REVIEW -> PostType.REVIEW;
             case SIGHT -> PostType.SIGHT;
         };
 
-        return ApiResponse.onSuccess(reviewService.getReviewList(postType, page, size, musicalName,location));
+        return ApiResponse.onSuccess(reviewService.getReviewList(postType, member, page, size, musicalName,location));
     }
 
     @GetMapping("/{postId}")
@@ -83,9 +83,9 @@ public class ReviewController {
     })
     public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> getReview(@RequestHeader("Authorization") String accessToken,
                                                                              @PathVariable("postId") Long postId) {
-        memberService.getMemberByToken(accessToken);
+        Member member = memberService.getMemberByToken(accessToken);
 
-        return ApiResponse.onSuccess(reviewService.getReview(postId));
+        return ApiResponse.onSuccess(reviewService.getReview(postId,member));
     }
 
     @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

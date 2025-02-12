@@ -3,6 +3,7 @@ package muit.backend.converter.postConverter;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.enums.PostType;
+import muit.backend.domain.enums.Role;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.s3.UuidFile;
@@ -36,13 +37,15 @@ public class PostConverter {
 
     // Entity -> ResultDTO
     // 게시글 조회 - 단건
-    public static PostResponseDTO.GeneralPostResponseDTO toGeneralPostResponseDTO(Post post,boolean isLiked) {
+    public static PostResponseDTO.GeneralPostResponseDTO toGeneralPostResponseDTO(Post post,boolean isLiked,Member member) {
 
+        boolean isMyPost = member.getRole().equals(Role.ADMIN) || member.getId().equals(post.getMember().getId());
         String name = post.getIsAnonymous() ? "익명" :post.getMember().getName();
 
         return PostResponseDTO.GeneralPostResponseDTO.builder()
                 .id(post.getId())
                 .memberId(post.getMember().getId())
+                .isMyPost(isMyPost)
                 .nickname(name)
                 .title(post.getTitle())
                 .content(post.getContent())

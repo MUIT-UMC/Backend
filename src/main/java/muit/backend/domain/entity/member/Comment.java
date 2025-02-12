@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.domain.common.BaseEntity;
+import muit.backend.domain.enums.Role;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
@@ -44,8 +45,14 @@ public class Comment extends BaseEntity {
 
 
 
-    public void deleteContent(String newContent) {
-        this.content = newContent;
+    public void deleteContent(Role role) {
+        if(role.equals(Role.USER)){
+            this.content = "삭제된 댓글입니다.";
+            this.anonymousIndex =-2;
+        }else{
+            this.content = "관리자에 의해 삭제된 댓글입니다.";
+            this.anonymousIndex = -2;
+        }
     }
 
     public void changeReportCount(Boolean isAdd){
