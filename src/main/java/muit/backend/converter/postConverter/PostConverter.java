@@ -29,6 +29,7 @@ public class PostConverter {
                 .title(requestDTO.getTitle())
                 .content(requestDTO.getContent())
                 .commentCount(0)
+                .likes(0)
                 .reportCount(0)
                 .postLikes(new ArrayList<>())
                 .images(imgList)
