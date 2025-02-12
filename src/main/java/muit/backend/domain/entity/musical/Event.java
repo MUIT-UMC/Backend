@@ -24,10 +24,7 @@ public class Event extends BaseEntity {
 
     private LocalDate evFrom;
 
-    private LocalDate evTo;
-
-    @Enumerated(EnumType.STRING)
-    private EventType eventType;
+    private LocalDate evTo; 
 
     @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "musical_id")
