@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService {
         // 엔티티 저장
         postRepository.save(post);
 
-        return PostConverter.toGeneralPostResponseDTO(post,false, true);
+        return PostConverter.toGeneralPostResponseDTO(post,false, member);
     }
 
     //게시판 조회
@@ -67,8 +67,8 @@ public class PostServiceImpl implements PostService {
                 .map((post)->{
                     PostLikes postLike= postLikesRepository.findByMemberAndPost(member,post);
                     boolean isLiked = postLike!=null;
-                    boolean isMyPost = member.getId().equals(post.getMember().getId());
-                    return PostConverter.toGeneralPostResponseDTO(post,isLiked,isMyPost);
+
+                    return PostConverter.toGeneralPostResponseDTO(post,isLiked,member);
                 }).collect(Collectors.toList());
 
         return PostResponseDTO.PostResultListDTO.builder()
@@ -89,8 +89,8 @@ public class PostServiceImpl implements PostService {
                 .map((post)->{
                     PostLikes postLike= postLikesRepository.findByMemberAndPost(member,post);
                     boolean isLiked = postLike!=null;
-                    boolean isMyPost = member.getId().equals(post.getMember().getId());
-                    return PostConverter.toGeneralPostResponseDTO(post,isLiked, isMyPost);
+
+                    return PostConverter.toGeneralPostResponseDTO(post,isLiked, member);
                 }).collect(Collectors.toList());
 
         return PostResponseDTO.PostResultListDTO.builder()
@@ -114,7 +114,7 @@ public class PostServiceImpl implements PostService {
         isLiked= postLike != null;
         boolean isMyPost = member.getId().equals(post.getMember().getId());
 
-        return PostConverter.toGeneralPostResponseDTO(post, isLiked, isMyPost);
+        return PostConverter.toGeneralPostResponseDTO(post, isLiked, member);
     }
 
     //게시글 삭제
@@ -173,7 +173,7 @@ public class PostServiceImpl implements PostService {
         PostLikes postLike = postLikesRepository.findByMemberAndPost(member,post);
         isLiked= postLike != null;
 
-        return PostConverter.toGeneralPostResponseDTO(changedPost,isLiked,true);
+        return PostConverter.toGeneralPostResponseDTO(changedPost,isLiked,member);
     }
 
     @Override
