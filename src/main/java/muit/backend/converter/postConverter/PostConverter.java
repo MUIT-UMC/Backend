@@ -36,13 +36,14 @@ public class PostConverter {
 
     // Entity -> ResultDTO
     // 게시글 조회 - 단건
-    public static PostResponseDTO.GeneralPostResponseDTO toGeneralPostResponseDTO(Post post,boolean isLiked) {
+    public static PostResponseDTO.GeneralPostResponseDTO toGeneralPostResponseDTO(Post post,boolean isLiked,boolean isMyPost) {
 
         String name = post.getIsAnonymous() ? "익명" :post.getMember().getName();
 
         return PostResponseDTO.GeneralPostResponseDTO.builder()
                 .id(post.getId())
                 .memberId(post.getMember().getId())
+                .isMyPost(isMyPost)
                 .nickname(name)
                 .title(post.getTitle())
                 .content(post.getContent())

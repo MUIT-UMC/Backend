@@ -4,6 +4,7 @@ import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
+import muit.backend.domain.enums.Role;
 import muit.backend.dto.postDTO.ReviewRequestDTO;
 import muit.backend.dto.postDTO.ReviewResponseDTO;
 import muit.backend.s3.UuidFile;
@@ -35,8 +36,9 @@ public class ReviewConverter {
     }
 
     //to 단건 DTO
-    public static ReviewResponseDTO.GeneralReviewResponseDTO toReviewResponseDTO(Post review) {
+    public static ReviewResponseDTO.GeneralReviewResponseDTO toReviewResponseDTO(Post review, Member member) {
 
+        boolean isMyPost = member.getRole().equals(Role.ADMIN) || member.getId().equals(review.getMember().getId());
         String name = review.getIsAnonymous() ? "익명" :review.getMember().getName();
 
         return ReviewResponseDTO.GeneralReviewResponseDTO.builder()
@@ -58,9 +60,9 @@ public class ReviewConverter {
     }
 
     //Page to ListDTO
-    public static ReviewResponseDTO.ReviewListResponseDTO toReviewListDTO(Page<Post> reviewPage) {
+    public static ReviewResponseDTO.ReviewListResponseDTO toReviewListDTO(Page<Post> reviewPage,Member member) {
         List<ReviewResponseDTO.GeneralReviewResponseDTO> reviewListDTO = reviewPage.stream().
-                map(ReviewConverter::toReviewResponseDTO).collect(Collectors.toList());
+                map(post->ReviewConverter.toReviewResponseDTO(post,member)).collect(Collectors.toList());
 
         return ReviewResponseDTO.ReviewListResponseDTO.builder()
                 .posts(reviewListDTO)

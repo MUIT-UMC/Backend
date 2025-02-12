@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService {
         // 엔티티 저장
         postRepository.save(post);
 
-        return PostConverter.toGeneralPostResponseDTO(post,false);
+        return PostConverter.toGeneralPostResponseDTO(post,false, true);
     }
 
     //게시판 조회
@@ -67,7 +67,8 @@ public class PostServiceImpl implements PostService {
                 .map((post)->{
                     PostLikes postLike= postLikesRepository.findByMemberAndPost(member,post);
                     boolean isLiked = postLike!=null;
-                    return PostConverter.toGeneralPostResponseDTO(post,isLiked);
+                    boolean isMyPost = member.getId().equals(post.getMember().getId());
+                    return PostConverter.toGeneralPostResponseDTO(post,isLiked,isMyPost);
                 }).collect(Collectors.toList());
 
         return PostResponseDTO.PostResultListDTO.builder()
@@ -88,7 +89,8 @@ public class PostServiceImpl implements PostService {
                 .map((post)->{
                     PostLikes postLike= postLikesRepository.findByMemberAndPost(member,post);
                     boolean isLiked = postLike!=null;
-                    return PostConverter.toGeneralPostResponseDTO(post,isLiked);
+                    boolean isMyPost = member.getId().equals(post.getMember().getId());
+                    return PostConverter.toGeneralPostResponseDTO(post,isLiked, isMyPost);
                 }).collect(Collectors.toList());
 
         return PostResponseDTO.PostResultListDTO.builder()
@@ -110,8 +112,9 @@ public class PostServiceImpl implements PostService {
         boolean isLiked;
         PostLikes postLike = postLikesRepository.findByMemberAndPost(member,post);
         isLiked= postLike != null;
+        boolean isMyPost = member.getId().equals(post.getMember().getId());
 
-        return PostConverter.toGeneralPostResponseDTO(post,isLiked);
+        return PostConverter.toGeneralPostResponseDTO(post, isLiked, isMyPost);
     }
 
     //게시글 삭제
@@ -170,7 +173,7 @@ public class PostServiceImpl implements PostService {
         PostLikes postLike = postLikesRepository.findByMemberAndPost(member,post);
         isLiked= postLike != null;
 
-        return PostConverter.toGeneralPostResponseDTO(changedPost,isLiked);
+        return PostConverter.toGeneralPostResponseDTO(changedPost,isLiked,true);
     }
 
     @Override

@@ -58,12 +58,12 @@ public class ReviewServiceImpl implements ReviewService {
 
         postRepository.save(review);
 
-        return ReviewConverter.toReviewResponseDTO(review);
+        return ReviewConverter.toReviewResponseDTO(review,member);
     }
 
     //리뷰 목록 조회
     @Override
-    public ReviewResponseDTO.ReviewListResponseDTO getReviewList(PostType postType, Integer page, Integer size, String musicalName, String location){
+    public ReviewResponseDTO.ReviewListResponseDTO getReviewList(PostType postType, Member member, Integer page, Integer size, String musicalName, String location){
         Page<Post> reviewPage;
 
         if(!musicalName.isEmpty()){
@@ -72,15 +72,15 @@ public class ReviewServiceImpl implements ReviewService {
             reviewPage = postRepository.findAllByPostTypeAndLocationContaining(postType, PageRequest.of(page, size),location);
         }
 
-        return ReviewConverter.toReviewListDTO(reviewPage);
+        return ReviewConverter.toReviewListDTO(reviewPage, member);
     }
 
 
     //리뷰 단건 조회
     @Override
-    public ReviewResponseDTO.GeneralReviewResponseDTO getReview(Long postId) {
+    public ReviewResponseDTO.GeneralReviewResponseDTO getReview(Long postId,Member member) {
         Post review = postRepository.findById(postId).orElseThrow(()->new GeneralException(ErrorStatus.POST_NOT_FOUND));
-        return ReviewConverter.toReviewResponseDTO(review);
+        return ReviewConverter.toReviewResponseDTO(review,member);
     }
 
     //리뷰 수정
@@ -118,7 +118,7 @@ public class ReviewServiceImpl implements ReviewService {
         //수정된 이미지 삽입
         List<UuidFile> imgArr = new ArrayList<>();
         if(imgFile!=null&&!imgFile.isEmpty()){
-            //추후 채은에게 SIGHT 추가 해달라고 하기
+
             imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, filePath)).collect(Collectors.toList());
         }
         review.changeImg(imgArr);
@@ -127,6 +127,6 @@ public class ReviewServiceImpl implements ReviewService {
         //나머지 필드 수정
         Post changedPost = review.changeReview(requestDTO);
 
-        return ReviewConverter.toReviewResponseDTO(changedPost);
+        return ReviewConverter.toReviewResponseDTO(changedPost, member);
     }
 }
