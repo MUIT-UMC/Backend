@@ -19,6 +19,7 @@ public class CommentReplyResponseDTO {
         private String nickname;
         private String content;
         private Long memberId;
+        private Boolean isMyComment;
         private LocalDateTime createdAt;
         private List<ReplyResponseDTO> replies;
     }
@@ -33,6 +34,7 @@ public class CommentReplyResponseDTO {
         private Long replyId;
         private String content;
         private Long memberId;
+        private Boolean isMyComment;
         private LocalDateTime createdAt;
     }
 

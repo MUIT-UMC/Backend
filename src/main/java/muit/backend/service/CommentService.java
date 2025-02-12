@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface CommentService {
-    CommentReplyResponseDTO.CommentListResponseDTO getCommentList(Long postId, Integer page, Integer size);
+    CommentReplyResponseDTO.CommentListResponseDTO getCommentList(Long postId,Member member, Integer page, Integer size);
 
     CommentReplyResponseDTO.CommentResponseDTO writeComment(CommentReplyRequestDTO.CommentRequestDTO requestDTO, Long postId, Member member);
 

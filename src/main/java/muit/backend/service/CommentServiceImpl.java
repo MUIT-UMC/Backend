@@ -34,10 +34,10 @@ public class CommentServiceImpl implements CommentService {
     //특정 게시물의 모든 댓글 조회
     @Transactional(readOnly = true)
     @Override
-    public CommentReplyResponseDTO.CommentListResponseDTO getCommentList(Long postId, Integer page, Integer size) {
+    public CommentReplyResponseDTO.CommentListResponseDTO getCommentList(Long postId, Member member, Integer page, Integer size) {
         Post post = postRepository.findById(postId).orElseThrow(()->new GeneralException(ErrorStatus.POST_NOT_FOUND));
         Page<Comment> commentPage = commentRepository.findAllByPost(post, PageRequest.of(page, size));
-        return CommentConverter.toCommentListResponseDTO(commentPage);
+        return CommentConverter.toCommentListResponseDTO(commentPage,member);
     }
 
     //특정 게시물에 댓글 생성
@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
         post.changeCommentCount(true);
 
         //comment -> responseDTO
-        return CommentConverter.toCommentResponseDTO(comment);
+        return CommentConverter.toCommentResponseDTO(comment,member);
     }
 
     //특정 댓글에 대댓글 생성
@@ -65,7 +65,7 @@ public class CommentServiceImpl implements CommentService {
         replyRepository.save(reply);
         comment.getPost().changeCommentCount(true);
 
-        return CommentConverter.toReplyResponseDTO(reply);
+        return CommentConverter.toReplyResponseDTO(reply,member);
     }
 
     //특정 댓글 삭제
