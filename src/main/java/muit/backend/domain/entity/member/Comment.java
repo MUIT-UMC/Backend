@@ -48,10 +48,10 @@ public class Comment extends BaseEntity {
     public void deleteContent(Role role) {
         if(role.equals(Role.USER)){
             this.content = "삭제된 댓글입니다.";
-            this.member = null;
+            this.anonymousIndex =-2;
         }else{
             this.content = "관리자에 의해 삭제된 댓글입니다.";
-            this.member = null;
+            this.anonymousIndex = -2;
         }
     }
 
