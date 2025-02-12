@@ -73,14 +73,14 @@ public class LostController {
             case LOST -> PostType.LOST;
             case FOUND -> PostType.FOUND;
         };
-        memberService.getMemberByToken(accessToken);
+        Member member = memberService.getMemberByToken(accessToken);
         Map<String,String> search = new HashMap<>();
         search.put("musicalName",musicalName.trim());
         search.put("lostDate",lostDate!=null ? lostDate.toString().trim():"");
         search.put("location",location.trim());
         search.put("lostItem",lostItem.trim());
 
-        return ApiResponse.onSuccess(lostService.getLostPostList(postType, page, size, search));
+        return ApiResponse.onSuccess(lostService.getLostPostList(postType, member, page, size, search));
     }
 
     @GetMapping("/{postId}")
@@ -88,8 +88,8 @@ public class LostController {
     public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> getPost(@RequestHeader("Authorization") String accessToken,
                                                                        @PathVariable("postId") Long postId) {
 
-        memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(lostService.getLostPost(postId));
+        Member member = memberService.getMemberByToken(accessToken);
+        return ApiResponse.onSuccess(lostService.getLostPost(postId,member));
     }
 
 

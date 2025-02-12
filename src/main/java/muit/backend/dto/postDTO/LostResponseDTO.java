@@ -19,6 +19,7 @@ public class LostResponseDTO {
     public static class GeneralLostResponseDTO {
         private Long id;
         private Long memberId;
+        private Boolean isMyPost;
         private String nickname;
         private String title;
         private String musicalName;

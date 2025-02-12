@@ -17,6 +17,7 @@ public class ReviewResponseDTO
     public static class GeneralReviewResponseDTO{
         private Long id;
         private Long memberId;
+        private Boolean isMyPost;
         private String nickname;
         private String title;
         private String content;

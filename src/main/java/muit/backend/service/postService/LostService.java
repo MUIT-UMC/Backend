@@ -14,10 +14,10 @@ import java.util.Map;
 public interface LostService {
 
     //특정 게시글 조회
-    public LostResponseDTO.GeneralLostResponseDTO getLostPost(Long PostId);
+    public LostResponseDTO.GeneralLostResponseDTO getLostPost(Long PostId,Member member);
 
     //게시판 조회
-    public LostResponseDTO.LostResultListDTO getLostPostList(PostType postType, Integer page, Integer size, Map<String,String> search);
+    public LostResponseDTO.LostResultListDTO getLostPostList(PostType postType, Member member, Integer page, Integer size, Map<String,String> search);
 
     //게시글 생성
     public LostResponseDTO.GeneralLostResponseDTO createLostPost(PostType postType, LostRequestDTO lostRequestDTO, List<MultipartFile> img, Member member);

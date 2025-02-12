@@ -18,6 +18,7 @@ public class PostResponseDTO {
     public static class GeneralPostResponseDTO {
         private Long id;
         private Long memberId;
+        private Boolean isMyPost;
         private String nickname;
         private String title;
         private String content;

@@ -8,6 +8,7 @@ import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.CommentConverter;
 import muit.backend.domain.entity.member.*;
 import muit.backend.domain.enums.ReportObjectType;
+import muit.backend.domain.enums.Role;
 import muit.backend.dto.commentDTO.CommentReplyRequestDTO;
 import muit.backend.dto.commentDTO.CommentReplyResponseDTO;
 import muit.backend.dto.reportDTO.ReportRequestDTO;
@@ -75,27 +76,31 @@ public class CommentServiceImpl implements CommentService {
 
         if(commentType.equals("COMMENT")){
             Comment comment = commentRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
-            //작성자와 동일인인지 검사
-            if(comment.getMember()!=member){
-                throw(new GeneralException(ErrorStatus._FORBIDDEN));
-            }
-            if(!comment.getReplyList().isEmpty()){
-                comment.deleteContent("삭제된 댓글입니다.");
+            //작성자와 동일인인지 검사/또는 관리자인지
+            if(comment.getMember()==member||comment.getMember().getRole()== Role.ADMIN){
+                if(!comment.getReplyList().isEmpty()){//대댓글 있으면 내용을 삭제된 댓글입니다 로
+                    comment.deleteContent(member.getRole());
+                }else{//대댓글 없으면 그냥 삭제
+                    commentRepository.delete(comment);
+                }
+                comment.getPost().changeCommentCount(false);
             }else{
-                commentRepository.delete(comment);
-            }
-            comment.getPost().changeCommentCount(false);
-        }else if(commentType.equals("REPLY")){
-            Reply reply = replyRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));            //작성자와 동일인인지 검사
-            if(reply.getMember()!=member){
                 throw(new GeneralException(ErrorStatus._FORBIDDEN));
             }
+        }
 
-            replyRepository.deleteById(commentId);
-            reply.getComment().getPost().changeCommentCount(false);
+        else if(commentType.equals("REPLY")){//대댓글의 경우
+            Reply reply = replyRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
+            //작성자와 동일인인지 검사
+            if(reply.getMember()==member||reply.getMember().getRole()== Role.ADMIN){
+                replyRepository.deleteById(commentId);
+                reply.getComment().getPost().changeCommentCount(false);
 
+            }else{
+                throw new RuntimeException("comment type not supported");
+            }
         }else{
-            throw new RuntimeException("comment type not supported");
+            throw(new GeneralException(ErrorStatus._FORBIDDEN));
         }
 
         return CommentReplyResponseDTO.DeleteResultDTO.builder()
