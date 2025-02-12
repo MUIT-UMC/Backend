@@ -6,14 +6,22 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import muit.backend.apiPayLoad.ApiResponse;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
+import muit.backend.converter.CommentConverter;
+import muit.backend.domain.entity.member.Comment;
 import muit.backend.domain.entity.member.Member;
+import muit.backend.domain.entity.member.Reply;
 import muit.backend.domain.enums.PostType;
+import muit.backend.domain.enums.Role;
 import muit.backend.dto.commentDTO.CommentReplyRequestDTO;
 import muit.backend.dto.commentDTO.CommentReplyResponseDTO;
 import muit.backend.dto.postDTO.LostRequestDTO;
 import muit.backend.dto.postDTO.LostResponseDTO;
 import muit.backend.dto.reportDTO.ReportRequestDTO;
 import muit.backend.dto.reportDTO.ReportResponseDTO;
+import muit.backend.repository.CommentRepository;
+import muit.backend.repository.ReplyRepository;
 import muit.backend.service.CommentService;
 import muit.backend.service.MemberService;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +34,8 @@ public class CommentController {
 
     private final CommentService commentService;
     private final MemberService memberService;
+    private final CommentRepository commentRepository;
+    private final ReplyRepository replyRepository;
 
     @GetMapping("/{postId}")
     @Operation(summary = "댓글 조회 API", description = "특정 게시물의 댓글을 모두 조회하는 API")
@@ -37,9 +47,9 @@ public class CommentController {
                                                                                       @PathVariable("postId") Long postId,
                                                                                       @RequestParam(defaultValue = "0", name = "page") Integer page,
                                                                                       @RequestParam(defaultValue = "20", name = "size") Integer size) {
-        memberService.getMemberByToken(accessToken);
+        Member member = memberService.getMemberByToken(accessToken);
 
-        return ApiResponse.onSuccess(commentService.getCommentList(postId, page, size));
+        return ApiResponse.onSuccess(commentService.getCommentList(postId, member, page, size));
     }
 
     @PostMapping("/{postId}")
@@ -79,5 +89,37 @@ public class CommentController {
 
         Member member = memberService.getMemberByToken(accessToken);
         return ApiResponse.onSuccess(commentService.reportComment(commentType,commentId,member,requestDTO));
+    }
+
+    @GetMapping("/admin/comment")
+    @Operation(summary = "댓글 단건 조회 API", description = "신고 내용 중 댓글 id로 댓글 정보 불러오는 API")
+    @Parameters({
+            @Parameter(name = "commentId", description = "댓글 아이디")
+    })
+    public ApiResponse<CommentReplyResponseDTO.CommentResponseDTO> getComment(@RequestHeader("Authorization") String accessToken,
+                                                                              @RequestParam("commentId") Long commentId) {
+        Member member = memberService.getMemberByToken(accessToken);
+        if(member.getRole()!= Role.ADMIN){
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_ADMIN);
+        }
+        Comment comment = commentRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
+
+        return ApiResponse.onSuccess(CommentConverter.toCommentResponseDTO(comment,member));
+    }
+
+    @GetMapping("/admin/reply")
+    @Operation(summary = "대댓글 단건 조회 API", description = "신고 내용 중 대댓글 id로 댓글 정보 불러오는 API")
+    @Parameters({
+            @Parameter(name = "replyId", description = "대댓글 아이디")
+    })
+    public ApiResponse<CommentReplyResponseDTO.ReplyResponseDTO> getReply(@RequestHeader("Authorization") String accessToken,
+                                                                            @RequestParam("commentId") Long commentId) {
+        Member member = memberService.getMemberByToken(accessToken);
+        if(member.getRole()!= Role.ADMIN){
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_ADMIN);
+        }
+        Reply reply = replyRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
+
+        return ApiResponse.onSuccess(CommentConverter.toReplyResponseDTO(reply,member));
     }
 }

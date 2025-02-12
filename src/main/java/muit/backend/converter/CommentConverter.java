@@ -94,10 +94,10 @@ public class CommentConverter {
 
     //Comment -> DTO
     //생성 시 답, 조회 시 단건 답
-    public static CommentReplyResponseDTO.CommentResponseDTO toCommentResponseDTO(Comment comment) {
+    public static CommentReplyResponseDTO.CommentResponseDTO toCommentResponseDTO(Comment comment, Member member) {
 
         List<CommentReplyResponseDTO.ReplyResponseDTO> replies = comment.getReplyList().stream()
-                .map(CommentConverter::toReplyResponseDTO).collect(Collectors.toList());
+                .map(reply->CommentConverter.toReplyResponseDTO(reply,member)).collect(Collectors.toList());
 
         String nickname = switch (comment.getAnonymousIndex()) {
             case -2 -> "삭제된 댓글";
@@ -106,10 +106,13 @@ public class CommentConverter {
             default -> "익명" + comment.getAnonymousIndex();
         };
 
+        boolean isMyComment = comment.getMember()==member;
+
         return CommentReplyResponseDTO.CommentResponseDTO.builder()
                 .commentId(comment.getId())
                 .content(comment.getContent())
                 .memberId(comment.getMember().getId())
+                .isMyComment(isMyComment)
                 .nickname(nickname)
                 .replies(replies)
                 .createdAt(comment.getCreatedAt())
@@ -117,9 +120,9 @@ public class CommentConverter {
     }
 
     //조회 시 리스트 형식 답
-    public static CommentReplyResponseDTO.CommentListResponseDTO toCommentListResponseDTO(Page<Comment> commentPage) {
+    public static CommentReplyResponseDTO.CommentListResponseDTO toCommentListResponseDTO(Page<Comment> commentPage, Member member) {
         List<CommentReplyResponseDTO.CommentResponseDTO> commentResultListDTO = commentPage.stream()
-                .map(CommentConverter::toCommentResponseDTO).collect(Collectors.toList());
+                .map(comment->CommentConverter.toCommentResponseDTO(comment, member)).collect(Collectors.toList());
 
         return CommentReplyResponseDTO.CommentListResponseDTO.builder()
                 .comments(commentResultListDTO)
@@ -132,7 +135,7 @@ public class CommentConverter {
 
 
     //생성 시 단건 답, 댓글 DTO 내부 대댓글 형식
-    public static CommentReplyResponseDTO.ReplyResponseDTO toReplyResponseDTO(Reply reply) {
+    public static CommentReplyResponseDTO.ReplyResponseDTO toReplyResponseDTO(Reply reply,Member member) {
 
         String nickname = switch (reply.getAnonymousIndex()) {
             case -1 -> reply.getMember().getName();
@@ -140,10 +143,12 @@ public class CommentConverter {
             default -> "익명" + reply.getAnonymousIndex();
         };
 
+        boolean isMyComment = reply.getMember()==member;
         return CommentReplyResponseDTO.ReplyResponseDTO.builder()
                 .commentId(reply.getComment().getId())
                 .replyId(reply.getId())
                 .memberId(reply.getMember().getId())
+                .isMyComment(isMyComment)
                 .nickname(nickname)
                 .content(reply.getContent())
                 .createdAt(reply.getCreatedAt())
