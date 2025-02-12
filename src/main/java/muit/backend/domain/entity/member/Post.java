@@ -55,6 +55,8 @@ public class Post extends BaseEntity {
 
     private String lostItem;
 
+    private Integer likes;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UuidFile> images = new ArrayList<>();
 
