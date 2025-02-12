@@ -3,6 +3,7 @@ package muit.backend.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import muit.backend.apiPayLoad.ApiResponse;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Validated
+@Tag(name = "회원")
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
@@ -36,6 +38,7 @@ public class MemberController {
     }
 
     @PostMapping("/email/login")
+    @Operation(summary = "로그인 api", description = "이메일로 로그인을 하는 기능.")
     // JWT 토큰을 생성하여 반환
     public ApiResponse<LoginAccessTokenResponse> login(@RequestBody LoginRequestDTO dto) {
         try {
@@ -50,8 +53,6 @@ public class MemberController {
         }
     }
 
-    @PostMapping("")
-
     @GetMapping("/{memberId}")
     @Parameters({
             @Parameter(name = "Authorization", description = "JWT 토큰으로, 사용자의 아이디, request header 입니다!")
@@ -61,6 +62,14 @@ public class MemberController {
         Member member = memberService.getMemberByToken(authorizationHeader);
         MyPageResponseDTO myPageResponseDTO = memberService.getMyPage(member.getId(), memberId);
 
+        return ApiResponse.onSuccess(myPageResponseDTO);
+    }
+
+    @PatchMapping("/{memberId}")
+    @Operation(summary = "회원 탈퇴(비활성화) api", description = "회원 비활성화 하는 기능입니다.")
+    public ApiResponse<MyPageResponseDTO> deactivateMember(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("memberId") Long memberId) {
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        MyPageResponseDTO myPageResponseDTO = memberService.deactivateMember(member.getId(), memberId);
         return ApiResponse.onSuccess(myPageResponseDTO);
     }
 

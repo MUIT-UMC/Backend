@@ -94,6 +94,10 @@ public class Member extends BaseEntity {
         this.password = password;
     }
 
+    public void deactivateMember(Member member) {
+        this.activeStatus = ActiveStatus.INACTIVE;
+    }
+
     public void updateMember(ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO) {
         if (requestDTO.getUsername() != null) {
             this.username = requestDTO.getUsername();

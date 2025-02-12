@@ -1,3 +1,4 @@
+/*
 package muit.backend.domain.entity;
 
 import jakarta.persistence.Entity;
@@ -26,3 +27,4 @@ public class Admin extends BaseEntity {
 
 
 }
+*/

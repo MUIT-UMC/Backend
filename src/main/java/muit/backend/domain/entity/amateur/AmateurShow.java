@@ -10,6 +10,7 @@ import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.enums.AmateurStatus;
 import muit.backend.dto.adminDTO.amateurTicketDTO.AmateurTicketRequestDTO;
 import muit.backend.dto.adminDTO.manageAmateurShowDTO.ManageAmateurShowRequestDTO;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class AmateurShow extends BaseEntity {
 
     private Integer totalTicket;
 
+    @ColumnDefault("0")
     private Integer soldTicket;
 
     private String timeInfo; // 공연시간 정보, runtime과 다름
