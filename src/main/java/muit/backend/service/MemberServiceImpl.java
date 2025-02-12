@@ -9,6 +9,7 @@ import muit.backend.config.jwt.TokenDTO;
 import muit.backend.config.jwt.TokenProvider;
 import muit.backend.converter.MemberConverter;
 import muit.backend.domain.entity.member.Member;
+import muit.backend.domain.enums.ActiveStatus;
 import muit.backend.domain.enums.Role;
 import muit.backend.dto.memberDTO.*;
 import muit.backend.repository.MemberRepository;
@@ -144,7 +145,23 @@ public class MemberServiceImpl implements MemberService {
                 .username(member.getUsername()).build();
     }
 
+    @Transactional
+    @Override
+    public MyPageResponseDTO deactivateMember(Long tokenId, Long memberId){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+        if (!tokenId.equals(memberId)) {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_AUTHORIZED);
+        }
+        if (!member.getActiveStatus().equals(ActiveStatus.ACTIVE)) {
+            throw new GeneralException(ErrorStatus.MEMBER_ALREADY_DEACTIVATED);
+        }
+        member.deactivateMember(member);
+        return MyPageResponseDTO.builder()
+                .id(memberId)
+                .name(member.getName())
+                .username(member.getUsername()).build();
 
+    }
 
 
 

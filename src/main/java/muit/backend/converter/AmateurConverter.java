@@ -25,6 +25,8 @@ public class AmateurConverter {
                 .age(dto.getAge())
                 .starring(dto.getStarring())
                 .totalTicket(dto.getTotalTicket())
+                .soldTicket(0)
+                .cancelFee(0)
                 .timeInfo(dto.getTimeInfo())
                 .account(dto.getAccount())
                 .contact(dto.getContact())
