@@ -25,6 +25,7 @@ public class TicketResponseDTO {
         private int quantity;
         private int totalPrice;
         private LocalDateTime date;
+        private String accountName;
         private ReservationStatus reservationStatus;
     }
 

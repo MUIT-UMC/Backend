@@ -122,6 +122,7 @@ public class MemberTicketServiceImpl implements MemberTicketService {
                 .quantity(requestDTO.getQuantity())
                 .totalPrice(totalPrice)
                 .reservationTime(LocalDateTime.now())
+                .accountName(requestDTO.getAccountName())
                 .reservationStatus(ReservationStatus.RESERVE_AWAIT)
                 .build();
         memberTicketRepository.save(memberTicket);
