@@ -1,5 +1,6 @@
 package muit.backend.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "이메일")
 public class EmailController {
     private final EmailService emailService;
     private final MemberRepository memberRepository;

@@ -28,6 +28,8 @@ public class MemberTicket extends BaseEntity {
 
     private LocalDateTime reservationTime;
 
+    private String accountName;
+
     @Enumerated(EnumType.STRING)
     private ReservationStatus reservationStatus;
 

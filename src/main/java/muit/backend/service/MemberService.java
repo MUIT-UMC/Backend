@@ -11,4 +11,6 @@ public interface MemberService {
     public Member getAdminByToken(String receivedBearerToken);
     public MyPageResponseDTO getMyPage(Long tokenId, Long memberId);
 
+    public MyPageResponseDTO deactivateMember(Long tokenId, Long memberId);
+
 }

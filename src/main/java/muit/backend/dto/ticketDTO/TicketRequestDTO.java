@@ -12,5 +12,6 @@ import lombok.*;
 public class TicketRequestDTO {
     @JsonProperty("quantity")
     private Integer quantity;
+    private String accountName;
 }
 

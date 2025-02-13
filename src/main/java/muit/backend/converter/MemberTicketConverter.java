@@ -15,6 +15,7 @@ public class MemberTicketConverter {
                 memberTicket.getQuantity(),
                 memberTicket.getTotalPrice(),
                 memberTicket.getReservationTime(),
+                memberTicket.getAccountName(),
                 memberTicket.getReservationStatus()
         );
     }
