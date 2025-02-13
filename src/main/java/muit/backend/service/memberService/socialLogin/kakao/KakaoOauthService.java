@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class KakaoOauthService {
+
     private final KakaoClient kakaoClient;
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
