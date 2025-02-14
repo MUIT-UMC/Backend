@@ -126,7 +126,6 @@ public class Post extends BaseEntity {
         if(reviewRequestDTO.getTitle()!=null){this.title = reviewRequestDTO.getTitle();}
         if(reviewRequestDTO.getContent()!=null){this.content = reviewRequestDTO.getContent();}
         if(reviewRequestDTO.getRating()!=null){this.rating = reviewRequestDTO.getRating();}
-
         return this;
     }
 }
