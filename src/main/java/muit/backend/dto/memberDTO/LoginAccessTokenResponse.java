@@ -1,5 +1,6 @@
 package muit.backend.dto.memberDTO;
 import lombok.*;
+import muit.backend.domain.enums.Role;
 
 @Getter
 @Setter
@@ -12,5 +13,6 @@ public class LoginAccessTokenResponse {
     private Long id;
     private String username;
     private String name;
+    private Role role;
 }
 
