@@ -2,11 +2,15 @@ package muit.backend.service.musicalService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import muit.backend.apiPayLoad.code.status.ErrorStatus;
+import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.config.InterparkConfig;
 import muit.backend.config.KopisConfig;
 import muit.backend.converter.CastingConverter;
 import muit.backend.converter.EventConverter;
 import muit.backend.converter.MusicalConverter;
+import muit.backend.domain.entity.member.Likes;
+import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.musical.Actor;
 import muit.backend.domain.entity.musical.Event;
@@ -51,12 +55,13 @@ public class MusicalServiceImpl implements MusicalService {
     private final CastingRepository castingRepository;
     private final ActorRepository actorRepository;
     private final PostRepository postRepository;
+    private final LikesRepository likesRepository;
 
     @Override
     public MusicalResponseDTO.MusicalResultDTO getMusical(Long musicalId) {
         //뮤지컬 유효성 검사
         Musical musical = musicalRepository.findById(musicalId)
-                .orElseThrow(() -> new RuntimeException("Musical not found"));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
 
         //이벤트 정보를 List<EventResultDTO>로 구성된 EventResultListDTO 에 담아서 반환
         List<Event> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId);
@@ -278,7 +283,8 @@ public class MusicalServiceImpl implements MusicalService {
 
     @Override
     public MusicalResponseDTO.AdminMusicalDetailDTO getMusicalDetail(Long musicalId) {
-        Musical musical = musicalRepository.findById(musicalId).orElse(null);
+        Musical musical = musicalRepository.findById(musicalId)
+                .orElseThrow(()->new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
 
         List<Event> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId);
 
@@ -308,6 +314,48 @@ public class MusicalServiceImpl implements MusicalService {
     public List<MusicalResponseDTO.MusicalTodayOpenDTO> getTodayOpenMusicals() {
         List<Musical> musicals = musicalRepository.getTodayOpenMusicals();
         return musicals.stream().map(MusicalConverter::toMusicalTodayOpenDTO).toList();
+    }
+
+    @Transactional
+    @Override
+    public MusicalResponseDTO.MusicalHomeDTO likeMusical(Member member, Long musicalId) {
+        Musical musical = musicalRepository.findById(musicalId)
+                .orElseThrow(()->new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
+
+        Long memberId = member.getId();
+
+        Likes likes = likesRepository.findByMemberIdAndMusicalId(memberId, musicalId);
+        if(likes != null) {
+            return MusicalResponseDTO.MusicalHomeDTO.builder()
+                    .id(likes.getMusical().getId())
+                    .name(likes.getMusical().getName())
+                    .msg("이미 좋아요한 뮤지컬입니다")
+                    .build();
+        }
+
+        Likes newLikes = Likes.builder()
+                .member(member)
+                .musical(musical)
+                .build();
+        likesRepository.save(newLikes);
+
+        return MusicalConverter.toMusicalHomeDTO(musical);
+    }
+
+    @Transactional
+    @Override
+    public MusicalResponseDTO.MusicalHomeDTO likeCancelMusical(Member member, Long musicalId){
+        Long memberId = member.getId();
+
+        Musical musical = musicalRepository.findById(musicalId).orElseThrow(()->new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
+
+        likesRepository.deleteByMemberIdAndMusicalId(memberId, musicalId);
+
+        return MusicalResponseDTO.MusicalHomeDTO.builder()
+                .id(musicalId)
+                .name(musical.getName())
+                .msg("좋아요가 취소되었습니다")
+                .build();
     }
 
 }

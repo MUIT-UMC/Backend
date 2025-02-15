@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import muit.backend.converter.EventConverter;
 import muit.backend.domain.common.BaseEntity;
+import muit.backend.domain.entity.member.Likes;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.enums.EventType;
 import muit.backend.dto.eventDTO.EventResponseDTO;
@@ -94,6 +95,9 @@ public class Musical extends BaseEntity {
     //직접 작성
     @OneToMany (mappedBy = "musical", cascade = CascadeType.ALL)
     private List<Casting> castingList = new ArrayList<>();
+
+    @OneToMany (mappedBy = "musical", cascade = CascadeType.ALL)
+    private List<Likes> likesList = new ArrayList<>();
 
     public Musical updateTheatre(Theatre theatre) {
         this.theatre = theatre;

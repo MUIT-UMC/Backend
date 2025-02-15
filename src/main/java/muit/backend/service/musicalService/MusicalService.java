@@ -1,5 +1,6 @@
 package muit.backend.service.musicalService;
 
+import muit.backend.domain.entity.member.Member;
 import muit.backend.dto.castingDTO.CastingResponseDTO;
 import muit.backend.dto.musicalDTO.MusicalRequestDTO;
 import muit.backend.dto.musicalDTO.MusicalResponseDTO;
@@ -36,4 +37,8 @@ public interface MusicalService {
     public List<CastingResponseDTO.CastingResultListDTO> getCastingInfo(Long id);
 
     public List<MusicalResponseDTO.MusicalTodayOpenDTO> getTodayOpenMusicals();
+
+    public MusicalResponseDTO.MusicalHomeDTO likeMusical(Member member, Long musicalId);
+
+    public MusicalResponseDTO.MusicalHomeDTO likeCancelMusical(Member member, Long musicalId);
 }
