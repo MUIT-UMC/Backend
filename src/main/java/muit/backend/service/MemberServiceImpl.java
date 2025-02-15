@@ -158,17 +158,101 @@ public class MemberServiceImpl implements MemberService {
         member.deactivateMember(member);
         return MyPageResponseDTO.builder()
                 .id(memberId)
+                .phone(member.getPhone())
+                .email(member.getEmail())
                 .name(member.getName())
-                .username(member.getUsername()).build();
+                .username(member.getUsername())
+                .status(member.getActiveStatus()).build();
 
     }
 
     @Override
-    public boolean CheckPassword(Member member,PasswordCheckRequestDTO dto){
+    public boolean CheckPassword(Member member, PasswordRequestDTO dto){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
         return passwordEncoder.matches(dto.getPassword(), member.getPassword());
     }
+
+    @Transactional
+    @Override
+    public MyPageResponseDTO changePhoneNumber(Long tokenId, Long memberId, PhoneChangeRequestDTO dto){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+        if (!tokenId.equals(memberId)) {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_AUTHORIZED);
+        }
+
+        member.changePhoneNumber(dto.getNewPhoneNumber());
+        return MyPageResponseDTO.builder()
+                .id(memberId)
+                .phone(member.getPhone())
+                .email(member.getEmail())
+                .name(member.getName())
+                .username(member.getUsername())
+                .status(member.getActiveStatus()).build();
+    }
+
+    @Transactional
+    @Override
+    public MyPageResponseDTO changeUsername(Long tokenId, Long memberId, UserNameChangeRequestDTO dto){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+        if (!tokenId.equals(memberId)) {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_AUTHORIZED);
+        }
+
+        member.changeUsername(dto.getNewUsername());
+        return MyPageResponseDTO.builder()
+                .id(memberId)
+                .phone(member.getPhone())
+                .email(member.getEmail())
+                .name(member.getName())
+                .username(member.getUsername())
+                .status(member.getActiveStatus()).build();
+    }
+    @Transactional
+    @Override
+    public MyPageResponseDTO changeEmail(Long tokenId, Long memberId, EmailVerifyRequestDTO dto){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+        if (!tokenId.equals(memberId)) {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_AUTHORIZED);
+        }
+
+        member.changeEmail(dto.getEmail());
+        return MyPageResponseDTO.builder()
+                .id(memberId)
+                .phone(member.getPhone())
+                .email(member.getEmail())
+                .name(member.getName())
+                .username(member.getUsername())
+                .status(member.getActiveStatus()).build();
+    }
+    @Transactional
+    @Override
+    public MyPageResponseDTO changePassword(Long tokenId, Long memberId, PasswordChangeRequestDTO dto){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+        if (!tokenId.equals(memberId)) {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_AUTHORIZED);
+        }
+
+        if(!dto.getNewPassword().equals(dto.getNewPasswordConfirm())){
+            throw new GeneralException(ErrorStatus.PASSWORD_NOT_MATCH);
+        }
+
+        String encodedPw = encoder.encode(dto.getNewPassword());
+
+        member.encodePassword(encodedPw);
+
+
+        return MyPageResponseDTO.builder()
+                .id(memberId)
+                .phone(member.getPhone())
+                .email(member.getEmail())
+                .name(member.getName())
+                .username(member.getUsername())
+                .status(member.getActiveStatus()).build();
+    }
+
+
+
+
 
 
 

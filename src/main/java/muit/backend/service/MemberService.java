@@ -13,6 +13,12 @@ public interface MemberService {
 
     public MyPageResponseDTO deactivateMember(Long tokenId, Long memberId);
 
-    public boolean CheckPassword(Member member,PasswordCheckRequestDTO dto);
+    public boolean CheckPassword(Member member, PasswordRequestDTO dto);
+
+    public MyPageResponseDTO changePhoneNumber(Long tokenId, Long memberId, PhoneChangeRequestDTO dto);
+    public MyPageResponseDTO changeUsername(Long tokenId, Long memberId, UserNameChangeRequestDTO dto);
+    public MyPageResponseDTO changeEmail(Long tokenId, Long memberId, EmailVerifyRequestDTO dto);
+    public MyPageResponseDTO changePassword(Long tokenId, Long memberId, PasswordChangeRequestDTO dto);
+
 
 }
