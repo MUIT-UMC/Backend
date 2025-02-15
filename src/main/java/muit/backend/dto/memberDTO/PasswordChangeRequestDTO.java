@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordCheckRequestDTO {
-    String password;
+public class PasswordChangeRequestDTO {
+    private String newPassword;
+    private String newPasswordConfirm;
 }
