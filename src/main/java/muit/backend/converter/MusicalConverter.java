@@ -92,6 +92,12 @@ public class MusicalConverter {
     }
 
     public static MusicalResponseDTO.MusicalHomeDTO toMusicalHomeDTO(Musical musical) {
+        if(musical==null){
+            return MusicalResponseDTO.MusicalHomeDTO.builder()
+                .msg("존재하지 않습니다.")
+                .build();
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.M.d", Locale.KOREA);
 
         String duration = musical.getPerFrom().format(formatter) + " ~ " + musical.getPerTo().format(formatter);

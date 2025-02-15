@@ -90,6 +90,9 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<AmateurShow> amateurShowList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Likes> likesList = new ArrayList<>();
+
 
     public void encodePassword(String password) {
         this.password = password;

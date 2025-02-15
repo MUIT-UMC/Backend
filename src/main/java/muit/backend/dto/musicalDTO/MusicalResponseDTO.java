@@ -55,6 +55,7 @@ public class MusicalResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MusicalHomeDTO{
+        private String msg;
         private Long id;
         private String posterUrl;
         private String name;
