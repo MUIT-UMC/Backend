@@ -13,4 +13,6 @@ public interface MemberService {
 
     public MyPageResponseDTO deactivateMember(Long tokenId, Long memberId);
 
+    public boolean CheckPassword(Member member,PasswordCheckRequestDTO dto);
+
 }
