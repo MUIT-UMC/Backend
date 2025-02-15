@@ -163,6 +163,13 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
+    @Override
+    public boolean CheckPassword(Member member,PasswordCheckRequestDTO dto){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        return passwordEncoder.matches(dto.getPassword(), member.getPassword());
+    }
+
 
 
 

@@ -73,6 +73,19 @@ public class MemberController {
         return ApiResponse.onSuccess(myPageResponseDTO);
     }
 
+    @PostMapping("/checkPassword")
+    @Operation(summary = "회원 정보 변경 전 비밀 번호 확인하는 api")
+    public ApiResponse<Boolean> checkPassword(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PasswordCheckRequestDTO dto) {
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        boolean isValid = memberService.CheckPassword(member, dto);
+        if (!isValid) {
+            return ApiResponse.onFailure("400", "비밀번호가 일치하지 않습니다.", false);
+        }
+        return ApiResponse.onSuccess(true);
+    }
+
+
+
 
 
 
