@@ -107,4 +107,20 @@ public class MusicalController {
         return ApiResponse.onSuccess(musicalService.getCastingInfo(musicalId));
     }
 
+    @PostMapping("/{musicalId}/likes")
+    @Operation(summary = "특정 뮤지컬 좋아요 ", description = "좋아요한 뮤지컬에 추가하는 API")
+    public ApiResponse<MusicalResponseDTO.MusicalHomeDTO> likeMusicals(@RequestHeader("Authorization") String accessToken,
+                                                                        @PathVariable("musicalId") Long musicalId){
+        Member member = memberService.getMemberByToken(accessToken);
+        return ApiResponse.onSuccess(musicalService.likeMusical(member, musicalId));
+    }
+
+    @DeleteMapping("/{musicalId}/likesCancel")
+    @Operation(summary = "특정 뮤지컬 좋아요 취소 ", description = "뮤지컬에 누른 좋아요를 취소하는 API")
+    public ApiResponse<MusicalResponseDTO.MusicalHomeDTO> likeCancelMusicals(@RequestHeader("Authorization") String accessToken,
+                                                                       @PathVariable("musicalId") Long musicalId){
+        Member member = memberService.getMemberByToken(accessToken);
+        return ApiResponse.onSuccess(musicalService.likeCancelMusical(member, musicalId));
+    }
+
 }

@@ -8,10 +8,15 @@ import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.config.jwt.TokenDTO;
 import muit.backend.config.jwt.TokenProvider;
 import muit.backend.converter.MemberConverter;
+import muit.backend.converter.MusicalConverter;
+import muit.backend.domain.entity.member.Likes;
 import muit.backend.domain.entity.member.Member;
+import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.ActiveStatus;
 import muit.backend.domain.enums.Role;
 import muit.backend.dto.memberDTO.*;
+import muit.backend.dto.musicalDTO.MusicalResponseDTO;
+import muit.backend.repository.LikesRepository;
 import muit.backend.repository.MemberRepository;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +24,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -28,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
     private final TokenProvider tokenProvider;
+    private final LikesRepository likesRepository;
 
     //== 개인회원 가입 - 이메일 ==//
     @Override
@@ -170,6 +178,13 @@ public class MemberServiceImpl implements MemberService {
         return passwordEncoder.matches(dto.getPassword(), member.getPassword());
     }
 
+    @Override
+    public List<MusicalResponseDTO.MusicalHomeDTO> getLikeMusicals(Member member){
+        Long memberId = member.getId();
+        List<Likes> likesList = likesRepository.findAllByMemberId(memberId);
+        return likesList.stream()
+                .map(likes->MusicalConverter.toMusicalHomeDTO(likes.getMusical())).toList();
+    }
 
 
 

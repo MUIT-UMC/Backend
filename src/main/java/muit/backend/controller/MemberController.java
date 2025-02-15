@@ -9,9 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.dto.memberDTO.*;
+import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 import muit.backend.service.MemberService;
+import muit.backend.service.musicalService.MusicalService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final MusicalService musicalService;
 
     @PostMapping("/register")
     @Operation(summary = "회원 가입 api", description = "이메일로 회원 가입 하는 기능.")
@@ -82,6 +87,13 @@ public class MemberController {
             return ApiResponse.onFailure("400", "비밀번호가 일치하지 않습니다.", false);
         }
         return ApiResponse.onSuccess(true);
+    }
+
+    @GetMapping("/likeMusicals")
+    @Operation(summary = "사용자가 좋아요한 뮤지컬 전체 조회 api")
+    public ApiResponse<List<MusicalResponseDTO.MusicalHomeDTO>> getLikeMusicals(@RequestHeader("Authorization") String authorizationHeader) {
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        return ApiResponse.onSuccess(memberService.getLikeMusicals(member));
     }
 
 
