@@ -25,6 +25,7 @@ public class LostConverter {
                 .content(requestDTO.getContent())
                 .images(imgList)
                 .commentCount(0)
+                .reportCount(0)
                 .location(requestDTO.getLocation())
                 .lostItem(requestDTO.getLostItem())
                 .lostDate(requestDTO.getLostDate())
