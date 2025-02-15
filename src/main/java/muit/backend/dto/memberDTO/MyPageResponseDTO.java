@@ -14,5 +14,7 @@ public class MyPageResponseDTO {
     private Long id;
     private String name;
     private String username;
+    private String email;
+    private String phone;
     private ActiveStatus status;
 }
