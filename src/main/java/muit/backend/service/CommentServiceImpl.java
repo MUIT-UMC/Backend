@@ -76,6 +76,9 @@ public class CommentServiceImpl implements CommentService {
 
         if(commentType.equals("COMMENT")){
             Comment comment = commentRepository.findById(commentId).orElseThrow(()->new GeneralException(ErrorStatus.COMMENT_NOT_FOUND));
+            if(comment.getAnonymousIndex()==-2){
+                throw new GeneralException(ErrorStatus.COMMENT_NOT_FOUND);
+            }
             //작성자와 동일인인지 검사/또는 관리자인지
             if(comment.getMember()==member||comment.getMember().getRole()== Role.ADMIN){
                 if(!comment.getReplyList().isEmpty()){//대댓글 있으면 내용을 삭제된 댓글입니다 로
