@@ -67,7 +67,7 @@ public class MusicalConverter {
                 .build();
     }
 
-    public static MusicalResponseDTO.MusicalResultDTO toMusicalResultDTO(Musical musical, EventResponseDTO.EventResultListDTO eventResultListDTO, Double rating) {
+    public static MusicalResponseDTO.MusicalResultDTO toMusicalResultDTO(Musical musical, EventResponseDTO.EventResultListDTO eventResultListDTO, Double rating, Boolean isLike) {
 
         return MusicalResponseDTO.MusicalResultDTO.builder()
                 .bgImg(musical.getBgImg())
@@ -76,6 +76,7 @@ public class MusicalConverter {
                 .storyDescription(musical.getDescription())
                 .id(musical.getId())
                 .name(musical.getName())
+                .isLike(isLike)
                 .score(rating)
                 .posterUrl(musical.getPosterUrl())
                 .place(musical.getPlace())

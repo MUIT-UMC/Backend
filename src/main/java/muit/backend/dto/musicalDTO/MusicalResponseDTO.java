@@ -33,6 +33,7 @@ public class MusicalResponseDTO {
 
         private Long id;
         private String name;
+        private Boolean isLike;
         private Double score;
         private String posterUrl;
         private String place;

@@ -31,7 +31,7 @@ public class MusicalController {
     public ApiResponse<MusicalResponseDTO.MusicalResultDTO> getMusical(@RequestHeader("Authorization") String accessToken,
                                                                        @PathVariable("musicalId") Long musicalId) {
         Member member = memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(musicalService.getMusical(musicalId));
+        return ApiResponse.onSuccess(musicalService.getMusical(musicalId, member));
     }
 
 
@@ -122,5 +122,6 @@ public class MusicalController {
         Member member = memberService.getMemberByToken(accessToken);
         return ApiResponse.onSuccess(musicalService.likeCancelMusical(member, musicalId));
     }
+
 
 }

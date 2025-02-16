@@ -58,7 +58,7 @@ public class MusicalServiceImpl implements MusicalService {
     private final LikesRepository likesRepository;
 
     @Override
-    public MusicalResponseDTO.MusicalResultDTO getMusical(Long musicalId) {
+    public MusicalResponseDTO.MusicalResultDTO getMusical(Long musicalId, Member member) {
         //뮤지컬 유효성 검사
         Musical musical = musicalRepository.findById(musicalId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
@@ -75,8 +75,13 @@ public class MusicalServiceImpl implements MusicalService {
         }
         rating = Math.round(10*rating/posts.size())/10.0;
 
+        Boolean isLike = false;
+        Likes likes = likesRepository.findByMemberIdAndMusicalId(member.getId(),musicalId);
+        if (likes!=null) {
+            isLike = true;
+        }
 
-        return MusicalConverter.toMusicalResultDTO(musical, eventResultListDTO, rating);
+        return MusicalConverter.toMusicalResultDTO(musical, eventResultListDTO, rating, isLike);
 
     }
 

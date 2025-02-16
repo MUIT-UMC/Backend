@@ -13,7 +13,7 @@ import java.util.List;
 public interface MusicalService {
 
     //특정 뮤지컬 조회
-    public MusicalResponseDTO.MusicalResultDTO getMusical(Long musicId);
+    public MusicalResponseDTO.MusicalResultDTO getMusical(Long musicId, Member member);
 
     //뮤지컬 생성
     public void createMusical(String kopisMusicalId);
