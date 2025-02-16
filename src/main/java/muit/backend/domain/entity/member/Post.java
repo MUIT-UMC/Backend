@@ -80,10 +80,10 @@ public class Post extends BaseEntity {
     }
 
     public void changeImg(List<UuidFile> newImgList, List<UuidFile> oldImgList){
-        if(oldImgList.size()!=this.images.size()){//기존 사진 개수가 달라졌으면
+        if(oldImgList!=null&&oldImgList.size()!=this.images.size()){//기존 사진 개수가 달라졌으면
             this.images.retainAll(oldImgList);//dto에서 보내준 이미지만 남기고 삭제된 항목은 고아객체 만들기
         }
-        if(!newImgList.isEmpty()){
+        if(newImgList!=null&&!newImgList.isEmpty()){
             this.images.addAll(newImgList);//새로운 이미지 추가된 건 따로 추가
         }
     }
