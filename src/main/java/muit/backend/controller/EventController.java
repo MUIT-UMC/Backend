@@ -33,7 +33,7 @@ public class EventController {
                                                                                              @RequestParam(defaultValue = "0", name = "page") Integer page){
         LocalDate today = LocalDate.now();
         Member member = memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(eventService.getEventListOrderByEvFrom(today, page));
+        return ApiResponse.onSuccess(eventService.getEventListOrderByEvFrom(today, member, page));
     }
 
     @GetMapping("/{musicalId}")
@@ -44,7 +44,7 @@ public class EventController {
     public ApiResponse<EventResponseDTO.EventResultListDTO> getEvent(@RequestHeader("Authorization") String accessToken,
                                                                      @PathVariable("musicalId") Long musicalId) {
         Member member = memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(eventService.getEvent(musicalId));
+        return ApiResponse.onSuccess(eventService.getEvent(musicalId, member));
     }
 
     @GetMapping("/musical/{eventId}")

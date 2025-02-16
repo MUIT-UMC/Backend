@@ -64,8 +64,9 @@ public class MusicalServiceImpl implements MusicalService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
 
         //이벤트 정보를 List<EventResultDTO>로 구성된 EventResultListDTO 에 담아서 반환
-        List<Event> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId);
-        EventResponseDTO.EventResultListDTO eventResultListDTO = EventConverter.toEventResultListDTO(musical, eventList);
+        List<EventResponseDTO.EventResultDTO> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId).stream()
+                .map(EventConverter::toEventResultDTO).toList();
+
 
         //뮤지컬 평점
         List<Post> posts = postRepository.findAllByPostTypeAndMusicalId(PostType.REVIEW,musicalId);
@@ -81,7 +82,7 @@ public class MusicalServiceImpl implements MusicalService {
             isLike = true;
         }
 
-        return MusicalConverter.toMusicalResultDTO(musical, eventResultListDTO, rating, isLike);
+        return MusicalConverter.toMusicalResultDTO(musical, eventList, rating, isLike);
 
     }
 
@@ -293,11 +294,10 @@ public class MusicalServiceImpl implements MusicalService {
 
         List<Event> eventList = eventRepository.findByMusicalIdOrderByEvFromAsc(musicalId);
 
+
         assert musical != null;
 
-        EventResponseDTO.EventResultListDTO eventResultListDTO = EventConverter.toEventResultListDTO(musical, eventList);
-
-        return MusicalConverter.adminMusicalDetailDTO(musical, eventResultListDTO);
+        return MusicalConverter.toAdminMusicalDetailDTO(musical, eventList);
     }
 
     @Override

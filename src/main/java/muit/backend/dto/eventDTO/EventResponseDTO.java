@@ -35,6 +35,7 @@ public class EventResponseDTO {
         private String duration;
         private LocalDate perFrom;
         private LocalDate perTo;
+        private Boolean isLike;
 
         private List<EventResultDTO> eventResultListDTO;
 
