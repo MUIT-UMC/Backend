@@ -88,16 +88,6 @@ public class ReviewController {
         return ApiResponse.onSuccess(reviewService.getReview(postId,member));
     }
 
-    @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "리뷰 게시글 수정 API", description = "특정 리뷰 게시글을 수정하는 API 입니다.")
-    public ApiResponse<ReviewResponseDTO.GeneralReviewResponseDTO> editReview(@RequestHeader("Authorization") String accessToken,
-                                                                              @PathVariable("postId") Long postId,
-                                                                              @RequestPart("reviewRequestDTO") ReviewRequestDTO reviewRequestDTO,
-                                                                              @RequestPart(name = "imageFiles", required = false)List<MultipartFile> img) {
-        Member member = memberService.getMemberByToken(accessToken);
-
-        return ApiResponse.onSuccess(reviewService.editReview(postId, reviewRequestDTO, img, member));
-    }
 
 
 

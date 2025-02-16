@@ -19,7 +19,6 @@ public class PatchPostRequestDTO {
     private LocalDate lostDate;
     private String location;
     private String lostItem;
-    private String musicalName;
     private Long musicalId;
     private Integer rating;
 

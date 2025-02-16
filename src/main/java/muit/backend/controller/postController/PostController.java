@@ -70,15 +70,4 @@ public class PostController {
         return ApiResponse.onSuccess(postService.getPost(postId, member));
     }
 
-
-    @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "게시글 수정 API", description = "특정 게시글을 수정하는 API 입니다.")
-    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> editPost(@RequestHeader("Authorization") String accessToken,
-                                                                        @PathVariable("postId") Long postId,
-                                                                        @RequestPart("postRequestDTO") PostRequestDTO postRequestDTO,
-                                                                        @RequestPart(name = "imageFiles", required = false)List<MultipartFile> img) {
-        Member member = memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(postService.editPost(postId, postRequestDTO, img, member));
-    }
-
 }
