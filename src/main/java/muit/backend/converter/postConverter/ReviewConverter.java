@@ -44,6 +44,7 @@ public class ReviewConverter {
 
         return ReviewResponseDTO.GeneralReviewResponseDTO.builder()
                 .id(review.getId())
+                .isMyPost(isMyPost)
                 .nickname(name)
                 .memberId(review.getMember().getId())
                 .musicalId(review.getMusical().getId())
