@@ -16,6 +16,8 @@ import muit.backend.domain.entity.member.Report;
 import muit.backend.domain.enums.PostType;
 import muit.backend.domain.enums.ReportObjectType;
 import muit.backend.domain.enums.Role;
+import muit.backend.dto.postDTO.PatchPostRequestDTO;
+import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.dto.reportDTO.ReportRequestDTO;
 import muit.backend.dto.reportDTO.ReportResponseDTO;
@@ -28,8 +30,10 @@ import muit.backend.service.ReportService;
 import muit.backend.service.postService.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +157,16 @@ public class CommonPostController {
                 .build();
         
         return ApiResponse.onSuccess(list);
+    }
+
+    @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "게시글 수정 API", description = "특정 게시글을 수정하는 API 입니다.")
+    public ApiResponse<PostResponseDTO.GeneralPostResponseDTO> editPost(@RequestHeader("Authorization") String accessToken,
+                                                                        @PathVariable("postId") Long postId,
+                                                                        @RequestPart("postRequestDTO") PatchPostRequestDTO postRequestDTO,
+                                                                        @RequestPart(name = "imageFiles", required = false)List<MultipartFile> img) {
+        Member member = memberService.getMemberByToken(accessToken);
+        return ApiResponse.onSuccess(postService.editPost(postId, postRequestDTO, img, member));
     }
 
 }

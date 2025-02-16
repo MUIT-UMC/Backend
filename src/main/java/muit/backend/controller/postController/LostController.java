@@ -92,16 +92,4 @@ public class LostController {
         return ApiResponse.onSuccess(lostService.getLostPost(postId,member));
     }
 
-
-    @PatchMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "분실 게시글 수정 API", description = "분실 게시글을 수정하는 API 입니다.")
-    public ApiResponse<LostResponseDTO.GeneralLostResponseDTO> editPost(@RequestHeader("Authorization") String accessToken,
-                                                                        @PathVariable("postId") Long postId,
-                                                                        @RequestPart("lostRequestDTO") LostRequestDTO lostRequestDTO,
-                                                                        @RequestPart(name = "imageFiles", required = false)List<MultipartFile> img) {
-
-        Member member = memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(lostService.editLostPost(postId, lostRequestDTO, img, member));
-    }
-
 }

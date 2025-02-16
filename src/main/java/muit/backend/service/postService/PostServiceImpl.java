@@ -8,9 +8,11 @@ import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.member.Post;
 import muit.backend.domain.entity.member.PostLikes;
 import muit.backend.domain.entity.member.Report;
+import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
 import muit.backend.domain.enums.ReportObjectType;
 import muit.backend.domain.enums.Role;
+import muit.backend.dto.postDTO.PatchPostRequestDTO;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.dto.reportDTO.ReportRequestDTO;
@@ -26,8 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +39,7 @@ public class PostServiceImpl implements PostService {
     private final PostLikesRepository postLikesRepository;
     private final UuidFileService uuidFileService;
     private final ReportRepository reportRepository;
+    private final MusicalRepository musicalRepository;
 
     //게시글 작성
     @Override
@@ -143,7 +145,7 @@ public class PostServiceImpl implements PostService {
     //게시글 수정
     @Override
     @Transactional
-    public PostResponseDTO.GeneralPostResponseDTO editPost(Long postId, PostRequestDTO requestDTO, List<MultipartFile> imgFile, Member member) {
+    public PostResponseDTO.GeneralPostResponseDTO editPost(Long postId, PatchPostRequestDTO requestDTO, List<MultipartFile> imgFile, Member member) {
 
         //post 유효성 검사
         Post post = postRepository.findById(postId)
@@ -154,17 +156,25 @@ public class PostServiceImpl implements PostService {
             throw(new GeneralException(ErrorStatus._FORBIDDEN));
         }
 
-        //기존 이미지 먼저 삭제
-        List<UuidFile> existingImg = post.getImages();
-        if(!existingImg.isEmpty()){
-            existingImg.forEach(uuidFileService::deleteFile);
+        //리뷰형 게시글일 경우 musical 변경 반영
+        if(post.getPostType().equals(PostType.REVIEW)||post.getPostType().equals(PostType.SIGHT)){
+            if(requestDTO.getMusicalId()!=null){
+                Musical musical = musicalRepository.findById(requestDTO.getMusicalId()).orElseThrow(() -> new GeneralException(ErrorStatus.MUSICAL_NOT_FOUND));
+                post.changeMusical(musical);
+            }
+
         }
-        //수정된 이미지 삽입
-        List<UuidFile> imgArr = new ArrayList<>();
+
+        //기존 이미지 url->UuidFile화
+        List<UuidFile> dtoImgs = requestDTO.getOriginalImgUrls().stream().map(file->
+                uuidFileService.getUuidFileByFileUrl(file).orElseThrow(()->new GeneralException(ErrorStatus.IMAGE_NOT_FOUND))).toList();
+
+        //수정된 이미지 s3 생성
+        List<UuidFile> newImgs = new ArrayList<>();
         if(imgFile!=null&&!imgFile.isEmpty()){
-            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, FilePath.BLIND)).collect(Collectors.toList());
+            newImgs = imgFile.stream().map(img->uuidFileService.createFile(img, FilePath.BLIND)).collect(Collectors.toList());
         }
-        post.changeImg(imgArr);
+        post.changeImg(newImgs,dtoImgs);
 
         //필드 수정
         Post changedPost = post.changePost(requestDTO);
