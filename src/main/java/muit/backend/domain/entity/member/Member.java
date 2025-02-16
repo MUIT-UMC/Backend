@@ -39,6 +39,7 @@ public class Member extends BaseEntity {
     private String phone;
 
     private String birthDate;
+    // 생년월일 없음
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -89,6 +90,9 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<AmateurShow> amateurShowList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Likes> likesList = new ArrayList<>();
+
 
     public void encodePassword(String password) {
         this.password = password;
@@ -96,6 +100,18 @@ public class Member extends BaseEntity {
 
     public void deactivateMember(Member member) {
         this.activeStatus = ActiveStatus.INACTIVE;
+    }
+
+    public void changePhoneNumber(String newPhone) {
+        this.phone = newPhone;
+    }
+
+    public void changeUsername(String newUsername) {
+        this.username = newUsername;
+    }
+
+    public void changeEmail(String newEmail) {
+        this.email = newEmail;
     }
 
     public void updateMember(ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO) {

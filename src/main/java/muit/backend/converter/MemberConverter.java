@@ -33,6 +33,7 @@ public class MemberConverter {
                 .id(member.getId())
                 .name(member.getName())
                 .username(member.getUsername())
+                .role(member.getRole())
                 .build();
     }
 }

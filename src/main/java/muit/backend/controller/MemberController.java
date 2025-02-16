@@ -9,9 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import muit.backend.apiPayLoad.ApiResponse;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.dto.memberDTO.*;
+import muit.backend.dto.musicalDTO.MusicalResponseDTO;
 import muit.backend.service.MemberService;
+import muit.backend.service.musicalService.MusicalService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final MusicalService musicalService;
 
     @PostMapping("/register")
     @Operation(summary = "회원 가입 api", description = "이메일로 회원 가입 하는 기능.")
@@ -65,13 +70,73 @@ public class MemberController {
         return ApiResponse.onSuccess(myPageResponseDTO);
     }
 
-    @PatchMapping("/{memberId}")
+    @PatchMapping("/{memberId}/deActive")
     @Operation(summary = "회원 탈퇴(비활성화) api", description = "회원 비활성화 하는 기능입니다.")
     public ApiResponse<MyPageResponseDTO> deactivateMember(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("memberId") Long memberId) {
         Member member = memberService.getMemberByToken(authorizationHeader);
         MyPageResponseDTO myPageResponseDTO = memberService.deactivateMember(member.getId(), memberId);
         return ApiResponse.onSuccess(myPageResponseDTO);
     }
+
+    @PatchMapping("{memberId}/changePhone")
+    @Operation(summary = "회원 정보 수정 - 핸드폰")
+    public ApiResponse<MyPageResponseDTO> changePhone(@RequestHeader("Authorization") String authorizationHeader,
+                                                      @PathVariable("memberId") Long memberId,
+                                                      @RequestBody PhoneChangeRequestDTO dto) {
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        MyPageResponseDTO myPageResponseDTO = memberService.changePhoneNumber(member.getId(), memberId, dto);
+        return ApiResponse.onSuccess(myPageResponseDTO);
+    }
+
+    @PatchMapping("{memberId}/changeUsername")
+    @Operation(summary = "회원 정보 수정 - 아이디")
+    public ApiResponse<MyPageResponseDTO> changeUsername(@RequestHeader("Authorization") String authorizationHeader,
+                                                      @PathVariable("memberId") Long memberId,
+                                                      @RequestBody UserNameChangeRequestDTO dto) {
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        MyPageResponseDTO myPageResponseDTO = memberService.changeUsername(member.getId(), memberId, dto);
+        return ApiResponse.onSuccess(myPageResponseDTO);
+    }
+
+    @PatchMapping("{memberId}/changeEmail")
+    @Operation(summary = "회원 정보 수정 - 이메일", description = "이메일로 회원을 구분 하기 때문에, 반드시 재로그인을 해야합니다. redirect 를 로그인 페이지로 해야합니다.")
+    public ApiResponse<MyPageResponseDTO> changeEmail(@RequestHeader("Authorization") String authorizationHeader,
+                                                         @PathVariable("memberId") Long memberId,
+                                                         @RequestBody EmailVerifyRequestDTO dto) {
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        MyPageResponseDTO myPageResponseDTO = memberService.changeEmail(member.getId(), memberId, dto);
+        return ApiResponse.onSuccess(myPageResponseDTO);
+    }
+
+    @PatchMapping("{memberId}/changePassword")
+    @Operation(summary = "회원 정보 수정 - 비밀번호")
+    public ApiResponse<MyPageResponseDTO> changePassword(@RequestHeader("Authorization") String authorizationHeader,
+                                                      @PathVariable("memberId") Long memberId,
+                                                      @RequestBody PasswordChangeRequestDTO dto) {
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        MyPageResponseDTO myPageResponseDTO = memberService.changePassword(member.getId(), memberId, dto);
+        return ApiResponse.onSuccess(myPageResponseDTO);
+    }
+
+    @PostMapping("{memberId}/checkPassword")
+    @Operation(summary = "회원 정보 변경 전 + 소극장 등록 전 비밀 번호 확인하는 api")
+    public ApiResponse<Boolean> checkPassword(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PasswordRequestDTO dto) {
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        boolean isValid = memberService.CheckPassword(member, dto);
+        if (!isValid) {
+            return ApiResponse.onFailure("400", "비밀번호가 일치하지 않습니다.", false);
+        }
+        return ApiResponse.onSuccess(true);
+    }
+
+    @GetMapping("/likeMusicals")
+    @Operation(summary = "사용자가 좋아요한 뮤지컬 전체 조회 api")
+    public ApiResponse<List<MusicalResponseDTO.MusicalHomeDTO>> getLikeMusicals(@RequestHeader("Authorization") String authorizationHeader) {
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        return ApiResponse.onSuccess(memberService.getLikeMusicals(member));
+    }
+
+
 
 
 

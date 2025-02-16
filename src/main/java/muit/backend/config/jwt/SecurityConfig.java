@@ -39,9 +39,11 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.disable()) // HTTP Basic 비활성화
                 .formLogin(formLogin -> formLogin.disable()) // 폼 로그인 비활성화
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/", "/home", "/index").permitAll() // 홈페이지 접근 허용
+                        .requestMatchers("/member/email/login", "/member/register", "/admin/login").permitAll() // 로그인 접근 허용
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // 스웨거 접근 허용
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/**").permitAll()
+                        //.requestMatchers("/**").permitAll() // 추후 삭제 예정
                         .anyRequest().authenticated()
                 )
                 .apply(new JwtSecurityConfig(tokenProvider));

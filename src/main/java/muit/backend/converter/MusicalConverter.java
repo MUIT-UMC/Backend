@@ -67,7 +67,7 @@ public class MusicalConverter {
                 .build();
     }
 
-    public static MusicalResponseDTO.MusicalResultDTO toMusicalResultDTO(Musical musical, EventResponseDTO.EventResultListDTO eventResultListDTO, Double rating) {
+    public static MusicalResponseDTO.MusicalResultDTO toMusicalResultDTO(Musical musical, List<EventResponseDTO.EventResultDTO> eventList, Double rating, Boolean isLike) {
 
         return MusicalResponseDTO.MusicalResultDTO.builder()
                 .bgImg(musical.getBgImg())
@@ -76,6 +76,7 @@ public class MusicalConverter {
                 .storyDescription(musical.getDescription())
                 .id(musical.getId())
                 .name(musical.getName())
+                .isLike(isLike)
                 .score(rating)
                 .posterUrl(musical.getPosterUrl())
                 .place(musical.getPlace())
@@ -85,13 +86,19 @@ public class MusicalConverter {
                 .ageLimit(musical.getAgeLimit())
                 .actorPreview(musical.getActorPreview())
                 .priceInfo(musical.getPriceInfo())
-                .eventList(eventResultListDTO)
+                .eventList(eventList)
                 .perPattern(musical.getPerPattern())
                 .desImgUrl(musical.getDesImgUrl())
                 .build();
     }
 
     public static MusicalResponseDTO.MusicalHomeDTO toMusicalHomeDTO(Musical musical) {
+        if(musical==null){
+            return MusicalResponseDTO.MusicalHomeDTO.builder()
+                .msg("존재하지 않습니다.")
+                .build();
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.M.d", Locale.KOREA);
 
         String duration = musical.getPerFrom().format(formatter) + " ~ " + musical.getPerTo().format(formatter);
@@ -168,8 +175,9 @@ public class MusicalConverter {
                 .build();
     }
 
-    public static MusicalResponseDTO.AdminMusicalDetailDTO adminMusicalDetailDTO(Musical musical, EventResponseDTO.EventResultListDTO eventList) {
+    public static MusicalResponseDTO.AdminMusicalDetailDTO toAdminMusicalDetailDTO(Musical musical, List<Event> eventList) {
 
+        List<EventResponseDTO.EventResultDTO> eventResults = eventList.stream().map(EventConverter::toEventResultDTO).toList();
 
         return MusicalResponseDTO.AdminMusicalDetailDTO.builder()
                 .id(musical.getId())
@@ -185,13 +193,11 @@ public class MusicalConverter {
                 .ageLimit(musical.getAgeLimit())
                 .actorPreview(musical.getActorPreview())
                 .priceInfo(musical.getPriceInfo())
-                .eventList(eventList)
+                .eventList(eventResults)
                 .bgImg(musical.getBgImg())
                 .description(musical.getDescription())
                 .fancyTitle(musical.getFancyTitle())
                 .category(musical.getCategory())
-                .openDate(musical.getOpenDate())
-                .openInfo(musical.getOpenInfo())
                 .build();
     }
 
