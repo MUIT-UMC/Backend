@@ -21,7 +21,4 @@ public interface LostService {
 
     //게시글 생성
     public LostResponseDTO.GeneralLostResponseDTO createLostPost(PostType postType, LostRequestDTO lostRequestDTO, List<MultipartFile> img, Member member);
-
-    //게시글 수정
-    LostResponseDTO.GeneralLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO, List<MultipartFile> img, Member member);
 }

@@ -42,6 +42,7 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_TICKET_ALREADY_CANCELED(HttpStatus.BAD_REQUEST, "MEMBERTICKET4003", "이미 취소하신 티켓입니다."),
     //POST ERROR
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4000", "존재하지 않는 게시글입니다."),
+    IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "IMAGE4000", "이미지를 찾을 수 없습니다."),
     
     //REPORT ERROR
     UNSUPPORTED_OBJECT_TYPE(HttpStatus.BAD_REQUEST, "REPORT4000", "지원하지 않는 신고 타입입니다."),

@@ -119,39 +119,5 @@ public class LostServiceImpl implements LostService {
         return LostConverter.toGeneralLostResponseDTO(post,member);
     }
 
-    @Override
-    @Transactional
-    public LostResponseDTO.GeneralLostResponseDTO editLostPost(Long postId, LostRequestDTO lostRequestDTO, List<MultipartFile> imgFile, Member member) {
-        //post 유효성 검사
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.POST_NOT_FOUND));
 
-        //작성자와 동일인인지 검사
-        if(post.getMember()!=member){
-            throw(new GeneralException(ErrorStatus._FORBIDDEN));
-        }
-
-        FilePath filePath = switch (post.getPostType()){
-            case LOST -> FilePath.LOST;
-            case FOUND -> FilePath.FOUND;
-            default -> throw new RuntimeException("Unsupported post type");
-        };
-
-        //기존 이미지 먼저 삭제
-        List<UuidFile> existingImg = post.getImages();
-        if(!existingImg.isEmpty()){
-            existingImg.forEach(uuidFileService::deleteFile);
-        }
-        //수정된 이미지 삽입
-        List<UuidFile> imgArr = new ArrayList<>();
-        if(imgFile!=null&&!imgFile.isEmpty()){
-            imgArr = imgFile.stream().map(img->uuidFileService.createFile(img, FilePath.REVIEW)).collect(Collectors.toList());
-        }
-        post.changeImg(imgArr);
-
-        //나머지 필드 수정
-        Post changedPost = post.changeLost(lostRequestDTO);
-        
-        return LostConverter.toGeneralLostResponseDTO(changedPost,member);
-    }
 }

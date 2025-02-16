@@ -9,6 +9,7 @@ import muit.backend.domain.common.BaseEntity;
 import muit.backend.domain.entity.musical.Musical;
 import muit.backend.domain.enums.PostType;
 import muit.backend.dto.postDTO.LostRequestDTO;
+import muit.backend.dto.postDTO.PatchPostRequestDTO;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.ReviewRequestDTO;
 import muit.backend.s3.UuidFile;
@@ -78,11 +79,13 @@ public class Post extends BaseEntity {
         this.musical = musical;
     }
 
-    public void changeImg(List<UuidFile> imgList){
-        if(!this.images.isEmpty()){
-            this.images.clear();
+    public void changeImg(List<UuidFile> newImgList, List<UuidFile> oldImgList){
+        if(oldImgList.size()!=this.images.size()){//기존 사진 개수가 달라졌으면
+            this.images.retainAll(oldImgList);//dto에서 보내준 이미지만 남기고 삭제된 항목은 고아객체 만들기
         }
-        this.images.addAll(imgList);
+        if(!newImgList.isEmpty()){
+            this.images.addAll(newImgList);//새로운 이미지 추가된 건 따로 추가
+        }
     }
 
     public void increaseMaxIndex(){
@@ -106,26 +109,17 @@ public class Post extends BaseEntity {
     }
 
 
-    public Post changePost(PostRequestDTO postRequestDTO) {
+
+
+    public Post changePost(PatchPostRequestDTO postRequestDTO){
+        if(postRequestDTO.getIsAnonymous()!=null){this.isAnonymous = postRequestDTO.getIsAnonymous();}
         if(postRequestDTO.getTitle()!=null){this.title = postRequestDTO.getTitle();}
         if(postRequestDTO.getContent()!=null){this.content = postRequestDTO.getContent();}
-        return this;
-
-    }
-
-    public Post changeLost(LostRequestDTO lostRequestDTO){
-        if(lostRequestDTO.getTitle()!=null){this.title = lostRequestDTO.getTitle();}
-        if(lostRequestDTO.getContent()!=null){this.content = lostRequestDTO.getContent();}
-        if(lostRequestDTO.getLocation()!=null){this.location = lostRequestDTO.getLocation();}
-        if(lostRequestDTO.getLostItem()!=null){this.lostItem = lostRequestDTO.getLostItem();}
-        if(lostRequestDTO.getLostDate()!=null){this.lostDate = lostRequestDTO.getLostDate();}
+        if(postRequestDTO.getLocation()!=null){this.location = postRequestDTO.getLocation();}
+        if(postRequestDTO.getLostItem()!=null){this.lostItem = postRequestDTO.getLostItem();}
+        if(postRequestDTO.getLostDate()!=null){this.lostDate = postRequestDTO.getLostDate();}
+        if(postRequestDTO.getRating()!=null){this.rating = postRequestDTO.getRating();}
         return this;
     }
 
-    public Post changeReview(ReviewRequestDTO reviewRequestDTO){
-        if(reviewRequestDTO.getTitle()!=null){this.title = reviewRequestDTO.getTitle();}
-        if(reviewRequestDTO.getContent()!=null){this.content = reviewRequestDTO.getContent();}
-        if(reviewRequestDTO.getRating()!=null){this.rating = reviewRequestDTO.getRating();}
-        return this;
-    }
 }

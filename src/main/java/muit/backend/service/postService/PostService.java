@@ -2,6 +2,7 @@ package muit.backend.service.postService;
 
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.enums.PostType;
+import muit.backend.dto.postDTO.PatchPostRequestDTO;
 import muit.backend.dto.postDTO.PostRequestDTO;
 import muit.backend.dto.postDTO.PostResponseDTO;
 import muit.backend.dto.reportDTO.ReportRequestDTO;
@@ -28,7 +29,7 @@ public interface PostService {
     public PostResponseDTO.DeleteResultDTO deletePost(Long id, Member member);
 
     //게시글 수정
-    public PostResponseDTO.GeneralPostResponseDTO editPost(Long postId, PostRequestDTO postRequestDTO, List<MultipartFile> img, Member member);
+    public PostResponseDTO.GeneralPostResponseDTO editPost(Long postId, PatchPostRequestDTO postRequestDTO, List<MultipartFile> img, Member member);
 
     PostResponseDTO.likeResultDTO likePost(Long postId, Member member);
 
