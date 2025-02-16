@@ -30,9 +30,9 @@ public class EventConverter {
     }
 
     //특정 뮤지컬의 여러 Event 리스트로 반환
-    public static EventResponseDTO.EventResultListDTO toEventResultListDTO(Musical musical, List<Event> eventList) {
-        List<EventResponseDTO.EventResultDTO> eventResultListDTO = eventList != null ? eventList.stream()
-                .map(EventConverter::toEventResultDTO).collect(Collectors.toList()) : null;
+    public static EventResponseDTO.EventResultListDTO toEventResultListDTO(Musical musical, Boolean isLike, List<Event> eventList) {
+        List<EventResponseDTO.EventResultDTO> eventResultDTOs = eventList != null ? eventList.stream()
+                .map(EventConverter::toEventResultDTO).toList() : null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd", Locale.KOREA);
 
         String duration = eventList != null ? musical.getPerFrom().format(formatter) + " ~ " + musical.getPerTo().format(formatter) : null;
@@ -45,7 +45,8 @@ public class EventConverter {
                 .duration(duration)
                 .perFrom(musical.getPerFrom())
                 .perTo(musical.getPerTo())
-                .eventResultListDTO(eventResultListDTO)
+                .isLike(isLike)
+                .eventResultListDTO(eventResultDTOs)
                 .build();
     }
 

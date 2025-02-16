@@ -67,7 +67,7 @@ public class MusicalConverter {
                 .build();
     }
 
-    public static MusicalResponseDTO.MusicalResultDTO toMusicalResultDTO(Musical musical, EventResponseDTO.EventResultListDTO eventResultListDTO, Double rating, Boolean isLike) {
+    public static MusicalResponseDTO.MusicalResultDTO toMusicalResultDTO(Musical musical, List<EventResponseDTO.EventResultDTO> eventList, Double rating, Boolean isLike) {
 
         return MusicalResponseDTO.MusicalResultDTO.builder()
                 .bgImg(musical.getBgImg())
@@ -86,7 +86,7 @@ public class MusicalConverter {
                 .ageLimit(musical.getAgeLimit())
                 .actorPreview(musical.getActorPreview())
                 .priceInfo(musical.getPriceInfo())
-                .eventList(eventResultListDTO)
+                .eventList(eventList)
                 .perPattern(musical.getPerPattern())
                 .desImgUrl(musical.getDesImgUrl())
                 .build();
@@ -175,8 +175,9 @@ public class MusicalConverter {
                 .build();
     }
 
-    public static MusicalResponseDTO.AdminMusicalDetailDTO adminMusicalDetailDTO(Musical musical, EventResponseDTO.EventResultListDTO eventList) {
+    public static MusicalResponseDTO.AdminMusicalDetailDTO toAdminMusicalDetailDTO(Musical musical, List<Event> eventList) {
 
+        List<EventResponseDTO.EventResultDTO> eventResults = eventList.stream().map(EventConverter::toEventResultDTO).toList();
 
         return MusicalResponseDTO.AdminMusicalDetailDTO.builder()
                 .id(musical.getId())
@@ -192,13 +193,11 @@ public class MusicalConverter {
                 .ageLimit(musical.getAgeLimit())
                 .actorPreview(musical.getActorPreview())
                 .priceInfo(musical.getPriceInfo())
-                .eventList(eventList)
+                .eventList(eventResults)
                 .bgImg(musical.getBgImg())
                 .description(musical.getDescription())
                 .fancyTitle(musical.getFancyTitle())
                 .category(musical.getCategory())
-                .openDate(musical.getOpenDate())
-                .openInfo(musical.getOpenInfo())
                 .build();
     }
 

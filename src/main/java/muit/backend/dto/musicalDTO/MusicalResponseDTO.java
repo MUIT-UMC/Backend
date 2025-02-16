@@ -44,7 +44,7 @@ public class MusicalResponseDTO {
         private List<String> actorPreview;
         private List<String> priceInfo;
 
-        private EventResponseDTO.EventResultListDTO eventList;
+        private List<EventResponseDTO.EventResultDTO> eventList;
 
         private String perPattern;
 
@@ -128,7 +128,7 @@ public class MusicalResponseDTO {
         private String ageLimit;
         private List<String> actorPreview;
         private List<String> priceInfo;
-        private EventResponseDTO.EventResultListDTO eventList;
+        private List<EventResponseDTO.EventResultDTO> eventList;
         //직접 작성 - 배경이미지
         private String bgImg;
         //직접 작성 - 영문명
@@ -136,8 +136,6 @@ public class MusicalResponseDTO {
         //직접 작성 - 태그
         private List<String> category;
         //직접 작성
-        private LocalDateTime openDate;
-        private EventType openInfo;
         //직접 작성 - 줄거리
         private String description;
         //직접 작성
