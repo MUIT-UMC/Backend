@@ -1,5 +1,6 @@
 package muit.backend.service;
 
+import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.entity.musical.Event;
 import muit.backend.dto.eventDTO.EventRequestDTO;
 import muit.backend.dto.eventDTO.EventResponseDTO;
@@ -14,9 +15,9 @@ import java.util.List;
 
 @Service
 public interface EventService {
-    public EventResponseDTO.EventResultListDTO getEvent (Long musicalId);
+    public EventResponseDTO.EventResultListDTO getEvent (Long musicalId, Member member);
 
-    public Page<EventResponseDTO.EventResultListDTO> getEventListOrderByEvFrom (LocalDate today, Integer page);
+    public Page<EventResponseDTO.EventResultListDTO> getEventListOrderByEvFrom (LocalDate today, Member member, Integer page);
 
     public EventResponseDTO.EventResultDTO createEvent(Long musicalId, EventRequestDTO.EventCreateDTO eventCreateDTO);
 
