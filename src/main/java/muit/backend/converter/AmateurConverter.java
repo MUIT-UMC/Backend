@@ -1,5 +1,6 @@
 package muit.backend.converter;
 
+import lombok.extern.slf4j.Slf4j;
 import muit.backend.domain.entity.amateur.*;
 import muit.backend.domain.entity.member.Member;
 import muit.backend.domain.enums.TicketType;
@@ -50,25 +51,24 @@ public class AmateurConverter {
                 .collect(Collectors.toList());
     }
 
-    public static AmateurNotice toNoticeEntity(AmateurEnrollRequestDTO.AmateurNoticeDTO dto,
+    public static AmateurNotice toNoticeEntity(String noticeContent,
                                                List<String> urls, AmateurShow show) {
-        if (dto == null || urls == null) return null;
+        if (noticeContent == null || urls == null) return null;
 
         return AmateurNotice.builder()
                 .amateurShow(show)
                 .noticeImageUrls(urls)
-                .content(dto.getContent())
+                .content(noticeContent)
                 .build();
     }
 
-    public static AmateurSummary toSummaryEntity(AmateurEnrollRequestDTO.AmateurSummaryDTO dto,
-                                                 String url, AmateurShow show) {
-        if (dto == null || url == null) return null;
+    public static AmateurSummary toSummaryEntity(String summaryContent,
+                                                 AmateurShow show) {
+        if (summaryContent == null) return null;
 
         return AmateurSummary.builder()
                 .amateurShow(show)
-                .summaryImage(url)
-                .content(dto.getContent())
+                .content(summaryContent)
                 .build();
     }
 
@@ -79,7 +79,6 @@ public class AmateurConverter {
         return dtos.stream()
                 .map(dto -> AmateurTicket.builder()
                         .amateurShow(show)
-                        .ticketType(TicketType.valueOf(dto.getTicketType()))
                         .ticketName(dto.getTicketName())
                         .price(Integer.parseInt(dto.getPrice()))
                         .build())

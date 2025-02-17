@@ -43,8 +43,9 @@ public class AmateurShowServiceImpl  implements  AmateurShowService{
     public AmateurEnrollResponseDTO.EnrollResponseDTO enrollShow(Member member, AmateurEnrollRequestDTO dto,
                                                                  MultipartFile posterImage,
                                                                  List<MultipartFile> castingImages,
-                                                                 List<MultipartFile> noticeImages,
-                                                                 MultipartFile summaryImage){
+                                                                 List<MultipartFile> noticeImages
+                                                                 //,MultipartFile summaryImage // 줄거리 이미지 빼기로함
+                                                                 ){
         String posterUrl = (posterImage != null) ?
                 uuidFileService.createFile(posterImage, FilePath.AMATEUR).getFileUrl() : null;
 
@@ -58,30 +59,37 @@ public class AmateurShowServiceImpl  implements  AmateurShowService{
                         .map(file -> uuidFileService.createFile(file, FilePath.AMATEUR_NOTICE).getFileUrl())
                         .toList() : null;
 
-        String summaryUrl = (summaryImage != null) ?
-                uuidFileService.createFile(summaryImage, FilePath.AMATEUR_SUMMARY).getFileUrl() : null;
+//        String summaryUrl = (summaryImage != null) ?
+//                uuidFileService.createFile(summaryImage, FilePath.AMATEUR_SUMMARY).getFileUrl() : null;
         AmateurShow amateurShow = AmateurConverter.toEntityWithDetails(member, dto, posterUrl);
         showRepository.save(amateurShow);
         //여기서 posterUrl 까지만 저장해주고
 
-        saveRelatedEntity(dto, amateurShow, castingUrls, noticeUrls, summaryUrl);
+        log.info("Notice Content: {}", dto.getNoticeContent());
+        log.info("Notice Image URLs: {}", noticeUrls);
+
+        saveRelatedEntity(dto, amateurShow, castingUrls, noticeUrls);
         //여기서 나머지도 저장 해줍니다
 
         return AmateurConverter.enrolledResponseDTO(amateurShow);
     }
 
     // 등록하기전에 합치기
-    private void saveRelatedEntity(AmateurEnrollRequestDTO dto, AmateurShow show,  List<String> castingUrls, List<String> noticeUrls, String summaryUrl){
+    private void saveRelatedEntity(AmateurEnrollRequestDTO dto, AmateurShow show,  List<String> castingUrls, List<String> noticeUrls){
         List<AmateurCasting> castings = AmateurConverter.toCastingEntity(dto.getCastings(), castingUrls, show);
         if (!castings.isEmpty()) {
             amateurCastingRepository.saveAll(castings);
             log.info("캐스팅 등록하기, 총 {}명 등록됨", castings.size());
         }
 
-        AmateurNotice notice = AmateurConverter.toNoticeEntity(dto.getNotice(), noticeUrls, show);
+        // 캐스팅 이미지와 함게 저장
+
+        AmateurNotice notice = AmateurConverter.toNoticeEntity(dto.getNoticeContent(), noticeUrls, show);
         if (notice != null) {
             amateurNoticeRepository.save(notice);
         }
+
+        // 공지사항 이미지와 함께 저장
 
         List<AmateurTicket> tickets = AmateurConverter.toTicketEntity(dto.getTickets(), show);
         if(!tickets.isEmpty()) {
@@ -89,9 +97,13 @@ public class AmateurShowServiceImpl  implements  AmateurShowService{
             log.info("티켓도 등록 해줘요");
         }
 
-        AmateurSummary summaries = AmateurConverter.toSummaryEntity( dto.getSummaries(),  summaryUrl, show);
+        // 티켓 저장, ticketType 제거
+
+        AmateurSummary summaries = AmateurConverter.toSummaryEntity(dto.getSummaryContent(), show);
         amateurSummaryRepository.save(summaries);
         log.info("줄거리도 등록 완료");
+
+        // 줄거리 저장, 줄거리 이미지 제거
 
         List<AmateurStaff> staff = AmateurConverter.toStaffEntity(dto.getStaff(), show);
         amateurStaffRepository.saveAll(staff);
