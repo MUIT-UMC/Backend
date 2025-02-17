@@ -167,8 +167,8 @@ public class PostServiceImpl implements PostService {
 
         //기존 이미지 url->UuidFile화
         List<UuidFile> dtoImgs = null;
-        if(requestDTO.getOriginalImgUrls()!=null&&!requestDTO.getOriginalImgUrls().isEmpty()){
-            requestDTO.getOriginalImgUrls().stream().map(file->
+        if(requestDTO.getOriginalImgUrls()!=null){
+            dtoImgs = requestDTO.getOriginalImgUrls().stream().map(file->
                     uuidFileService.getUuidFileByFileUrl(file).orElseThrow(()->new GeneralException(ErrorStatus.IMAGE_NOT_FOUND))).toList();
         }
 
