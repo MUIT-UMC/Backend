@@ -30,10 +30,11 @@ public class AmateurController {
     public ApiResponse<AmateurEnrollResponseDTO.EnrollResponseDTO> enroll(@RequestHeader("Authorization") String authorizationHeader, @RequestPart("data") AmateurEnrollRequestDTO amateurEnrollRequestDTO, // JSON 데이터
                                                                           @RequestPart(name = "posterImage", required = false) MultipartFile posterImage,
                                                                           @RequestPart(name = "castingImages", required = false) List<MultipartFile> castingImages,
-                                                                          @RequestPart(name = "noticeImages", required = false) List<MultipartFile> noticeImages,
-                                                                          @RequestPart(name = "summaryImage", required = false) MultipartFile summaryImage){
+                                                                          @RequestPart(name = "noticeImages", required = false) List<MultipartFile> noticeImages){
+                                                                          //@RequestPart(name = "summaryImage", required = false) MultipartFile summaryImage){
         Member member = memberService.getMemberByToken(authorizationHeader);
-        AmateurEnrollResponseDTO.EnrollResponseDTO enrollResponseDTO = showService.enrollShow(member, amateurEnrollRequestDTO, posterImage, castingImages, noticeImages, summaryImage);
+
+        AmateurEnrollResponseDTO.EnrollResponseDTO enrollResponseDTO = showService.enrollShow(member, amateurEnrollRequestDTO, posterImage, castingImages, noticeImages);
         return ApiResponse.onSuccess(enrollResponseDTO);
 
     }

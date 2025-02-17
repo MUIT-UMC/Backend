@@ -13,8 +13,8 @@ public interface AmateurShowService {
     AmateurEnrollResponseDTO.EnrollResponseDTO enrollShow(Member member, AmateurEnrollRequestDTO dto,
                                                           MultipartFile posterImage,
                                                           List<MultipartFile> castingImages,
-                                                          List<MultipartFile> noticeImages,
-                                                          MultipartFile summaryImage);
+                                                          List<MultipartFile> noticeImages
+                                                          );
     AmateurShowResponseDTO getShow(Long amateurId);
 
     List<AmateurShowResponseDTO.AmateurShowListDTO> getAllShows(Integer page, Integer size);
