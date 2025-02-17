@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AmateurEnrollRequestDTO {
     private String name;
-    private String posterImgUrl;
+    //private String posterImgUrl; // 포스터는 따로 뺌
     private String place;
     private String schedule;
     private String age;
@@ -25,10 +25,10 @@ public class AmateurEnrollRequestDTO {
     private String hashtag;
     private String runtime;
     private List<AmateurCastingDTO> castings;
-    private AmateurNoticeDTO notice;
+    private String noticeContent;
     private List<AmateurTicketDTO> tickets;
     private List<AmateurStaffDTO> staff;
-    private AmateurSummaryDTO summaries;
+    private String summaryContent;
 
 
     @Builder
@@ -36,19 +36,19 @@ public class AmateurEnrollRequestDTO {
     @NoArgsConstructor
     @Getter
     public static class AmateurCastingDTO{
-        private String imgUrl;
+        //private String imgUrl; // 캐스팅 url도 따로 Multipart로
         private String actorName;
         private String castingName;
     }
 
-    @Builder
+/*    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class AmateurNoticeDTO{
-        private List<String> imgUrls;
+        // private List<String> imgUrls;
         private String content;
-    }
+    }*/
 
     @Builder
     @AllArgsConstructor
@@ -56,7 +56,7 @@ public class AmateurEnrollRequestDTO {
     @Getter
     public static class AmateurTicketDTO{
         private String ticketName;
-        private String ticketType;
+        //private String ticketType; // 티켓 타입 빼기로함
         private String price;
     }
 
@@ -70,12 +70,12 @@ public class AmateurEnrollRequestDTO {
         private String name;
     }
 
-    @Builder
+  /*  @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class AmateurSummaryDTO{
-        private String imgUrl;
+        // private String imgUrl;
         private String content;
-    }
+    }*/
 }
