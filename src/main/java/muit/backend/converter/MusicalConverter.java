@@ -79,6 +79,7 @@ public class MusicalConverter {
                 .isLike(isLike)
                 .score(rating)
                 .posterUrl(musical.getPosterUrl())
+                .theatreId(musical.getTheatre().getId())
                 .place(musical.getPlace())
                 .perFrom(musical.getPerFrom())
                 .perTo(musical.getPerTo())

@@ -36,6 +36,7 @@ public class MusicalResponseDTO {
         private Boolean isLike;
         private Double score;
         private String posterUrl;
+        private Long theatreId;
         private String place;
         private LocalDate perFrom;
         private LocalDate perTo;
