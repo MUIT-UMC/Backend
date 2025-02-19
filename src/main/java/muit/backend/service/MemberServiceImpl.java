@@ -149,7 +149,11 @@ public class MemberServiceImpl implements MemberService {
         return MyPageResponseDTO.builder()
                 .id(memberId)
                 .name(member.getName())
-                .username(member.getUsername()).build();
+                .username(member.getUsername())
+                .phone(member.getPhone())
+                .email(member.getEmail())
+                .status(member.getActiveStatus())
+                .build();
     }
 
     @Transactional
