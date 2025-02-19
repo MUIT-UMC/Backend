@@ -114,6 +114,11 @@ public class Member extends BaseEntity {
         this.email = newEmail;
     }
 
+    public void changeAddress(String newAddress) {
+        this.address = newAddress;
+    }
+
+
     public void updateMember(ManageMemberRequestDTO.UpdateMemberRequestDTO requestDTO) {
         if (requestDTO.getUsername() != null) {
             this.username = requestDTO.getUsername();

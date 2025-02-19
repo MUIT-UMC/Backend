@@ -152,6 +152,7 @@ public class MemberServiceImpl implements MemberService {
                 .username(member.getUsername())
                 .phone(member.getPhone())
                 .email(member.getEmail())
+                .address(member.getAddress())
                 .status(member.getActiveStatus())
                 .build();
     }
@@ -173,6 +174,7 @@ public class MemberServiceImpl implements MemberService {
                 .email(member.getEmail())
                 .name(member.getName())
                 .username(member.getUsername())
+                .address(member.getAddress())
                 .status(member.getActiveStatus()).build();
 
     }
@@ -198,6 +200,7 @@ public class MemberServiceImpl implements MemberService {
                 .email(member.getEmail())
                 .name(member.getName())
                 .username(member.getUsername())
+                .address(member.getAddress())
                 .status(member.getActiveStatus()).build();
     }
 
@@ -216,6 +219,7 @@ public class MemberServiceImpl implements MemberService {
                 .email(member.getEmail())
                 .name(member.getName())
                 .username(member.getUsername())
+                .address(member.getAddress())
                 .status(member.getActiveStatus()).build();
     }
     @Transactional
@@ -233,6 +237,7 @@ public class MemberServiceImpl implements MemberService {
                 .email(member.getEmail())
                 .name(member.getName())
                 .username(member.getUsername())
+                .address(member.getAddress())
                 .status(member.getActiveStatus()).build();
     }
     @Transactional
@@ -258,6 +263,26 @@ public class MemberServiceImpl implements MemberService {
                 .email(member.getEmail())
                 .name(member.getName())
                 .username(member.getUsername())
+                .address(member.getAddress())
+                .status(member.getActiveStatus()).build();
+    }
+
+    @Transactional
+    @Override
+    public MyPageResponseDTO changeAddress(Long tokenId, Long memberId, AddressChangeRequestDTO dto){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+        if (!tokenId.equals(memberId)) {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_AUTHORIZED);
+        }
+
+        member.changeAddress(dto.getAddress());
+        return MyPageResponseDTO.builder()
+                .id(memberId)
+                .phone(member.getPhone())
+                .email(member.getEmail())
+                .name(member.getName())
+                .username(member.getUsername())
+                .address(member.getAddress())
                 .status(member.getActiveStatus()).build();
     }
 

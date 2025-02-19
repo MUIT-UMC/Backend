@@ -118,6 +118,16 @@ public class MemberController {
         return ApiResponse.onSuccess(myPageResponseDTO);
     }
 
+    @PatchMapping("{memberId}/changeAddress")
+    @Operation(summary = "회원 정보 수정 - 주소")
+    public ApiResponse<MyPageResponseDTO> changeAddress(@RequestHeader("Authorization") String authorizationHeader,
+                                                         @PathVariable("memberId") Long memberId,
+                                                         @RequestBody AddressChangeRequestDTO dto) {
+        Member member = memberService.getMemberByToken(authorizationHeader);
+        MyPageResponseDTO myPageResponseDTO = memberService.changeAddress(member.getId(), memberId, dto);
+        return ApiResponse.onSuccess(myPageResponseDTO);
+    }
+
     @PostMapping("{memberId}/checkPassword")
     @Operation(summary = "회원 정보 변경 전 + 소극장 등록 전 비밀 번호 확인하는 api")
     public ApiResponse<Boolean> checkPassword(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PasswordRequestDTO dto) {

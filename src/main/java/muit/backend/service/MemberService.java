@@ -22,6 +22,7 @@ public interface MemberService {
     public MyPageResponseDTO changeUsername(Long tokenId, Long memberId, UserNameChangeRequestDTO dto);
     public MyPageResponseDTO changeEmail(Long tokenId, Long memberId, EmailVerifyRequestDTO dto);
     public MyPageResponseDTO changePassword(Long tokenId, Long memberId, PasswordChangeRequestDTO dto);
+    public MyPageResponseDTO changeAddress(Long tokenId, Long memberId, AddressChangeRequestDTO dto);
 
 
     public List<MusicalResponseDTO.MusicalHomeDTO> getLikeMusicals(Member member);
