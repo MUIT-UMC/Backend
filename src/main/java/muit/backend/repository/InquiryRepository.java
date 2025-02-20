@@ -38,6 +38,6 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
             "WHERE i.id = :inquiryId")
     Optional<Inquiry> findByIdWithMemberAndResponse(@Param("inquiryId") Long inquiryId);
 
-    @Query("SELECT i FROM Inquiry i JOIN FETCH i.member WHERE i.inquiryStatus = :status ORDER BY i.createdAt DESC")
+    @Query("SELECT i FROM Inquiry i JOIN FETCH i.member WHERE i.inquiryStatus = :status AND i.member = :member ORDER BY i.createdAt DESC")
     Page<Inquiry> findAllByMemberAndStatus(Member member, InquiryStatus status, PageRequest of);
 }

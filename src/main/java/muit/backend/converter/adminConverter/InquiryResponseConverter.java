@@ -2,6 +2,7 @@ package muit.backend.converter.adminConverter;
 
 import muit.backend.domain.entity.member.Inquiry;
 import muit.backend.domain.entity.member.InquiryResponse;
+import muit.backend.domain.entity.member.Member;
 import muit.backend.dto.adminDTO.inquiryResponseDTO.InquiryResponseRequestDTO;
 import muit.backend.dto.adminDTO.inquiryResponseDTO.InquiryResponseResponseDTO;
 
@@ -17,8 +18,9 @@ public class InquiryResponseConverter {
 
     }
 
-    public static InquiryResponse toInquiryResponse(Inquiry inquiry, InquiryResponseRequestDTO.InquiryResponseUpsertDTO requestDTO) {
+    public static InquiryResponse toInquiryResponse(Member member, Inquiry inquiry, InquiryResponseRequestDTO.InquiryResponseUpsertDTO requestDTO) {
         return InquiryResponse.builder()
+                .member(member)
                 .inquiry(inquiry)
                 .content(requestDTO.getContent())
                 .build();
