@@ -17,7 +17,7 @@ import java.util.List;
 public interface EventService {
     public EventResponseDTO.EventResultListDTO getEvent (Long musicalId, Member member);
 
-    public Page<EventResponseDTO.EventResultListDTO> getEventListOrderByEvFrom (LocalDate today, Member member, Integer page);
+    public Page<EventResponseDTO.EventResultListDTO> getEventListOrderByEvTo (LocalDate today, Member member, Integer page);
 
     public EventResponseDTO.EventResultDTO createEvent(Long musicalId, EventRequestDTO.EventCreateDTO eventCreateDTO);
 

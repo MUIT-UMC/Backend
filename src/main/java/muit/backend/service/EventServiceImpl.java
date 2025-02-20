@@ -53,15 +53,15 @@ public class EventServiceImpl implements EventService {
 
 
     @Override
-    public Page<EventResponseDTO.EventResultListDTO> getEventListOrderByEvFrom(LocalDate today, Member member, Integer page) {
+    public Page<EventResponseDTO.EventResultListDTO> getEventListOrderByEvTo(LocalDate today, Member member, Integer page) {
         //Event 를 EvFrom 기준 오름차순으로 정렬
-        List<Event> eventList = eventRepository.findAllByEvFromIsNotNullOrderByEvFromAsc();
+        List<Event> eventList = eventRepository.findAllByEvFromIsNotNullOrderByEvToAsc();
 
         List<EventResponseDTO.EventResultListDTO> eventResultListDTOs = eventList.stream()
                 .collect(Collectors.groupingBy(event -> event.getMusical().getId()))
                 .values().stream()
                 .filter(group -> group.stream()                                     // List<Event>로 변환된 스트림을 다시 스트림으로 변환
-                        .anyMatch(event -> !event.getEvFrom().isBefore(today)))
+                        .anyMatch(event -> !event.getEvTo().isBefore(today)))
                 .map(group-> {
                     return EventConverter.toEventResultListDTO(group.get(0).getMusical(),
                             (likesRepository.findByMemberIdAndMusicalId(member.getId(), group.get(0).getMusical().getId())!=null), group);})
