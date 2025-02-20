@@ -15,5 +15,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findByMusicalIdOrderByEvFromAsc(long musicalId);
 
-    List<Event> findAllByEvFromIsNotNullOrderByEvFromAsc();
+    List<Event> findAllByEvFromIsNotNullOrderByEvToAsc();
 }
