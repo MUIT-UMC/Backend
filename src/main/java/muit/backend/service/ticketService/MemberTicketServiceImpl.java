@@ -168,6 +168,7 @@ public class MemberTicketServiceImpl implements MemberTicketService {
                .place(amateurShow.getPlace())
                .schedule(amateurShow.getSchedule())
                .reservationStatus(memberTicket.getReservationStatus())
+               .cancelDate(amateurShow.getSchedule())
                .build();
     }
 
@@ -190,6 +191,7 @@ public class MemberTicketServiceImpl implements MemberTicketService {
                         .schedule(ticket.getAmateurTicket().getAmateurShow().getSchedule())
                         .place(ticket.getAmateurTicket().getAmateurShow().getPlace())
                         .quantity(ticket.getQuantity())
+                        .cancelDate(ticket.getAmateurTicket().getAmateurShow().getSchedule())
                         .reservationStatus(ticket.getReservationStatus())
                         .build())
                 .collect(Collectors.toList());

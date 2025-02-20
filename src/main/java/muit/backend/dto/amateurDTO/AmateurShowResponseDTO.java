@@ -13,13 +13,12 @@ import java.util.List;
 public class AmateurShowResponseDTO {
     private Long id;
     private String name;
-    private String posterImgUrl;
     private String place;
     private String schedule;
     private String age;
     private String starring;
     private int totalTicket;
-    private int soldTicket;
+   // private int soldTicket;
     private String timeInfo;
     private String account;
     private String contact;
@@ -28,17 +27,20 @@ public class AmateurShowResponseDTO {
     private String amateurStatus;
 
     private List<AmateurCastingDTO> castings;
-    private AmateurNoticeDTO notice;
+    private String noticeContent;
     private List<AmateurTicketDTO> tickets;
     private List<AmateurStaffDTO> staff;
-    private AmateurSummaryDTO summaries;
+    private String summaryContent;
+    private String posterImage;
+    private List<String> castingImages;
+    private List<String> noticeImages;
 
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class AmateurCastingDTO {
-        private String imgUrl;
+        //private String imgUrl; // 이미지 따로 뺌
         private String actorName;
         private String castingName;
     }
@@ -58,7 +60,7 @@ public class AmateurShowResponseDTO {
     @Getter
     public static class AmateurTicketDTO {
         private String ticketName;
-        private String ticketType;
+       // private String ticketType; // 티켓 타입 없음
         private String price;
     }
 
