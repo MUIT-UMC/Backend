@@ -28,12 +28,12 @@ public class EventController {
     private final MemberService memberService;
 
     @GetMapping("")
-    @Operation(summary = "현재 진행중인 뮤지컬 이벤트 조회 API", description = "시작 날짜가 오늘 날짜 이후인 이벤트를 하나라도 갖고 있는 모든 뮤지컬의 이벤트 목록을 조회하는 API, 한 페이지에 뮤지컬 6개씩")
+    @Operation(summary = "현재 진행중인 뮤지컬 이벤트 조회 API", description = "종료 날짜가 오늘 날짜 이후인 이벤트를 하나라도 갖고 있는 모든 뮤지컬의 이벤트 목록을 조회하는 API, 한 페이지에 뮤지컬 6개씩")
     public ApiResponse<Page<EventResponseDTO.EventResultListDTO>> getEventListSortedByEvFrom(@RequestHeader("Authorization") String accessToken,
                                                                                              @RequestParam(defaultValue = "0", name = "page") Integer page){
         LocalDate today = LocalDate.now();
         Member member = memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(eventService.getEventListOrderByEvFrom(today, member, page));
+        return ApiResponse.onSuccess(eventService.getEventListOrderByEvTo(today, member, page));
     }
 
     @GetMapping("/{musicalId}")
