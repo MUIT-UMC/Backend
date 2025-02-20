@@ -39,12 +39,11 @@ public class InquiryController {
     @GetMapping("")
     @Operation(summary = "문의 리스트 조회 API", description = "일반 회원이 자신의 문의 리스트를 조회하는 API")
     public ApiResponse<InquiryResponseDTO.InquiryResultListDTO> getInquiryList(@RequestHeader("Authorization") String accessToken,
-                                                                               @RequestParam(name ="status", required = false) InquiryStatus status,
                                                                                @RequestParam(defaultValue = "0", name = "page") Integer page,
                                                                                @RequestParam(defaultValue = "20", name = "size")Integer size)
     {
         Member member = memberService.getMemberByToken(accessToken);
-        return ApiResponse.onSuccess(inquiryService.getList(member,status, page, size));
+        return ApiResponse.onSuccess(inquiryService.getList(member,page, size));
     }
 
     @GetMapping("/{inquiryId}")

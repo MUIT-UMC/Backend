@@ -57,6 +57,6 @@ public class ManageInquiryController {
                                                                                            @RequestBody InquiryResponseRequestDTO.InquiryResponseUpsertDTO requestDTO) {
         Member admin = memberService.getAdminByToken(authorizationHeader);
 
-        return ApiResponse.onSuccess(inquiryResponseService.upsertResponse(inquiryId, requestDTO));
+        return ApiResponse.onSuccess(inquiryResponseService.upsertResponse(admin, inquiryId, requestDTO));
     }
 }

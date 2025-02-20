@@ -155,6 +155,9 @@ public class MemberTicketServiceImpl implements MemberTicketService {
     public TicketResponseDTO.MyPageTicketDTO getMyTicket(Member member,Long memberTicketId){
         MemberTicket memberTicket = memberTicketRepository.findById(memberTicketId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_TICKET_NOT_FOUND));
+        if (!memberTicket.getMember().getId().equals(member.getId())) {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_AUTHORIZED);
+        }
 
         AmateurTicket amateurTicket = memberTicket.getAmateurTicket();
         AmateurShow amateurShow = amateurTicket.getAmateurShow();
@@ -168,6 +171,7 @@ public class MemberTicketServiceImpl implements MemberTicketService {
                .place(amateurShow.getPlace())
                .schedule(amateurShow.getSchedule())
                .reservationStatus(memberTicket.getReservationStatus())
+               .cancelDate(amateurShow.getSchedule())
                .build();
     }
 
@@ -190,6 +194,7 @@ public class MemberTicketServiceImpl implements MemberTicketService {
                         .schedule(ticket.getAmateurTicket().getAmateurShow().getSchedule())
                         .place(ticket.getAmateurTicket().getAmateurShow().getPlace())
                         .quantity(ticket.getQuantity())
+                        .cancelDate(ticket.getAmateurTicket().getAmateurShow().getSchedule())
                         .reservationStatus(ticket.getReservationStatus())
                         .build())
                 .collect(Collectors.toList());

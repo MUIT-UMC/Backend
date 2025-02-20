@@ -29,7 +29,8 @@ public class InquiryResponse extends BaseEntity {
     @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry;
 
-    public void updateContent(String content) {
+    public void updateContent(String content,Member member) {
         this.content = content;
+        this.member = member;
     }
 }

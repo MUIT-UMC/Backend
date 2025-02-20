@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfiguration;
 public class SecurityConfig {
     private final TokenProvider tokenProvider;
     private final JwtFilter jwtFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -28,6 +29,10 @@ public class SecurityConfig {
                     config.addAllowedOrigin("http://localhost:8080"); // '*' 대신 명시적 출처 사용
                     config.addAllowedOrigin("http://localhost:5173"); // '*' 대신 명시적 출처 사용
                     config.addAllowedOrigin("http://13.209.69.125:8080"); //배포된 프론트엔드 서버 추가
+                    config.addAllowedOrigin("https://muitproject.vercel.app"); //배포된 프론트엔드 주소 추가
+                    config.addAllowedOrigin("http://muit-front.s3-website.ap-northeast-2.amazonaws.com"); //배포된 프론트엔드 주소 추가
+                    config.addAllowedOrigin("http://muit.site"); //배포된 프론트엔드 주소 추가
+                    config.addAllowedOrigin("https://muit.site"); //배포된 프론트엔드 주소 추가
                     //config.addAllowedOrigin("*");
                     config.addAllowedHeader("*");
                     config.addAllowedMethod("*");

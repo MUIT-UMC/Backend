@@ -62,7 +62,7 @@ public class LostController {
     })
     public ApiResponse<LostResponseDTO.LostResultListDTO> getPostList(@RequestHeader("Authorization") String accessToken,
                                                                       @RequestParam(defaultValue = "") String musicalName,
-                                                                      @RequestParam(defaultValue = "") LocalDate lostDate,
+                                                                      @RequestParam(defaultValue = "") String lostDate,
                                                                       @RequestParam(defaultValue = "") String location,
                                                                       @RequestParam(defaultValue = "") String lostItem,
                                                                       @RequestParam("postType") LostType lostType,
@@ -76,7 +76,7 @@ public class LostController {
         Member member = memberService.getMemberByToken(accessToken);
         Map<String,String> search = new HashMap<>();
         search.put("musicalName",musicalName.trim());
-        search.put("lostDate",lostDate!=null ? lostDate.toString().trim():"");
+        search.put("lostDate",lostDate);
         search.put("location",location.trim());
         search.put("lostItem",lostItem.trim());
 

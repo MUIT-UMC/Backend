@@ -2,7 +2,9 @@ package muit.backend.repository;
 
 import muit.backend.domain.entity.member.Inquiry;
 import muit.backend.domain.entity.member.Member;
+import muit.backend.domain.enums.InquiryStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,8 +15,6 @@ import java.util.Optional;
 
 @Repository
 public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
-
-    Page<Inquiry> findAllByMember(Member member, Pageable pageable);
 
     // 전체 조회용 (member 함께 조회)
     @Query("SELECT i FROM Inquiry i JOIN FETCH i.member ORDER BY i.createdAt DESC")
@@ -35,4 +35,7 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
             "LEFT JOIN FETCH i.inquiryResponse " +  // 답변은 항상 존재하지 X -> LEFT JOIN 사용
             "WHERE i.id = :inquiryId")
     Optional<Inquiry> findByIdWithMemberAndResponse(@Param("inquiryId") Long inquiryId);
+
+    @Query("SELECT i FROM Inquiry i JOIN FETCH i.member WHERE i.member = :member ORDER BY i.createdAt DESC")
+    Page<Inquiry> findAllByMember(Member member, Pageable pageable);
 }
