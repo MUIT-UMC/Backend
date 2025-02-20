@@ -11,7 +11,7 @@ public interface InquiryService {
     InquiryResponseDTO.GeneralInquiryResultDTO createInquiry(InquiryRequestDTO.InquiryCreateRequestDTO requestDTO, Member member);
 
     //문의 리스트 조회
-    InquiryResponseDTO.InquiryResultListDTO getList(Member member, InquiryStatus status, Integer page, Integer size);
+    InquiryResponseDTO.InquiryResultListDTO getList(Member member, Integer page, Integer size);
 
     InquiryResponseDTO.GeneralInquiryResultDTO getOne(Long inquiryId, Member member);
 

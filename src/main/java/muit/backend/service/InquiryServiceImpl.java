@@ -41,8 +41,8 @@ public class InquiryServiceImpl implements InquiryService {
 
     //문의 리스트 조회
     @Override
-    public InquiryResponseDTO.InquiryResultListDTO getList(Member member, InquiryStatus status, Integer page, Integer size) {
-        Page<Inquiry> inquiryPage = inquiryRepository.findAllByMemberAndStatus(member, status, PageRequest.of(page,size));
+    public InquiryResponseDTO.InquiryResultListDTO getList(Member member, Integer page, Integer size) {
+        Page<Inquiry> inquiryPage = inquiryRepository.findAllByMember(member, PageRequest.of(page,size));
 
         return InquiryConverter.toInquiryListDTO(inquiryPage);
     }
