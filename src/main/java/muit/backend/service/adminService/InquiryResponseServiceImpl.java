@@ -6,6 +6,7 @@ import muit.backend.apiPayLoad.exception.GeneralException;
 import muit.backend.converter.adminConverter.InquiryResponseConverter;
 import muit.backend.domain.entity.member.Inquiry;
 import muit.backend.domain.entity.member.InquiryResponse;
+import muit.backend.domain.entity.member.Member;
 import muit.backend.dto.adminDTO.inquiryResponseDTO.InquiryResponseRequestDTO;
 import muit.backend.dto.adminDTO.inquiryResponseDTO.InquiryResponseResponseDTO;
 import muit.backend.repository.InquiryRepository;
@@ -24,7 +25,7 @@ public class InquiryResponseServiceImpl implements InquiryResponseService {
     // 답변 생성
     @Override
     @Transactional
-    public InquiryResponseResponseDTO.InquiryResponseUpsertDTO upsertResponse(Long inquiryId, InquiryResponseRequestDTO.InquiryResponseUpsertDTO requestDTO) {
+    public InquiryResponseResponseDTO.InquiryResponseUpsertDTO upsertResponse(Member member, Long inquiryId, InquiryResponseRequestDTO.InquiryResponseUpsertDTO requestDTO) {
         Inquiry inquiry = inquiryRepository.findById(inquiryId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.INQUIRY_NOT_FOUND));
 
@@ -33,10 +34,10 @@ public class InquiryResponseServiceImpl implements InquiryResponseService {
         if (inquiry.getInquiryResponse() != null) {
             // 기존 답변이 있으면 수정하기
             inquiryResponse = inquiry.getInquiryResponse();
-            inquiryResponse.updateContent(requestDTO.getContent());
+            inquiryResponse.updateContent(requestDTO.getContent(),member);
         } else {
             // 답변이 없으면 생성하기
-            inquiryResponse = InquiryResponseConverter.toInquiryResponse(inquiry, requestDTO);
+            inquiryResponse = InquiryResponseConverter.toInquiryResponse(member, inquiry, requestDTO);
             inquiryResponse = inquiryResponseRepository.save(inquiryResponse);
 
             inquiry.addResponse(inquiryResponse);  // 답변 추가됨 -> 상태 변경 호출
