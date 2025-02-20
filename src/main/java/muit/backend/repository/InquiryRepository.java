@@ -16,8 +16,6 @@ import java.util.Optional;
 @Repository
 public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
 
-    Page<Inquiry> findAllByMember(Member member, Pageable pageable);
-
     // 전체 조회용 (member 함께 조회)
     @Query("SELECT i FROM Inquiry i JOIN FETCH i.member ORDER BY i.createdAt DESC")
     Page<Inquiry> findAllWithMember(Pageable pageable);
@@ -38,6 +36,6 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
             "WHERE i.id = :inquiryId")
     Optional<Inquiry> findByIdWithMemberAndResponse(@Param("inquiryId") Long inquiryId);
 
-    @Query("SELECT i FROM Inquiry i JOIN FETCH i.member WHERE i.inquiryStatus = :status AND i.member = :member ORDER BY i.createdAt DESC")
-    Page<Inquiry> findAllByMemberAndStatus(Member member, InquiryStatus status, PageRequest of);
+    @Query("SELECT i FROM Inquiry i JOIN FETCH i.member WHERE i.member = :member ORDER BY i.createdAt DESC")
+    Page<Inquiry> findAllByMember(Member member, Pageable pageable);
 }
