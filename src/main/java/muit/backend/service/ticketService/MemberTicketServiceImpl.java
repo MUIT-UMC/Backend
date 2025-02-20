@@ -155,6 +155,9 @@ public class MemberTicketServiceImpl implements MemberTicketService {
     public TicketResponseDTO.MyPageTicketDTO getMyTicket(Member member,Long memberTicketId){
         MemberTicket memberTicket = memberTicketRepository.findById(memberTicketId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_TICKET_NOT_FOUND));
+        if (!memberTicket.getMember().getId().equals(member.getId())) {
+            throw new GeneralException(ErrorStatus.MEMBER_NOT_AUTHORIZED);
+        }
 
         AmateurTicket amateurTicket = memberTicket.getAmateurTicket();
         AmateurShow amateurShow = amateurTicket.getAmateurShow();
