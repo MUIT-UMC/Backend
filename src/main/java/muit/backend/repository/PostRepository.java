@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,4 +43,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByMember(Member member,PageRequest of);
 
     List<Post> findAllByPostTypeAndMusicalId(PostType postType, Long musicalId);
+
+    Page<Post> findAllByPostTypeAndMusicalNameAndLostItemContainingAndLocationContainingAndLostDate(PostType postType, PageRequest of, String musicalName, String lostItem, String location, LocalDate lostDate);
+
+    Page<Post> findAllByPostTypeAndLostItemContainingAndLocationContainingAndLostDate(PostType postType, PageRequest of, String lostItem, String location, LocalDate ld);
 }

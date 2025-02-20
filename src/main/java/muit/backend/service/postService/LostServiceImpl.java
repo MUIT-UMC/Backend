@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,34 +47,34 @@ public class LostServiceImpl implements LostService {
         Page<Post> postPage;
         if(!search.get("musicalName").isEmpty()) {//뮤지컬 이름 포함 검색
             if(!search.get("lostDate").isEmpty()){//날짜 포함 검색
-                LocalDateTime startTime = LocalDateTime.of(LocalDate.parse(search.get("lostDate") ),LocalTime.of(0,0,0));
-                LocalDateTime endTime = LocalDateTime.of(LocalDate.parse(search.get("lostDate")),LocalTime.of(23,59,59));
-                postPage = postRepository.findAllByPostTypeAndMusicalNameAndLostItemContainingAndLocationContainingAndLostDateBetween(postType,
+                LocalDate ld = LocalDate.parse(search.get("lostDate"));
+                System.out.println(ld);
+                postPage = postRepository.findAllByPostTypeAndMusicalNameAndLostItemContainingAndLocationContainingAndLostDate(postType,
                         PageRequest.of(page, size),
                         search.get("musicalName"),
                         search.get("lostItem"),
                         search.get("location"),
-                        startTime,endTime);
+                        ld);
+                System.out.println("날짜 검색");
 
-            }else{
+            }else{//날짜 없을 때
                 postPage = postRepository.findAllByPostTypeAndMusicalNameAndLostItemContainingAndLocationContaining(postType,
                         PageRequest.of(page, size),
                         search.get("musicalName"),
                         search.get("lostItem"),
                         search.get("location"));
-                System.out.println("날짜 없을때");
             }
 
         }else {//뮤지컬 이름 미포함 검색
 
             if(!search.get("lostDate").isEmpty()){//날짜 포함 검색
-                LocalDateTime startTime = LocalDateTime.of(LocalDate.parse(search.get("lostDate")),LocalTime.of(0,0,0));
-                LocalDateTime endTime = LocalDateTime.of(LocalDate.parse(search.get("lostDate")),LocalTime.of(23,59,59));
-                postPage = postRepository.findAllByPostTypeAndLostItemContainingAndLocationContainingAndLostDateBetween(postType,
+                LocalDate ld = LocalDate.parse(search.get("lostDate"));
+                System.out.println(ld);
+                postPage = postRepository.findAllByPostTypeAndLostItemContainingAndLocationContainingAndLostDate(postType,
                         PageRequest.of(page, size),
                         search.get("lostItem"),
                         search.get("location"),
-                        startTime,endTime);
+                        ld);
             }else{
                 postPage = postRepository.findAllByPostTypeAndLostItemContainingAndLocationContaining(postType,
                         PageRequest.of(page, size),
