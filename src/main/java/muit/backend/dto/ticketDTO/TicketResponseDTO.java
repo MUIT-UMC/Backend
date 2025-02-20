@@ -80,6 +80,7 @@ public class TicketResponseDTO {
         private ReservationStatus reservationStatus;
         private LocalDateTime reservationDate;
         private String place;
+        private String cancelDate;
         private String schedule;
     }
 

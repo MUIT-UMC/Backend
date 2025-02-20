@@ -10,6 +10,7 @@ import muit.backend.dto.amateurDTO.AmateurShowResponseDTO;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -114,7 +115,6 @@ public class AmateurConverter {
         return AmateurShowResponseDTO.builder()
                 .id(show.getId())
                 .name(show.getName())
-                .posterImgUrl(show.getPosterImgUrl())
                 .place(show.getPlace())
                 .schedule(show.getSchedule())
                 .age(show.getAge())
@@ -128,18 +128,35 @@ public class AmateurConverter {
                 .runtime(show.getRuntime())
                 .amateurStatus(show.getAmateurStatus().toString())
                 .castings(toCastingDTO(show.getAmateurCastingList()))
-                .notice(toNoticeDTO(show.getAmateurNotice()))
+                .noticeContent(show.getAmateurNotice().getContent())
                 .tickets(toTicketDTO(show.getAmateurTicketList()))
                 .staff(toStaffDTO(show.getAmateurStaffList()))
-                .summaries(toSummaryDTO(show.getAmateurSummary()))
+                .summaryContent(show.getAmateurSummary().getContent())
+                .posterImage(show.getPosterImgUrl())
+                .castingImages(extractCastingImages(show.getAmateurCastingList()))
+                .noticeImages(extractNoticeImages(show.getAmateurNotice()))
                 .build();
     }
+
+    private static List<String> extractCastingImages(List<AmateurCasting> castingList) {
+        if (castingList == null) return Collections.emptyList();
+        return castingList.stream()
+                .map(AmateurCasting::getImageUrl) // 이미지 URL 필드가 있다고 가정
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private static List<String> extractNoticeImages(AmateurNotice notice) {
+        if (notice == null || notice.getNoticeImageUrls() == null) return Collections.emptyList();
+        return notice.getNoticeImageUrls();
+    }
+
 
     private static List<AmateurShowResponseDTO.AmateurCastingDTO> toCastingDTO(List<AmateurCasting> castings) {
         if (castings == null) return null;
         return castings.stream()
                 .map(casting -> new AmateurShowResponseDTO.AmateurCastingDTO(
-                        casting.getImageUrl(),
+                        //casting.getImageUrl(),
                         casting.getActorName(),
                         casting.getCastingName()
                 ))
@@ -159,7 +176,7 @@ public class AmateurConverter {
         return tickets.stream()
                 .map(ticket -> new AmateurShowResponseDTO.AmateurTicketDTO(
                         ticket.getTicketName(),
-                        ticket.getTicketType().toString(),
+                       // ticket.getTicketType().toString(),
                         String.valueOf(ticket.getPrice())
                 ))
                 .collect(Collectors.toList());
