@@ -33,6 +33,7 @@ public class SecurityConfig {
                     config.addAllowedOrigin("http://muit-front.s3-website.ap-northeast-2.amazonaws.com"); //배포된 프론트엔드 주소 추가
                     config.addAllowedOrigin("http://muit.site"); //배포된 프론트엔드 주소 추가
                     config.addAllowedOrigin("https://muit.site"); //배포된 프론트엔드 주소 추가
+                    config.addAllowedOrigin("https://musical-dodol-afad4e.netlify.app"); //배포된 프론트엔드 주소 추가
                     //config.addAllowedOrigin("*");
                     config.addAllowedHeader("*");
                     config.addAllowedMethod("*");
