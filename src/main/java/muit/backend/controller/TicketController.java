@@ -67,6 +67,7 @@ public class TicketController {
         return ApiResponse.onSuccess(cancelRequestTicketDTO);
     }
 
+
     @GetMapping("/myTickets/{memberTicketId}")
     @Operation(summary = "마이페이지에서 티켓 단건 조회")
     public ApiResponse<TicketResponseDTO.MyPageTicketDTO> getMyTicket(@RequestHeader("Authorization") String authorizationHeader,
